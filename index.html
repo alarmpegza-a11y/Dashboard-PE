@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PE-SYSTEM — Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:        #07090f;
+            --surface:   #0d1117;
+            --border:    rgba(255,255,255,0.07);
+            --text:      #f0f4ff;
+            --muted:     #4a5568;
+            --accent:    #3b82f6;
+            --glow:      rgba(59,130,246,0.18);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #shell {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* ── SIDEBAR ── */
+        #sidebar {
+            width: 72px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0 20px;
+            gap: 0;
+            z-index: 100;
+            flex-shrink: 0;
+            transition: width 0.28s cubic-bezier(.4,0,.2,1);
+            overflow: hidden;
+        }
+
+        #sidebar.expanded { width: 220px; }
+
+        .logo-wrap {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 16px;
+            margin-bottom: 28px;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 16px rgba(59,130,246,0.35);
+        }
+        .logo-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 3px;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        #sidebar.expanded .logo-text { opacity: 1; }
+
+        .nav-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background 0.15s;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            border-left: 3px solid transparent;
+            user-select: none;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.05); }
+        .nav-item.active {
+            background: rgba(59,130,246,0.12);
+            border-left-color: var(--accent);
+        }
+        .nav-item.active .nav-icon-wrap { box-shadow: 0 0 0 1px rgba(59,130,246,0.4); }
+
+        .nav-icon-wrap {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: transform 0.15s;
+        }
+        .nav-item:hover .nav-icon-wrap { transform: scale(1.08); }
+
+        .nav-label { flex: 1; overflow: hidden; }
+        .nav-label-title {
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e2e8f0;
+            opacity: 0;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        .nav-label-sub {
+            font-size: 9px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+            margin-top: 1px;
+        }
+        #sidebar.expanded .nav-label-title,
+        #sidebar.expanded .nav-label-sub { opacity: 1; }
+
+        .sidebar-toggle {
+            margin-top: auto;
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 16px;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .sidebar-toggle:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+        .nav-divider {
+            width: calc(100% - 24px);
+            height: 1px;
+            background: var(--border);
+            margin: 8px 0;
+            flex-shrink: 0;
+        }
+
+        /* ── MAIN ── */
+        #main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #topbar {
+            height: 52px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            flex-shrink: 0;
+            z-index: 50;
+        }
+
+        .topbar-breadcrumb { display: flex; align-items: center; gap: 8px; flex: 1; }
+        .topbar-app-badge { display: flex; align-items: center; gap: 8px; }
+        .topbar-icon {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+        }
+        .topbar-name {
+            font-size: 13px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 1.5px; color: #fff;
+        }
+        .topbar-sub {
+            font-size: 9px; color: var(--muted);
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .live-pill {
+            display: flex; align-items: center; gap: 5px;
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 20px; padding: 3px 10px;
+            font-size: 8px; font-weight: 900;
+            color: #10b981; text-transform: uppercase; letter-spacing: 1px;
+            margin-left: auto;
+        }
+        .live-dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: #10b981; animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.7); }
+            50% { box-shadow: 0 0 6px 3px rgba(16,185,129,0.3); }
+        }
+
+        /* ── IFRAME AREA ── */
+        #iframe-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-frame {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            background: #fff;
+        }
+        .app-frame.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ── HOME SCREEN ── */
+        #home-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            overflow: hidden;
+        }
+
+        #home-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+        }
+
+        .home-glow {
+            position: absolute;
+            top: 30%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; height: 300px;
+            background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .home-headline {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(48px, 8vw, 96px);
+            letter-spacing: 8px;
+            color: #fff;
+            line-height: 1;
+            text-align: center;
+            position: relative;
+            animation: fadeUp 0.6s ease both;
+        }
+        .home-headline span { color: var(--accent); }
+        .home-sub {
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 4px;
+            color: var(--muted); margin-top: 12px;
+            position: relative;
+            animation: fadeUp 0.6s 0.1s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-top: 52px;
+            position: relative;
+            padding: 0 20px;
+            max-width: 900px;
+            width: 100%;
+            animation: fadeUp 0.6s 0.2s ease both;
+        }
+
+        .app-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px 16px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(.4,0,.2,1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .app-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.15);
+        }
+        .app-card:active { transform: translateY(-1px) scale(0.98); }
+
+        .app-card-icon {
+            width: 52px; height: 52px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; flex-shrink: 0;
+        }
+        .app-card-title {
+            font-size: 10px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: #e2e8f0; line-height: 1.3;
+        }
+        .app-card-desc {
+            font-size: 8.5px; color: var(--muted);
+            font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; line-height: 1.4;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 32px;
+            margin-top: 52px;
+            position: relative;
+            animation: fadeUp 0.6s 0.35s ease both;
+        }
+        .stat-item { text-align: center; }
+        .stat-val {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px; letter-spacing: 2px;
+            color: var(--accent); line-height: 1;
+        }
+        .stat-lbl {
+            font-size: 8px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: var(--muted); margin-top: 2px;
+        }
+        .stat-sep { width: 1px; background: var(--border); align-self: stretch; }
+
+        /* ── LOADING ── */
+        #loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        #loading-overlay.show { opacity: 1; pointer-events: all; }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 3px solid rgba(59,130,246,0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-text {
+            font-size: 10px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 3px; color: var(--muted);
+        }
+
+        /* ── ERROR SCREEN ── */
+        #error-screen {
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            z-index: 150;
+        }
+        #error-screen.show { display: flex; }
+        .error-icon { font-size: 48px; }
+        .error-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px; letter-spacing: 4px;
+            color: #ef4444;
+        }
+        .error-msg {
+            font-size: 11px; color: var(--muted);
+            font-weight: 600; text-transform: uppercase;
+            letter-spacing: 2px; text-align: center;
+            max-width: 380px; line-height: 1.8;
+        }
+        .error-btn {
+            margin-top: 8px;
+            padding: 10px 24px;
+            background: rgba(239,68,68,0.15);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 12px;
+            color: #ef4444;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .error-btn:hover { background: rgba(239,68,68,0.25); }
+
+        /* Open in new tab button */
+        .open-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+            padding: 10px 24px;
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.3);
+            border-radius: 12px;
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+        .open-btn:hover { background: rgba(59,130,246,0.25); }
+
+        /* ── MOBILE BOTTOM NAV ── */
+        #mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 64px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            z-index: 300;
+            overflow-x: auto; overflow-y: hidden;
+        }
+        .mobile-nav-inner {
+            display: flex;
+            height: 100%;
+            padding: 0 4px;
+            min-width: max-content;
+        }
+        .mobile-nav-item {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 3px; padding: 8px 14px;
+            cursor: pointer; border-radius: 12px;
+            margin: 6px 2px; transition: background 0.15s;
+            min-width: 60px;
+        }
+        .mobile-nav-item.active { background: rgba(59,130,246,0.15); }
+        .mobile-nav-item .m-icon { font-size: 20px; }
+        .mobile-nav-item .m-label {
+            font-size: 7px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--muted); white-space: nowrap;
+        }
+        .mobile-nav-item.active .m-label { color: var(--accent); }
+
+        @media (max-width: 768px) {
+            #sidebar { display: none; }
+            #mobile-nav { display: block; }
+            #main { padding-bottom: 64px; }
+            .apps-grid { grid-template-columns: repeat(3, 1fr); }
+            .stats-bar { gap: 20px; }
+        }
+
+        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 64px; top: 50%;
+            transform: translateY(-50%);
+            background: #1e293b; color: #fff;
+            font-size: 10px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 1px;
+            padding: 6px 10px; border-radius: 8px;
+            white-space: nowrap; pointer-events: none;
+            opacity: 0; transition: opacity 0.15s;
+            z-index: 999;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<div id="shell">
+
+    <nav id="sidebar">
+        <div class="logo-wrap" onclick="toggleSidebar()">
+            <div class="logo-icon">PE</div>
+            <div class="logo-text">PE-SYSTEM</div>
+        </div>
+
+        <div class="nav-item active" data-app="home" data-tooltip="Home" onclick="openApp('home')">
+            <div class="nav-icon-wrap" style="background:rgba(100,116,139,0.15);">🏠</div>
+            <div class="nav-label">
+                <div class="nav-label-title">Home</div>
+                <div class="nav-label-sub">Übersicht</div>
+            </div>
+        </div>
+
+        <div class="nav-divider"></div>
+
+        <div class="nav-item" data-app="ausmesser" data-tooltip="Ausmesser" onclick="openApp('ausmesser')">
+            <div class="nav-icon-wrap" style="background:rgba(239,68,68,0.15);">📐</div>
+            <div class="nav-label">
+                <div class="nav-label-title">Ausmesser Cloud</div>
+                <div class="nav-label-sub">PE Fabrikation</div>
+            </div>
+        </div>
+
+        <div class="nav-item" data-app="pe-montage" data-tooltip="PE-Montage" onclick="openApp('pe-montage')">
+            <div class="nav-icon-wrap" style="background:rgba(16,185,129,0.15);">🔧</div>
+            <div class="nav-label">
+                <div class="nav-label-title">PE-Montage / FA</div>
+                <div class="nav-label-sub">Montage Manager</div>
+            </div>
+        </div>
+
+        <div class="nav-item" data-app="pe-kalender" data-tooltip="PE-Kalender" onclick="openApp('pe-kalender')">
+            <div class="nav-icon-wrap" style="background:rgba(59,130,246,0.15);">📅</div>
+            <div class="nav-label">
+                <div class="nav-label-title">PE-Kalender</div>
+                <div class="nav-label-sub">Tourendispo Live</div>
+            </div>
+        </div>
+
+        <div class="nav-item" data-app="stunden" data-tooltip="Stunden" onclick="openApp('stunden')">
+            <div class="nav-icon-wrap" style="background:rgba(139,92,246,0.15);">⏱️</div>
+            <div class="nav-label">
+                <div class="nav-label-title">Stunden</div>
+                <div class="nav-label-sub">Zeiterfassung</div>
+            </div>
+        </div>
+
+        <div class="nav-item" data-app="dispo" data-tooltip="Ajdin Dispo" onclick="openApp('dispo')">
+            <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15);">🚛</div>
+            <div class="nav-label">
+                <div class="nav-label-title">Ajdin Dispo</div>
+                <div class="nav-label-sub">Tourendispo Pro</div>
+            </div>
+        </div>
+
+        <div class="nav-divider"></div>
+
+        <div class="sidebar-toggle" onclick="toggleSidebar()">
+            <span id="toggle-icon">›</span>
+        </div>
+    </nav>
+
+    <div id="main">
+        <div id="topbar">
+            <div class="topbar-breadcrumb">
+                <div class="topbar-app-badge">
+                    <div class="topbar-icon" id="topbar-icon">🏠</div>
+                    <div>
+                        <div class="topbar-name" id="topbar-name">PE-SYSTEM</div>
+                        <div class="topbar-sub" id="topbar-sub">Command Center</div>
+                    </div>
+                </div>
+            </div>
+            <div class="live-pill">
+                <div class="live-dot"></div>
+                <span>LIVE</span>
+            </div>
+        </div>
+
+        <div id="iframe-container">
+
+            <div id="home-screen">
+                <div class="home-glow"></div>
+                <div class="home-headline">PE<span>—</span>SYSTEM</div>
+                <div class="home-sub">Command Center · 5 Apps · Alle verbunden</div>
+
+                <div class="apps-grid">
+                    <div class="app-card" onclick="openApp('ausmesser')">
+                        <div class="app-card-icon" style="background:rgba(239,68,68,0.15);">📐</div>
+                        <div>
+                            <div class="app-card-title">Ausmesser Cloud</div>
+                            <div class="app-card-desc">PE Fabrikation</div>
+                        </div>
+                    </div>
+                    <div class="app-card" onclick="openApp('pe-montage')">
+                        <div class="app-card-icon" style="background:rgba(16,185,129,0.15);">🔧</div>
+                        <div>
+                            <div class="app-card-title">PE-Montage / FA</div>
+                            <div class="app-card-desc">Montage Manager</div>
+                        </div>
+                    </div>
+                    <div class="app-card" onclick="openApp('pe-kalender')">
+                        <div class="app-card-icon" style="background:rgba(59,130,246,0.15);">📅</div>
+                        <div>
+                            <div class="app-card-title">PE-Kalender</div>
+                            <div class="app-card-desc">Tourendispo Live</div>
+                        </div>
+                    </div>
+                    <div class="app-card" onclick="openApp('stunden')">
+                        <div class="app-card-icon" style="background:rgba(139,92,246,0.15);">⏱️</div>
+                        <div>
+                            <div class="app-card-title">Stunden</div>
+                            <div class="app-card-desc">Zeiterfassung</div>
+                        </div>
+                    </div>
+                    <div class="app-card" onclick="openApp('dispo')">
+                        <div class="app-card-icon" style="background:rgba(245,158,11,0.15);">🚛</div>
+                        <div>
+                            <div class="app-card-title">Ajdin Dispo</div>
+                            <div class="app-card-desc">Tourendispo Pro</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-val">5</div>
+                        <div class="stat-lbl">Apps</div>
+                    </div>
+                    <div class="stat-sep"></div>
+                    <div class="stat-item">
+                        <div class="stat-val">2</div>
+                        <div class="stat-lbl">Accounts</div>
+                    </div>
+                    <div class="stat-sep"></div>
+                    <div class="stat-item">
+                        <div class="stat-val">∞</div>
+                        <div class="stat-lbl">Live-Sync</div>
+                    </div>
+                    <div class="stat-sep"></div>
+                    <div class="stat-item">
+                        <div class="stat-val" id="clock-val">—</div>
+                        <div class="stat-lbl">Uhrzeit</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error screen -->
+            <div id="error-screen">
+                <div class="error-icon">⚠️</div>
+                <div class="error-title">Zugriff Blockiert</div>
+                <div class="error-msg">
+                    Diese App kann nicht direkt eingebettet werden.<br>
+                    GitHub Pages blockiert manchmal iFrame-Zugriff.<br>
+                    Öffne sie direkt im neuen Tab:
+                </div>
+                <a id="error-link" href="#" target="_blank" class="open-btn">↗ App öffnen</a>
+                <button class="error-btn" onclick="hideError()">← Zurück zur Übersicht</button>
+            </div>
+
+            <div id="loading-overlay">
+                <div class="spinner"></div>
+                <div class="loading-text">App wird geladen...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mobile-nav">
+    <div class="mobile-nav-inner">
+        <div class="mobile-nav-item active" data-app="home" onclick="openApp('home')">
+            <span class="m-icon">🏠</span>
+            <span class="m-label">Home</span>
+        </div>
+        <div class="mobile-nav-item" data-app="ausmesser" onclick="openApp('ausmesser')">
+            <span class="m-icon">📐</span>
+            <span class="m-label">Ausmesser</span>
+        </div>
+        <div class="mobile-nav-item" data-app="pe-montage" onclick="openApp('pe-montage')">
+            <span class="m-icon">🔧</span>
+            <span class="m-label">Montage</span>
+        </div>
+        <div class="mobile-nav-item" data-app="pe-kalender" onclick="openApp('pe-kalender')">
+            <span class="m-icon">📅</span>
+            <span class="m-label">Kalender</span>
+        </div>
+        <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')">
+            <span class="m-icon">⏱️</span>
+            <span class="m-label">Stunden</span>
+        </div>
+        <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')">
+            <span class="m-icon">🚛</span>
+            <span class="m-label">Dispo</span>
+        </div>
+    </div>
+</div>
+
+<script>
+const APPS = {
+    'ausmesser': {
+        label: 'Ausmesser Cloud',
+        sub: 'PE Fabrikation GIS',
+        icon: '📐',
+        iconBg: 'rgba(239,68,68,0.15)',
+        url: 'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/',
+    },
+    'pe-montage': {
+        label: 'PE-Montage / FA',
+        sub: 'Montage Manager Pro',
+        icon: '🔧',
+        iconBg: 'rgba(16,185,129,0.15)',
+        url: 'https://alarmpegza-a11y.github.io/PE-MONTAGE/',
+    },
+    'pe-kalender': {
+        label: 'PE-Kalender',
+        sub: 'Tourendispo Live',
+        icon: '📅',
+        iconBg: 'rgba(59,130,246,0.15)',
+        url: 'https://alarmpegza-a11y.github.io/PE-KALENDER/',
+    },
+    'stunden': {
+        label: 'Stunden',
+        sub: 'Zeiterfassung',
+        icon: '⏱️',
+        iconBg: 'rgba(139,92,246,0.15)',
+        url: 'https://alarmpegza-a11y.github.io/Stunden/',
+    },
+    'dispo': {
+        label: 'Ajdin Dispo',
+        sub: 'Tourendispo Pro',
+        icon: '🚛',
+        iconBg: 'rgba(245,158,11,0.15)',
+        url: 'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/',
+    },
+};
+
+let currentApp = 'home';
+let sidebarExpanded = false;
+const loadedFrames = new Set();
+
+function toggleSidebar() {
+    sidebarExpanded = !sidebarExpanded;
+    document.getElementById('sidebar').classList.toggle('expanded', sidebarExpanded);
+    document.getElementById('toggle-icon').textContent = sidebarExpanded ? '‹' : '›';
+}
+
+function openApp(appId) {
+    currentApp = appId;
+
+    document.querySelectorAll('.nav-item').forEach(el =>
+        el.classList.toggle('active', el.dataset.app === appId));
+    document.querySelectorAll('.mobile-nav-item').forEach(el =>
+        el.classList.toggle('active', el.dataset.app === appId));
+
+    const homeScreen = document.getElementById('home-screen');
+    const errorScreen = document.getElementById('error-screen');
+
+    if (appId === 'home') {
+        homeScreen.style.display = 'flex';
+        errorScreen.classList.remove('show');
+        document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
+        setTopbar('🏠', 'PE-SYSTEM', 'Command Center', 'rgba(100,116,139,0.15)');
+        return;
+    }
+
+    homeScreen.style.display = 'none';
+    errorScreen.classList.remove('show');
+
+    const app = APPS[appId];
+    if (!app) return;
+
+    setTopbar(app.icon, app.label, app.sub, app.iconBg);
+    document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
+
+    let frame = document.getElementById('frame-' + appId);
+    if (!frame) {
+        frame = document.createElement('iframe');
+        frame.id = 'frame-' + appId;
+        frame.className = 'app-frame';
+        frame.allow = 'clipboard-read; clipboard-write';
+        document.getElementById('iframe-container').appendChild(frame);
+    }
+
+    if (!loadedFrames.has(appId)) {
+        const overlay = document.getElementById('loading-overlay');
+        overlay.classList.add('show');
+
+        // Timeout: if iframe doesn't load in 6s, show error with direct link
+        const errorTimeout = setTimeout(() => {
+            overlay.classList.remove('show');
+            showError(app.url, app.label);
+        }, 6000);
+
+        frame.onload = () => {
+            clearTimeout(errorTimeout);
+            overlay.classList.remove('show');
+            loadedFrames.add(appId);
+            // Check if iframe actually loaded something useful
+            try {
+                const doc = frame.contentDocument || frame.contentWindow.document;
+                if (!doc || doc.body === null) {
+                    showError(app.url, app.label);
+                }
+            } catch(e) {
+                // Cross-origin — this means it loaded but we can't inspect it
+                // That's actually fine — the app is running
+            }
+        };
+        frame.onerror = () => {
+            clearTimeout(errorTimeout);
+            overlay.classList.remove('show');
+            showError(app.url, app.label);
+        };
+        frame.src = app.url;
+    }
+
+    frame.classList.add('visible');
+}
+
+function showError(url, label) {
+    document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
+    const errorScreen = document.getElementById('error-screen');
+    document.getElementById('error-link').href = url;
+    document.getElementById('error-link').textContent = '↗ ' + label + ' öffnen';
+    errorScreen.classList.add('show');
+}
+
+function hideError() {
+    openApp('home');
+}
+
+function setTopbar(icon, name, sub, iconBg) {
+    document.getElementById('topbar-icon').textContent = icon;
+    document.getElementById('topbar-icon').style.background = iconBg;
+    document.getElementById('topbar-name').textContent = name;
+    document.getElementById('topbar-sub').textContent = sub;
+}
+
+function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    document.getElementById('clock-val').textContent = h + ':' + m;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+document.querySelectorAll('.app-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.04), var(--surface) 60%)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.background = ''; });
+});
+</script>
+
+</body>
+</html>
