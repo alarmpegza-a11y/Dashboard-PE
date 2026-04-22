@@ -27,11 +27,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        #shell {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-        }
+        #shell { display: flex; height: 100vh; width: 100vw; }
 
         /* ── SIDEBAR ── */
         #sidebar {
@@ -48,459 +44,415 @@
             transition: width 0.28s cubic-bezier(.4,0,.2,1);
             overflow: hidden;
         }
-
         #sidebar.expanded { width: 220px; }
 
         .logo-wrap {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 16px;
-            margin-bottom: 28px;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
+            width: 100%; display: flex; align-items: center; gap: 12px;
+            padding: 0 16px; margin-bottom: 28px;
+            overflow: hidden; white-space: nowrap; cursor: pointer;
         }
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
+            width: 40px; height: 40px; flex-shrink: 0;
             background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 16px rgba(59,130,246,0.35);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: #fff;
+            letter-spacing: 1px; box-shadow: 0 4px 16px rgba(59,130,246,0.35);
         }
         .logo-text {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 22px;
-            letter-spacing: 3px;
-            color: #fff;
-            opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
+            font-family: 'Bebas Neue', sans-serif; font-size: 22px;
+            letter-spacing: 3px; color: #fff; opacity: 0;
+            transition: opacity 0.2s; white-space: nowrap;
         }
         #sidebar.expanded .logo-text { opacity: 1; }
 
-        .nav-item {
+        /* Scrollable nav area */
+        #nav-items-wrap {
+            flex: 1;
             width: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: background 0.15s;
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-            border-left: 3px solid transparent;
-            user-select: none;
+            flex-direction: column;
+            scrollbar-width: none;
+        }
+        #nav-items-wrap::-webkit-scrollbar { display: none; }
+
+        .nav-item {
+            width: 100%; display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; cursor: pointer; transition: background 0.15s;
+            position: relative; overflow: hidden; white-space: nowrap;
+            border-left: 3px solid transparent; user-select: none; flex-shrink: 0;
         }
         .nav-item:hover { background: rgba(255,255,255,0.05); }
-        .nav-item.active {
-            background: rgba(59,130,246,0.12);
-            border-left-color: var(--accent);
-        }
+        .nav-item.active { background: rgba(59,130,246,0.12); border-left-color: var(--accent); }
         .nav-item.active .nav-icon-wrap { box-shadow: 0 0 0 1px rgba(59,130,246,0.4); }
 
         .nav-icon-wrap {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            border-radius: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: transform 0.15s;
+            width: 40px; height: 40px; flex-shrink: 0; border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; transition: transform 0.15s;
         }
         .nav-item:hover .nav-icon-wrap { transform: scale(1.08); }
 
         .nav-label { flex: 1; overflow: hidden; }
         .nav-label-title {
-            font-size: 11px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e2e8f0;
-            opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
+            font-size: 11px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 1px; color: #e2e8f0; opacity: 0;
+            transition: opacity 0.2s; white-space: nowrap;
         }
         .nav-label-sub {
-            font-size: 9px;
-            color: var(--muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-            margin-top: 1px;
+            font-size: 9px; color: var(--muted); font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px; opacity: 0;
+            transition: opacity 0.2s; white-space: nowrap; margin-top: 1px;
         }
         #sidebar.expanded .nav-label-title,
         #sidebar.expanded .nav-label-sub { opacity: 1; }
 
-        .sidebar-toggle {
-            margin-top: auto;
-            width: 40px;
-            height: 40px;
-            border-radius: 11px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            cursor: pointer;
+        .sidebar-bottom {
+            width: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            color: var(--muted);
-            font-size: 16px;
-            transition: all 0.15s;
+            gap: 8px;
+            padding: 8px 0 0;
+            border-top: 1px solid var(--border);
             flex-shrink: 0;
+        }
+
+        .sidebar-toggle {
+            width: 40px; height: 40px; border-radius: 11px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            color: var(--muted); font-size: 16px; transition: all 0.15s; flex-shrink: 0;
         }
         .sidebar-toggle:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
+        /* Settings button in sidebar */
+        .settings-nav-btn {
+            width: calc(100% - 0px);
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; cursor: pointer; transition: background 0.15s;
+            white-space: nowrap; user-select: none; flex-shrink: 0;
+            border-left: 3px solid transparent;
+        }
+        .settings-nav-btn:hover { background: rgba(255,255,255,0.05); }
+        .settings-nav-btn.active { background: rgba(59,130,246,0.12); border-left-color: var(--accent); }
+
         .nav-divider {
-            width: calc(100% - 24px);
-            height: 1px;
-            background: var(--border);
-            margin: 8px 0;
-            flex-shrink: 0;
+            width: calc(100% - 24px); height: 1px;
+            background: var(--border); margin: 8px 0; flex-shrink: 0;
         }
 
         /* ── MAIN ── */
-        #main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
+        #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
 
         #topbar {
-            height: 52px;
-            background: var(--surface);
+            height: 52px; background: var(--surface);
             border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 12px;
-            flex-shrink: 0;
-            z-index: 50;
+            display: flex; align-items: center; padding: 0 20px; gap: 12px;
+            flex-shrink: 0; z-index: 50;
         }
-
         .topbar-breadcrumb { display: flex; align-items: center; gap: 8px; flex: 1; }
         .topbar-app-badge { display: flex; align-items: center; gap: 8px; }
-        .topbar-icon {
-            width: 28px; height: 28px;
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 14px;
-        }
-        .topbar-name {
-            font-size: 13px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 1.5px; color: #fff;
-        }
-        .topbar-sub {
-            font-size: 9px; color: var(--muted);
-            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-        }
+        .topbar-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .topbar-name { font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; }
+        .topbar-sub { font-size: 9px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
         .live-pill {
             display: flex; align-items: center; gap: 5px;
-            background: rgba(16,185,129,0.1);
-            border: 1px solid rgba(16,185,129,0.25);
+            background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25);
             border-radius: 20px; padding: 3px 10px;
-            font-size: 8px; font-weight: 900;
-            color: #10b981; text-transform: uppercase; letter-spacing: 1px;
-            margin-left: auto;
+            font-size: 8px; font-weight: 900; color: #10b981;
+            text-transform: uppercase; letter-spacing: 1px; margin-left: auto;
         }
-        .live-dot {
-            width: 5px; height: 5px; border-radius: 50%;
-            background: #10b981; animation: pulse 1.5s infinite;
-        }
+        .live-dot { width: 5px; height: 5px; border-radius: 50%; background: #10b981; animation: pulse 1.5s infinite; }
         @keyframes pulse {
             0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.7); }
             50% { box-shadow: 0 0 6px 3px rgba(16,185,129,0.3); }
         }
 
         /* ── IFRAME AREA ── */
-        #iframe-container {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-        }
+        #iframe-container { flex: 1; position: relative; overflow: hidden; }
 
         .app-frame {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-            background: #fff;
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            border: none; opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease; background: #fff;
         }
-        .app-frame.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
+        .app-frame.visible { opacity: 1; pointer-events: all; }
 
         /* ── HOME SCREEN ── */
         #home-screen {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg);
-            overflow: hidden;
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: var(--bg); overflow: hidden;
         }
-
         #home-screen::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
+            content: ''; position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
             background-size: 48px 48px;
             mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
         }
-
         .home-glow {
-            position: absolute;
-            top: 30%; left: 50%;
-            transform: translate(-50%, -50%);
+            position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);
             width: 500px; height: 300px;
             background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
             pointer-events: none;
         }
-
         .home-headline {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(48px, 8vw, 96px);
-            letter-spacing: 8px;
-            color: #fff;
-            line-height: 1;
-            text-align: center;
-            position: relative;
+            font-size: clamp(48px, 8vw, 96px); letter-spacing: 8px; color: #fff;
+            line-height: 1; text-align: center; position: relative;
             animation: fadeUp 0.6s ease both;
         }
         .home-headline span { color: var(--accent); }
         .home-sub {
-            font-size: 11px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 4px;
-            color: var(--muted); margin-top: 12px;
-            position: relative;
-            animation: fadeUp 0.6s 0.1s ease both;
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 4px; color: var(--muted); margin-top: 12px;
+            position: relative; animation: fadeUp 0.6s 0.1s ease both;
         }
-
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-            margin-top: 52px;
-            position: relative;
-            padding: 0 20px;
-            max-width: 900px;
-            width: 100%;
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            gap: 16px; margin-top: 52px; position: relative;
+            padding: 0 20px; max-width: 900px; width: 100%;
             animation: fadeUp 0.6s 0.2s ease both;
         }
-
         .app-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px 16px;
-            cursor: pointer;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 20px; padding: 20px 16px; cursor: pointer;
             transition: all 0.2s cubic-bezier(.4,0,.2,1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 12px; text-align: center; position: relative; overflow: hidden;
         }
-        .app-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255,255,255,0.15);
-        }
+        .app-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
         .app-card:active { transform: translateY(-1px) scale(0.98); }
 
-        .app-card-icon {
-            width: 52px; height: 52px;
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; flex-shrink: 0;
-        }
-        .app-card-title {
-            font-size: 10px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 1px;
-            color: #e2e8f0; line-height: 1.3;
-        }
-        .app-card-desc {
-            font-size: 8.5px; color: var(--muted);
-            font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.5px; line-height: 1.4;
-        }
+        .app-card-icon { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        .app-card-title { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #e2e8f0; line-height: 1.3; }
+        .app-card-desc { font-size: 8.5px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
 
         .stats-bar {
-            display: flex;
-            gap: 32px;
-            margin-top: 52px;
-            position: relative;
-            animation: fadeUp 0.6s 0.35s ease both;
+            display: flex; gap: 32px; margin-top: 52px;
+            position: relative; animation: fadeUp 0.6s 0.35s ease both;
         }
         .stat-item { text-align: center; }
-        .stat-val {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px; letter-spacing: 2px;
-            color: var(--accent); line-height: 1;
-        }
-        .stat-lbl {
-            font-size: 8px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 2px;
-            color: var(--muted); margin-top: 2px;
-        }
+        .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--accent); line-height: 1; }
+        .stat-lbl { font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-top: 2px; }
         .stat-sep { width: 1px; background: var(--border); align-self: stretch; }
 
         /* ── LOADING ── */
         #loading-overlay {
-            position: absolute;
-            inset: 0;
-            background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            z-index: 200;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
+            position: absolute; inset: 0; background: var(--bg);
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 16px; z-index: 200;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
         }
         #loading-overlay.show { opacity: 1; pointer-events: all; }
-        .spinner {
-            width: 36px; height: 36px;
-            border: 3px solid rgba(59,130,246,0.2);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
+        .spinner { width: 36px; height: 36px; border: 3px solid rgba(59,130,246,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-text {
-            font-size: 10px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 3px; color: var(--muted);
-        }
+        .loading-text { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; color: var(--muted); }
 
         /* ── ERROR SCREEN ── */
         #error-screen {
-            position: absolute;
-            inset: 0;
-            background: var(--bg);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            z-index: 150;
+            position: absolute; inset: 0; background: var(--bg);
+            display: none; flex-direction: column; align-items: center;
+            justify-content: center; gap: 16px; z-index: 150;
         }
         #error-screen.show { display: flex; }
         .error-icon { font-size: 48px; }
-        .error-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px; letter-spacing: 4px;
-            color: #ef4444;
-        }
-        .error-msg {
-            font-size: 11px; color: var(--muted);
-            font-weight: 600; text-transform: uppercase;
-            letter-spacing: 2px; text-align: center;
-            max-width: 380px; line-height: 1.8;
-        }
-        .error-btn {
-            margin-top: 8px;
-            padding: 10px 24px;
-            background: rgba(239,68,68,0.15);
-            border: 1px solid rgba(239,68,68,0.3);
-            border-radius: 12px;
-            color: #ef4444;
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+        .error-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 4px; color: #ef4444; }
+        .error-msg { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; text-align: center; max-width: 380px; line-height: 1.8; }
+        .error-btn { margin-top: 8px; padding: 10px 24px; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); border-radius: 12px; color: #ef4444; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.15s; }
         .error-btn:hover { background: rgba(239,68,68,0.25); }
-
-        /* Open in new tab button */
-        .open-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 4px;
-            padding: 10px 24px;
-            background: rgba(59,130,246,0.15);
-            border: 1px solid rgba(59,130,246,0.3);
-            border-radius: 12px;
-            color: var(--accent);
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.15s;
-            text-decoration: none;
-        }
+        .open-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 10px 24px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 12px; color: var(--accent); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.15s; text-decoration: none; }
         .open-btn:hover { background: rgba(59,130,246,0.25); }
+
+        /* ── SETTINGS PANEL ── */
+        #settings-screen {
+            position: absolute; inset: 0; background: var(--bg);
+            display: none; flex-direction: column;
+            overflow: hidden; z-index: 10;
+        }
+        #settings-screen.show { display: flex; }
+
+        .settings-header {
+            padding: 28px 32px 20px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .settings-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px; letter-spacing: 5px; color: #fff;
+        }
+        .settings-title span { color: var(--accent); }
+        .settings-subtitle {
+            font-size: 9px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 3px; color: var(--muted); margin-top: 4px;
+        }
+
+        .settings-body {
+            flex: 1; overflow-y: auto; padding: 24px 32px;
+            display: flex; flex-direction: column; gap: 32px;
+        }
+        .settings-body::-webkit-scrollbar { width: 4px; }
+        .settings-body::-webkit-scrollbar-track { background: transparent; }
+        .settings-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+        .settings-section-title {
+            font-size: 9px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 3px; color: var(--muted); margin-bottom: 14px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .settings-section-title::after {
+            content: ''; flex: 1; height: 1px; background: var(--border);
+        }
+
+        /* ADD APP FORM */
+        .add-app-form {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        .form-label {
+            font-size: 8px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--muted);
+        }
+        .form-input {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            border-radius: 10px; padding: 10px 14px;
+            color: var(--text); font-family: 'DM Sans', sans-serif;
+            font-size: 12px; font-weight: 500;
+            outline: none; transition: border-color 0.15s, background 0.15s;
+            width: 100%;
+        }
+        .form-input:focus { border-color: rgba(59,130,246,0.5); background: rgba(59,130,246,0.04); }
+        .form-input::placeholder { color: var(--muted); }
+
+        .emoji-picker-row {
+            display: flex; gap: 8px; flex-wrap: wrap;
+        }
+        .emoji-opt {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; cursor: pointer; transition: all 0.15s;
+        }
+        .emoji-opt:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        .emoji-opt.selected { border-color: var(--accent); background: rgba(59,130,246,0.15); }
+
+        .color-picker-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .color-opt {
+            width: 28px; height: 28px; border-radius: 8px;
+            cursor: pointer; transition: transform 0.15s;
+            border: 2px solid transparent;
+        }
+        .color-opt:hover { transform: scale(1.15); }
+        .color-opt.selected { border-color: #fff; transform: scale(1.15); }
+
+        .btn-add {
+            padding: 11px 20px;
+            background: rgba(59,130,246,0.2);
+            border: 1px solid rgba(59,130,246,0.4);
+            border-radius: 11px; color: var(--accent);
+            font-size: 10px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; transition: all 0.15s;
+            align-self: flex-start; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-add:hover { background: rgba(59,130,246,0.3); }
+
+        /* APP LIST */
+        .apps-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .app-list-item {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 12px 16px;
+            display: flex; align-items: center; gap: 14px;
+            transition: border-color 0.15s;
+        }
+        .app-list-item:hover { border-color: rgba(255,255,255,0.12); }
+
+        .app-list-icon {
+            width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+        .app-list-info { flex: 1; min-width: 0; }
+        .app-list-name {
+            font-size: 11px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 1px; color: #e2e8f0; white-space: nowrap;
+            overflow: hidden; text-overflow: ellipsis;
+        }
+        .app-list-url {
+            font-size: 9px; color: var(--muted); font-weight: 600;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            margin-top: 2px;
+        }
+        .app-list-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+        .btn-icon {
+            width: 30px; height: 30px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; cursor: pointer; transition: all 0.15s;
+            border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+            color: var(--muted);
+        }
+        .btn-icon:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .btn-icon.danger:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #ef4444; }
+
+        /* EDIT inline */
+        .app-list-item.editing { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.04); }
+        .edit-fields { flex: 1; display: flex; gap: 8px; }
+        .edit-input {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(59,130,246,0.3);
+            border-radius: 8px; padding: 7px 10px; color: var(--text);
+            font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
+            outline: none; flex: 1;
+        }
+        .edit-input:focus { border-color: rgba(59,130,246,0.6); }
+
+        .btn-save {
+            padding: 7px 14px; background: rgba(59,130,246,0.2);
+            border: 1px solid rgba(59,130,246,0.4); border-radius: 8px;
+            color: var(--accent); font-size: 9px; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+            transition: all 0.15s; white-space: nowrap;
+        }
+        .btn-save:hover { background: rgba(59,130,246,0.3); }
+
+        .locked-badge {
+            font-size: 8px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--muted);
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            border-radius: 6px; padding: 3px 7px; flex-shrink: 0;
+        }
 
         /* ── MOBILE BOTTOM NAV ── */
         #mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: 64px;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            z-index: 300;
-            overflow-x: auto; overflow-y: hidden;
+            display: none; position: fixed;
+            bottom: 0; left: 0; right: 0; height: 64px;
+            background: var(--surface); border-top: 1px solid var(--border);
+            z-index: 300; overflow-x: auto; overflow-y: hidden;
         }
-        .mobile-nav-inner {
-            display: flex;
-            height: 100%;
-            padding: 0 4px;
-            min-width: max-content;
-        }
+        .mobile-nav-inner { display: flex; height: 100%; padding: 0 4px; min-width: max-content; }
         .mobile-nav-item {
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 3px; padding: 8px 14px;
-            cursor: pointer; border-radius: 12px;
-            margin: 6px 2px; transition: background 0.15s;
-            min-width: 60px;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 3px; padding: 8px 14px;
+            cursor: pointer; border-radius: 12px; margin: 6px 2px;
+            transition: background 0.15s; min-width: 60px;
         }
         .mobile-nav-item.active { background: rgba(59,130,246,0.15); }
         .mobile-nav-item .m-icon { font-size: 20px; }
-        .mobile-nav-item .m-label {
-            font-size: 7px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            color: var(--muted); white-space: nowrap;
-        }
+        .mobile-nav-item .m-label { font-size: 7px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); white-space: nowrap; }
         .mobile-nav-item.active .m-label { color: var(--accent); }
 
         @media (max-width: 768px) {
@@ -509,89 +461,59 @@
             #main { padding-bottom: 64px; }
             .apps-grid { grid-template-columns: repeat(3, 1fr); }
             .stats-bar { gap: 20px; }
+            .form-row { grid-template-columns: 1fr; }
+            .settings-body { padding: 16px; }
+            .settings-header { padding: 20px 16px 16px; }
         }
 
-        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after {
+        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after,
+        #sidebar:not(.expanded) .settings-nav-btn:hover[data-tooltip]::after {
             content: attr(data-tooltip);
-            position: absolute;
-            left: 64px; top: 50%;
-            transform: translateY(-50%);
+            position: absolute; left: 64px; top: 50%; transform: translateY(-50%);
             background: #1e293b; color: #fff;
-            font-size: 10px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 1px;
-            padding: 6px 10px; border-radius: 8px;
-            white-space: nowrap; pointer-events: none;
-            opacity: 0; transition: opacity 0.15s;
-            z-index: 999;
+            font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;
+            padding: 6px 10px; border-radius: 8px; white-space: nowrap; pointer-events: none;
+            opacity: 0; transition: opacity 0.15s; z-index: 999;
             border: 1px solid rgba(255,255,255,0.1);
         }
-        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after { opacity: 1; }
+        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after,
+        #sidebar:not(.expanded) .settings-nav-btn:hover[data-tooltip]::after { opacity: 1; }
     </style>
 </head>
 <body>
 
 <div id="shell">
-
     <nav id="sidebar">
         <div class="logo-wrap" onclick="toggleSidebar()">
             <div class="logo-icon">PE</div>
             <div class="logo-text">PE-SYSTEM</div>
         </div>
 
-        <div class="nav-item active" data-app="home" data-tooltip="Home" onclick="openApp('home')">
-            <div class="nav-icon-wrap" style="background:rgba(100,116,139,0.15);">🏠</div>
-            <div class="nav-label">
-                <div class="nav-label-title">Home</div>
-                <div class="nav-label-sub">Übersicht</div>
+        <div id="nav-items-wrap">
+            <div class="nav-item active" data-app="home" data-tooltip="Home" onclick="openApp('home')">
+                <div class="nav-icon-wrap" style="background:rgba(100,116,139,0.15);">🏠</div>
+                <div class="nav-label">
+                    <div class="nav-label-title">Home</div>
+                    <div class="nav-label-sub">Übersicht</div>
+                </div>
             </div>
+            <div class="nav-divider"></div>
+            <!-- Dynamic nav items injected here -->
+            <div id="dynamic-nav-items"></div>
+            <div class="nav-divider"></div>
         </div>
 
-        <div class="nav-divider"></div>
-
-        <div class="nav-item" data-app="ausmesser" data-tooltip="Ausmesser" onclick="openApp('ausmesser')">
-            <div class="nav-icon-wrap" style="background:rgba(239,68,68,0.15);">📐</div>
-            <div class="nav-label">
-                <div class="nav-label-title">Ausmesser Cloud</div>
-                <div class="nav-label-sub">PE Fabrikation</div>
+        <div class="sidebar-bottom">
+            <div class="settings-nav-btn" data-tooltip="Einstellungen" onclick="openApp('settings')" id="settings-nav-btn">
+                <div class="nav-icon-wrap" style="background:rgba(100,116,139,0.15);">⚙️</div>
+                <div class="nav-label">
+                    <div class="nav-label-title">Einstellungen</div>
+                    <div class="nav-label-sub">Apps verwalten</div>
+                </div>
             </div>
-        </div>
-
-        <div class="nav-item" data-app="pe-montage" data-tooltip="PE-Montage" onclick="openApp('pe-montage')">
-            <div class="nav-icon-wrap" style="background:rgba(16,185,129,0.15);">🔧</div>
-            <div class="nav-label">
-                <div class="nav-label-title">PE-Montage / FA</div>
-                <div class="nav-label-sub">Montage Manager</div>
+            <div class="sidebar-toggle" onclick="toggleSidebar()">
+                <span id="toggle-icon">›</span>
             </div>
-        </div>
-
-        <div class="nav-item" data-app="pe-kalender" data-tooltip="PE-Kalender" onclick="openApp('pe-kalender')">
-            <div class="nav-icon-wrap" style="background:rgba(59,130,246,0.15);">📅</div>
-            <div class="nav-label">
-                <div class="nav-label-title">PE-Kalender</div>
-                <div class="nav-label-sub">Tourendispo Live</div>
-            </div>
-        </div>
-
-        <div class="nav-item" data-app="stunden" data-tooltip="Stunden" onclick="openApp('stunden')">
-            <div class="nav-icon-wrap" style="background:rgba(139,92,246,0.15);">⏱️</div>
-            <div class="nav-label">
-                <div class="nav-label-title">Stunden</div>
-                <div class="nav-label-sub">Zeiterfassung</div>
-            </div>
-        </div>
-
-        <div class="nav-item" data-app="dispo" data-tooltip="Ajdin Dispo" onclick="openApp('dispo')">
-            <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15);">🚛</div>
-            <div class="nav-label">
-                <div class="nav-label-title">Ajdin Dispo</div>
-                <div class="nav-label-sub">Tourendispo Pro</div>
-            </div>
-        </div>
-
-        <div class="nav-divider"></div>
-
-        <div class="sidebar-toggle" onclick="toggleSidebar()">
-            <span id="toggle-icon">›</span>
         </div>
     </nav>
 
@@ -613,53 +535,15 @@
         </div>
 
         <div id="iframe-container">
-
+            <!-- HOME -->
             <div id="home-screen">
                 <div class="home-glow"></div>
                 <div class="home-headline">PE<span>—</span>SYSTEM</div>
-                <div class="home-sub">Command Center · 5 Apps · Alle verbunden</div>
-
-                <div class="apps-grid">
-                    <div class="app-card" onclick="openApp('ausmesser')">
-                        <div class="app-card-icon" style="background:rgba(239,68,68,0.15);">📐</div>
-                        <div>
-                            <div class="app-card-title">Ausmesser Cloud</div>
-                            <div class="app-card-desc">PE Fabrikation</div>
-                        </div>
-                    </div>
-                    <div class="app-card" onclick="openApp('pe-montage')">
-                        <div class="app-card-icon" style="background:rgba(16,185,129,0.15);">🔧</div>
-                        <div>
-                            <div class="app-card-title">PE-Montage / FA</div>
-                            <div class="app-card-desc">Montage Manager</div>
-                        </div>
-                    </div>
-                    <div class="app-card" onclick="openApp('pe-kalender')">
-                        <div class="app-card-icon" style="background:rgba(59,130,246,0.15);">📅</div>
-                        <div>
-                            <div class="app-card-title">PE-Kalender</div>
-                            <div class="app-card-desc">Tourendispo Live</div>
-                        </div>
-                    </div>
-                    <div class="app-card" onclick="openApp('stunden')">
-                        <div class="app-card-icon" style="background:rgba(139,92,246,0.15);">⏱️</div>
-                        <div>
-                            <div class="app-card-title">Stunden</div>
-                            <div class="app-card-desc">Zeiterfassung</div>
-                        </div>
-                    </div>
-                    <div class="app-card" onclick="openApp('dispo')">
-                        <div class="app-card-icon" style="background:rgba(245,158,11,0.15);">🚛</div>
-                        <div>
-                            <div class="app-card-title">Ajdin Dispo</div>
-                            <div class="app-card-desc">Tourendispo Pro</div>
-                        </div>
-                    </div>
-                </div>
-
+                <div class="home-sub" id="home-sub">Command Center · 5 Apps · Alle verbunden</div>
+                <div class="apps-grid" id="apps-grid"></div>
                 <div class="stats-bar">
                     <div class="stat-item">
-                        <div class="stat-val">5</div>
+                        <div class="stat-val" id="apps-count">5</div>
                         <div class="stat-lbl">Apps</div>
                     </div>
                     <div class="stat-sep"></div>
@@ -680,105 +564,407 @@
                 </div>
             </div>
 
-            <!-- Error screen -->
+            <!-- ERROR -->
             <div id="error-screen">
                 <div class="error-icon">⚠️</div>
                 <div class="error-title">Zugriff Blockiert</div>
-                <div class="error-msg">
-                    Diese App kann nicht direkt eingebettet werden.<br>
-                    GitHub Pages blockiert manchmal iFrame-Zugriff.<br>
-                    Öffne sie direkt im neuen Tab:
-                </div>
+                <div class="error-msg">Diese App kann nicht direkt eingebettet werden.<br>GitHub Pages blockiert manchmal iFrame-Zugriff.<br>Öffne sie direkt im neuen Tab:</div>
                 <a id="error-link" href="#" target="_blank" class="open-btn">↗ App öffnen</a>
                 <button class="error-btn" onclick="hideError()">← Zurück zur Übersicht</button>
             </div>
 
+            <!-- LOADING -->
             <div id="loading-overlay">
                 <div class="spinner"></div>
                 <div class="loading-text">App wird geladen...</div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div id="settings-screen">
+                <div class="settings-header">
+                    <div class="settings-title">EINSTELL<span>—</span>UNGEN</div>
+                    <div class="settings-subtitle">Apps hinzufügen · umbenennen · entfernen</div>
+                </div>
+                <div class="settings-body">
+
+                    <!-- ADD NEW APP -->
+                    <div>
+                        <div class="settings-section-title">Neue App hinzufügen</div>
+                        <div class="add-app-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <div class="form-label">App Name</div>
+                                    <input class="form-input" id="new-name" type="text" placeholder="z.B. Meine App" maxlength="30">
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-label">Untertitel</div>
+                                    <input class="form-input" id="new-sub" type="text" placeholder="z.B. Tool Beschreibung" maxlength="30">
+                                </div>
+                            </div>
+                            <div class="form-group full">
+                                <div class="form-label">URL</div>
+                                <input class="form-input" id="new-url" type="url" placeholder="https://beispiel.com/app">
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label">Icon (Emoji)</div>
+                                <div class="emoji-picker-row" id="emoji-picker">
+                                    <!-- filled by JS -->
+                                </div>
+                                <input class="form-input" id="new-icon" type="text" placeholder="Oder eigenes Emoji eingeben z.B. 🚀" style="margin-top:8px;" maxlength="4">
+                            </div>
+                            <div class="form-group">
+                                <div class="form-label">Icon Farbe</div>
+                                <div class="color-picker-row" id="color-picker">
+                                    <!-- filled by JS -->
+                                </div>
+                            </div>
+                            <button class="btn-add" onclick="addApp()">
+                                <span>＋</span> App hinzufügen
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- MANAGE EXISTING -->
+                    <div>
+                        <div class="settings-section-title">Apps verwalten</div>
+                        <div class="apps-list" id="apps-manage-list"></div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- MOBILE NAV -->
 <div id="mobile-nav">
-    <div class="mobile-nav-inner">
+    <div class="mobile-nav-inner" id="mobile-nav-inner">
         <div class="mobile-nav-item active" data-app="home" onclick="openApp('home')">
             <span class="m-icon">🏠</span>
             <span class="m-label">Home</span>
         </div>
-        <div class="mobile-nav-item" data-app="ausmesser" onclick="openApp('ausmesser')">
-            <span class="m-icon">📐</span>
-            <span class="m-label">Ausmesser</span>
-        </div>
-        <div class="mobile-nav-item" data-app="pe-montage" onclick="openApp('pe-montage')">
-            <span class="m-icon">🔧</span>
-            <span class="m-label">Montage</span>
-        </div>
-        <div class="mobile-nav-item" data-app="pe-kalender" onclick="openApp('pe-kalender')">
-            <span class="m-icon">📅</span>
-            <span class="m-label">Kalender</span>
-        </div>
-        <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')">
-            <span class="m-icon">⏱️</span>
-            <span class="m-label">Stunden</span>
-        </div>
-        <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')">
-            <span class="m-icon">🚛</span>
-            <span class="m-label">Dispo</span>
+        <!-- dynamic items injected -->
+        <div class="mobile-nav-item" data-app="settings" onclick="openApp('settings')">
+            <span class="m-icon">⚙️</span>
+            <span class="m-label">Settings</span>
         </div>
     </div>
 </div>
 
 <script>
-const APPS = {
-    'ausmesser': {
-        label: 'Ausmesser Cloud',
-        sub: 'PE Fabrikation GIS',
-        icon: '📐',
-        iconBg: 'rgba(239,68,68,0.15)',
-        url: 'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/',
-    },
-    'pe-montage': {
-        label: 'PE-Montage / FA',
-        sub: 'Montage Manager Pro',
-        icon: '🔧',
-        iconBg: 'rgba(16,185,129,0.15)',
-        url: 'https://alarmpegza-a11y.github.io/PE-MONTAGE/',
-    },
-    'pe-kalender': {
-        label: 'PE-Kalender',
-        sub: 'Tourendispo Live',
-        icon: '📅',
-        iconBg: 'rgba(59,130,246,0.15)',
-        url: 'https://alarmpegza-a11y.github.io/PE-KALENDER/',
-    },
-    'stunden': {
-        label: 'Stunden',
-        sub: 'Zeiterfassung',
-        icon: '⏱️',
-        iconBg: 'rgba(139,92,246,0.15)',
-        url: 'https://alarmpegza-a11y.github.io/Stunden/',
-    },
-    'dispo': {
-        label: 'Ajdin Dispo',
-        sub: 'Tourendispo Pro',
-        icon: '🚛',
-        iconBg: 'rgba(245,158,11,0.15)',
-        url: 'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/',
-    },
-};
+// ── DEFAULT APPS ──
+const DEFAULT_APPS = [
+    { id: 'ausmesser',  label: 'Ausmesser Cloud', sub: 'PE Fabrikation GIS',  icon: '📐', iconBg: 'rgba(239,68,68,0.15)',    url: 'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/', locked: true },
+    { id: 'pe-montage', label: 'PE-Montage / FA',  sub: 'Montage Manager Pro', icon: '🔧', iconBg: 'rgba(16,185,129,0.15)',  url: 'https://alarmpegza-a11y.github.io/PE-MONTAGE/', locked: true },
+    { id: 'pe-kalender',label: 'PE-Kalender',      sub: 'Tourendispo Live',    icon: '📅', iconBg: 'rgba(59,130,246,0.15)',  url: 'https://alarmpegza-a11y.github.io/PE-KALENDER/', locked: true },
+    { id: 'stunden',    label: 'Stunden',           sub: 'Zeiterfassung',      icon: '⏱️', iconBg: 'rgba(139,92,246,0.15)', url: 'https://alarmpegza-a11y.github.io/Stunden/', locked: true },
+    { id: 'dispo',      label: 'Ajdin Dispo',       sub: 'Tourendispo Pro',    icon: '🚛', iconBg: 'rgba(245,158,11,0.15)',  url: 'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/', locked: true },
+];
 
+const EMOJI_OPTIONS = ['🌐','📊','📋','🗂️','🔗','💼','📱','🖥️','🔑','📧','🗓️','📈','⚡','🛠️','🎯','🔍','💬','📌','🏗️','🚀'];
+const COLOR_OPTIONS = [
+    { bg: 'rgba(239,68,68,0.15)',   hex: '#ef4444' },
+    { bg: 'rgba(16,185,129,0.15)',  hex: '#10b981' },
+    { bg: 'rgba(59,130,246,0.15)',  hex: '#3b82f6' },
+    { bg: 'rgba(139,92,246,0.15)',  hex: '#8b5cf6' },
+    { bg: 'rgba(245,158,11,0.15)',  hex: '#f59e0b' },
+    { bg: 'rgba(236,72,153,0.15)',  hex: '#ec4899' },
+    { bg: 'rgba(20,184,166,0.15)',  hex: '#14b8a6' },
+    { bg: 'rgba(249,115,22,0.15)',  hex: '#f97316' },
+    { bg: 'rgba(100,116,139,0.15)', hex: '#64748b' },
+    { bg: 'rgba(132,204,22,0.15)',  hex: '#84cc16' },
+];
+
+let selectedEmoji = '🌐';
+let selectedColor = COLOR_OPTIONS[0];
+
+// ── STATE ──
+function loadApps() {
+    try {
+        const stored = localStorage.getItem('pe_custom_apps');
+        if (stored) return JSON.parse(stored);
+    } catch(e) {}
+    return [];
+}
+
+function saveApps(customApps) {
+    localStorage.setItem('pe_custom_apps', JSON.stringify(customApps));
+}
+
+function getAllApps() {
+    const custom = loadApps();
+    // Merge: default apps might have been renamed via stored overrides
+    const overrides = getOverrides();
+    return [
+        ...DEFAULT_APPS.map(a => ({
+            ...a,
+            label: overrides[a.id]?.label || a.label,
+            sub:   overrides[a.id]?.sub   || a.sub,
+        })),
+        ...custom,
+    ];
+}
+
+function getOverrides() {
+    try {
+        return JSON.parse(localStorage.getItem('pe_app_overrides') || '{}');
+    } catch(e) { return {}; }
+}
+function saveOverride(id, label, sub) {
+    const ov = getOverrides();
+    ov[id] = { label, sub };
+    localStorage.setItem('pe_app_overrides', JSON.stringify(ov));
+}
+
+// ── BUILD UI ──
 let currentApp = 'home';
 let sidebarExpanded = false;
 const loadedFrames = new Set();
 
-function toggleSidebar() {
-    sidebarExpanded = !sidebarExpanded;
-    document.getElementById('sidebar').classList.toggle('expanded', sidebarExpanded);
-    document.getElementById('toggle-icon').textContent = sidebarExpanded ? '‹' : '›';
+function renderAll() {
+    renderSidebarNav();
+    renderMobileNav();
+    renderHomeGrid();
+    renderManageList();
+    updateStatCount();
 }
 
+function renderSidebarNav() {
+    const wrap = document.getElementById('dynamic-nav-items');
+    wrap.innerHTML = '';
+    getAllApps().forEach(app => {
+        const div = document.createElement('div');
+        div.className = 'nav-item';
+        div.dataset.app = app.id;
+        div.dataset.tooltip = app.label;
+        div.onclick = () => openApp(app.id);
+        div.innerHTML = `
+            <div class="nav-icon-wrap" style="background:${app.iconBg};">${app.icon}</div>
+            <div class="nav-label">
+                <div class="nav-label-title">${app.label}</div>
+                <div class="nav-label-sub">${app.sub}</div>
+            </div>`;
+        wrap.appendChild(div);
+    });
+}
+
+function renderMobileNav() {
+    const inner = document.getElementById('mobile-nav-inner');
+    // Keep first (home) and last (settings) items
+    const homeItem = inner.children[0];
+    const settingsItem = inner.lastElementChild;
+    // Remove all dynamic items
+    while (inner.children.length > 1) inner.removeChild(inner.children[1]);
+    // Insert settings before rebuilding
+    getAllApps().forEach(app => {
+        const div = document.createElement('div');
+        div.className = 'mobile-nav-item';
+        div.dataset.app = app.id;
+        div.onclick = () => openApp(app.id);
+        div.innerHTML = `<span class="m-icon">${app.icon}</span><span class="m-label">${app.label.substring(0,8)}</span>`;
+        inner.insertBefore(div, settingsItem);
+    });
+}
+
+function renderHomeGrid() {
+    const grid = document.getElementById('apps-grid');
+    grid.innerHTML = '';
+    getAllApps().forEach(app => {
+        const card = document.createElement('div');
+        card.className = 'app-card';
+        card.onclick = () => openApp(app.id);
+        card.innerHTML = `
+            <div class="app-card-icon" style="background:${app.iconBg};">${app.icon}</div>
+            <div>
+                <div class="app-card-title">${app.label}</div>
+                <div class="app-card-desc">${app.sub}</div>
+            </div>`;
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.04), var(--surface) 60%)`;
+        });
+        card.addEventListener('mouseleave', () => { card.style.background = ''; });
+        grid.appendChild(card);
+    });
+}
+
+function updateStatCount() {
+    const n = getAllApps().length;
+    document.getElementById('apps-count').textContent = n;
+    document.getElementById('home-sub').textContent = `Command Center · ${n} App${n !== 1 ? 's' : ''} · Alle verbunden`;
+}
+
+function renderManageList() {
+    const list = document.getElementById('apps-manage-list');
+    list.innerHTML = '';
+
+    getAllApps().forEach(app => {
+        const item = document.createElement('div');
+        item.className = 'app-list-item';
+        item.id = 'manage-item-' + app.id;
+
+        if (app.locked) {
+            // Locked default apps: allow rename only
+            item.innerHTML = `
+                <div class="app-list-icon" style="background:${app.iconBg};">${app.icon}</div>
+                <div class="app-list-info">
+                    <div class="app-list-name">${app.label}</div>
+                    <div class="app-list-url">${app.url}</div>
+                </div>
+                <div class="app-list-actions">
+                    <span class="locked-badge">Standard</span>
+                    <div class="btn-icon" title="Umbenennen" onclick="toggleEdit('${app.id}')">✏️</div>
+                </div>`;
+        } else {
+            item.innerHTML = `
+                <div class="app-list-icon" style="background:${app.iconBg};">${app.icon}</div>
+                <div class="app-list-info">
+                    <div class="app-list-name">${app.label}</div>
+                    <div class="app-list-url">${app.url}</div>
+                </div>
+                <div class="app-list-actions">
+                    <div class="btn-icon" title="Umbenennen" onclick="toggleEdit('${app.id}')">✏️</div>
+                    <div class="btn-icon danger" title="Löschen" onclick="deleteApp('${app.id}')">🗑️</div>
+                </div>`;
+        }
+        list.appendChild(item);
+    });
+}
+
+function toggleEdit(appId) {
+    const item = document.getElementById('manage-item-' + appId);
+    if (item.classList.contains('editing')) {
+        item.classList.remove('editing');
+        renderManageList();
+        return;
+    }
+
+    const app = getAllApps().find(a => a.id === appId);
+    item.classList.add('editing');
+
+    const infoEl = item.querySelector('.app-list-info');
+    const actionsEl = item.querySelector('.app-list-actions');
+
+    infoEl.innerHTML = `
+        <div class="edit-fields">
+            <input class="edit-input" id="edit-label-${appId}" value="${app.label}" placeholder="Name" maxlength="30">
+            <input class="edit-input" id="edit-sub-${appId}" value="${app.sub}" placeholder="Untertitel" maxlength="30">
+        </div>`;
+
+    actionsEl.innerHTML = `
+        <button class="btn-save" onclick="saveEdit('${appId}')">✓ Speichern</button>
+        <div class="btn-icon" onclick="cancelEdit('${appId}')">✕</div>`;
+}
+
+function cancelEdit(appId) {
+    const item = document.getElementById('manage-item-' + appId);
+    item.classList.remove('editing');
+    renderManageList();
+}
+
+function saveEdit(appId) {
+    const newLabel = document.getElementById('edit-label-' + appId).value.trim();
+    const newSub   = document.getElementById('edit-sub-' + appId).value.trim();
+    if (!newLabel) return;
+
+    const allApps = getAllApps();
+    const app = allApps.find(a => a.id === appId);
+
+    if (app.locked) {
+        saveOverride(appId, newLabel, newSub);
+    } else {
+        const custom = loadApps();
+        const idx = custom.findIndex(a => a.id === appId);
+        if (idx !== -1) {
+            custom[idx].label = newLabel;
+            custom[idx].sub   = newSub;
+            saveApps(custom);
+        }
+    }
+
+    // Invalidate loaded frame so it reloads cleanly
+    loadedFrames.delete(appId);
+    renderAll();
+}
+
+function deleteApp(appId) {
+    if (!confirm('Diese App wirklich entfernen?')) return;
+    const custom = loadApps();
+    saveApps(custom.filter(a => a.id !== appId));
+    loadedFrames.delete(appId);
+    const frame = document.getElementById('frame-' + appId);
+    if (frame) frame.remove();
+    if (currentApp === appId) openApp('home');
+    renderAll();
+}
+
+// ── EMOJI / COLOR PICKERS ──
+function buildPickers() {
+    const ep = document.getElementById('emoji-picker');
+    EMOJI_OPTIONS.forEach(em => {
+        const d = document.createElement('div');
+        d.className = 'emoji-opt' + (em === selectedEmoji ? ' selected' : '');
+        d.textContent = em;
+        d.onclick = () => {
+            selectedEmoji = em;
+            document.getElementById('new-icon').value = '';
+            document.querySelectorAll('.emoji-opt').forEach(x => x.classList.remove('selected'));
+            d.classList.add('selected');
+        };
+        ep.appendChild(d);
+    });
+
+    const cp = document.getElementById('color-picker');
+    COLOR_OPTIONS.forEach((c, i) => {
+        const d = document.createElement('div');
+        d.className = 'color-opt' + (i === 0 ? ' selected' : '');
+        d.style.background = c.hex;
+        d.title = c.hex;
+        d.onclick = () => {
+            selectedColor = c;
+            document.querySelectorAll('.color-opt').forEach(x => x.classList.remove('selected'));
+            d.classList.add('selected');
+        };
+        cp.appendChild(d);
+    });
+}
+
+// ── ADD APP ──
+function addApp() {
+    const name = document.getElementById('new-name').value.trim();
+    const sub  = document.getElementById('new-sub').value.trim();
+    let   url  = document.getElementById('new-url').value.trim();
+    const customIcon = document.getElementById('new-icon').value.trim();
+    const icon = customIcon || selectedEmoji;
+
+    if (!name || !url) { alert('Bitte Name und URL ausfüllen.'); return; }
+    if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+
+    const id = 'custom-' + Date.now();
+    const custom = loadApps();
+    custom.push({
+        id,
+        label: name,
+        sub: sub || 'Custom App',
+        icon,
+        iconBg: selectedColor.bg,
+        url,
+        locked: false,
+    });
+    saveApps(custom);
+
+    // Reset form
+    document.getElementById('new-name').value = '';
+    document.getElementById('new-sub').value = '';
+    document.getElementById('new-url').value = '';
+    document.getElementById('new-icon').value = '';
+
+    renderAll();
+}
+
+// ── NAVIGATION ──
 function openApp(appId) {
     currentApp = appId;
 
@@ -787,25 +973,35 @@ function openApp(appId) {
     document.querySelectorAll('.mobile-nav-item').forEach(el =>
         el.classList.toggle('active', el.dataset.app === appId));
 
-    const homeScreen = document.getElementById('home-screen');
-    const errorScreen = document.getElementById('error-screen');
+    const settingsBtn = document.getElementById('settings-nav-btn');
+    settingsBtn.classList.toggle('active', appId === 'settings');
+
+    const homeScreen     = document.getElementById('home-screen');
+    const errorScreen    = document.getElementById('error-screen');
+    const settingsScreen = document.getElementById('settings-screen');
+
+    homeScreen.style.display     = 'none';
+    errorScreen.classList.remove('show');
+    settingsScreen.classList.remove('show');
+    document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
 
     if (appId === 'home') {
         homeScreen.style.display = 'flex';
-        errorScreen.classList.remove('show');
-        document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
         setTopbar('🏠', 'PE-SYSTEM', 'Command Center', 'rgba(100,116,139,0.15)');
         return;
     }
 
-    homeScreen.style.display = 'none';
-    errorScreen.classList.remove('show');
+    if (appId === 'settings') {
+        settingsScreen.classList.add('show');
+        renderManageList();
+        setTopbar('⚙️', 'Einstellungen', 'Apps verwalten', 'rgba(100,116,139,0.15)');
+        return;
+    }
 
-    const app = APPS[appId];
+    const app = getAllApps().find(a => a.id === appId);
     if (!app) return;
 
     setTopbar(app.icon, app.label, app.sub, app.iconBg);
-    document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
 
     let frame = document.getElementById('frame-' + appId);
     if (!frame) {
@@ -820,7 +1016,6 @@ function openApp(appId) {
         const overlay = document.getElementById('loading-overlay');
         overlay.classList.add('show');
 
-        // Timeout: if iframe doesn't load in 6s, show error with direct link
         const errorTimeout = setTimeout(() => {
             overlay.classList.remove('show');
             showError(app.url, app.label);
@@ -830,16 +1025,10 @@ function openApp(appId) {
             clearTimeout(errorTimeout);
             overlay.classList.remove('show');
             loadedFrames.add(appId);
-            // Check if iframe actually loaded something useful
             try {
                 const doc = frame.contentDocument || frame.contentWindow.document;
-                if (!doc || doc.body === null) {
-                    showError(app.url, app.label);
-                }
-            } catch(e) {
-                // Cross-origin — this means it loaded but we can't inspect it
-                // That's actually fine — the app is running
-            }
+                if (!doc || doc.body === null) showError(app.url, app.label);
+            } catch(e) { /* cross-origin = loaded fine */ }
         };
         frame.onerror = () => {
             clearTimeout(errorTimeout);
@@ -854,15 +1043,12 @@ function openApp(appId) {
 
 function showError(url, label) {
     document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
-    const errorScreen = document.getElementById('error-screen');
     document.getElementById('error-link').href = url;
     document.getElementById('error-link').textContent = '↗ ' + label + ' öffnen';
-    errorScreen.classList.add('show');
+    document.getElementById('error-screen').classList.add('show');
 }
 
-function hideError() {
-    openApp('home');
-}
+function hideError() { openApp('home'); }
 
 function setTopbar(icon, name, sub, iconBg) {
     document.getElementById('topbar-icon').textContent = icon;
@@ -871,25 +1057,24 @@ function setTopbar(icon, name, sub, iconBg) {
     document.getElementById('topbar-sub').textContent = sub;
 }
 
+function toggleSidebar() {
+    sidebarExpanded = !sidebarExpanded;
+    document.getElementById('sidebar').classList.toggle('expanded', sidebarExpanded);
+    document.getElementById('toggle-icon').textContent = sidebarExpanded ? '‹' : '›';
+}
+
 function updateClock() {
     const now = new Date();
     const h = String(now.getHours()).padStart(2,'0');
     const m = String(now.getMinutes()).padStart(2,'0');
     document.getElementById('clock-val').textContent = h + ':' + m;
 }
+
+// ── INIT ──
+buildPickers();
+renderAll();
 updateClock();
 setInterval(updateClock, 1000);
-
-document.querySelectorAll('.app-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.04), var(--surface) 60%)`;
-    });
-    card.addEventListener('mouseleave', () => { card.style.background = ''; });
-});
 </script>
-
 </body>
 </html>
