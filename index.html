@@ -556,34 +556,34 @@
             </div>
         </div>
 
-        <div class="nav-item" data-app="pe-montage" data-tooltip="PE-Montage" onclick="openApp('pe-montage')">
+        <div class="nav-item" data-app="pe-montage" data-tooltip="Montage Manager" onclick="openApp('pe-montage')">
             <div class="nav-icon-wrap" style="background:rgba(16,185,129,0.15);">🔧</div>
             <div class="nav-label">
-                <div class="nav-label-title">PE-Montage / FA</div>
+                <div class="nav-label-title">Montage Manager / FA</div>
                 <div class="nav-label-sub">Montage Manager</div>
             </div>
         </div>
 
-        <div class="nav-item" data-app="pe-kalender" data-tooltip="PE-Kalender" onclick="openApp('pe-kalender')">
+        <div class="nav-item" data-app="pe-kalender" data-tooltip="Kalender Manager" onclick="openApp('pe-kalender')">
             <div class="nav-icon-wrap" style="background:rgba(59,130,246,0.15);">📅</div>
             <div class="nav-label">
-                <div class="nav-label-title">PE-Kalender</div>
+                <div class="nav-label-title">Kalender Manager</div>
                 <div class="nav-label-sub">Tourendispo Live</div>
             </div>
         </div>
 
-        <div class="nav-item" data-app="stunden" data-tooltip="Stunden" onclick="openApp('stunden')">
+        <div class="nav-item" data-app="stunden" data-tooltip="Montage Dispo" onclick="openApp('stunden')">
             <div class="nav-icon-wrap" style="background:rgba(139,92,246,0.15);">⏱️</div>
             <div class="nav-label">
-                <div class="nav-label-title">Stunden</div>
+                <div class="nav-label-title">Montage Dispo</div>
                 <div class="nav-label-sub">Zeiterfassung</div>
             </div>
         </div>
 
-        <div class="nav-item" data-app="dispo" data-tooltip="Ajdin Dispo" onclick="openApp('dispo')">
+        <div class="nav-item" data-app="dispo" data-tooltip="Excel Dispo" onclick="openApp('dispo')">
             <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15);">🚛</div>
             <div class="nav-label">
-                <div class="nav-label-title">Ajdin Dispo</div>
+                <div class="nav-label-title">Excel Dispo</div>
                 <div class="nav-label-sub">Tourendispo Pro</div>
             </div>
         </div>
@@ -630,28 +630,28 @@
                     <div class="app-card" onclick="openApp('pe-montage')">
                         <div class="app-card-icon" style="background:rgba(16,185,129,0.15);">🔧</div>
                         <div>
-                            <div class="app-card-title">PE-Montage / FA</div>
+                            <div class="app-card-title">Montage Manager / FA</div>
                             <div class="app-card-desc">Montage Manager</div>
                         </div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-kalender')">
                         <div class="app-card-icon" style="background:rgba(59,130,246,0.15);">📅</div>
                         <div>
-                            <div class="app-card-title">PE-Kalender</div>
+                            <div class="app-card-title">Kalender Manager</div>
                             <div class="app-card-desc">Tourendispo Live</div>
                         </div>
                     </div>
                     <div class="app-card" onclick="openApp('stunden')">
                         <div class="app-card-icon" style="background:rgba(139,92,246,0.15);">⏱️</div>
                         <div>
-                            <div class="app-card-title">Stunden</div>
+                            <div class="app-card-title">Montage Dispo</div>
                             <div class="app-card-desc">Zeiterfassung</div>
                         </div>
                     </div>
                     <div class="app-card" onclick="openApp('dispo')">
                         <div class="app-card-icon" style="background:rgba(245,158,11,0.15);">🚛</div>
                         <div>
-                            <div class="app-card-title">Ajdin Dispo</div>
+                            <div class="app-card-title">Excel Dispo</div>
                             <div class="app-card-desc">Tourendispo Pro</div>
                         </div>
                     </div>
@@ -721,11 +721,11 @@
         </div>
         <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')">
             <span class="m-icon">⏱️</span>
-            <span class="m-label">Stunden</span>
+            <span class="m-label">M-Dispo</span>
         </div>
         <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')">
             <span class="m-icon">🚛</span>
-            <span class="m-label">Dispo</span>
+            <span class="m-label">Excel</span>
         </div>
     </div>
 </div>
@@ -740,28 +740,28 @@ const APPS = {
         url: 'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/',
     },
     'pe-montage': {
-        label: 'PE-Montage / FA',
+        label: 'Montage Manager / FA',
         sub: 'Montage Manager Pro',
         icon: '🔧',
         iconBg: 'rgba(16,185,129,0.15)',
         url: 'https://alarmpegza-a11y.github.io/PE-MONTAGE/',
     },
     'pe-kalender': {
-        label: 'PE-Kalender',
+        label: 'Kalender Manager',
         sub: 'Tourendispo Live',
         icon: '📅',
         iconBg: 'rgba(59,130,246,0.15)',
         url: 'https://alarmpegza-a11y.github.io/PE-KALENDER/',
     },
     'stunden': {
-        label: 'Stunden',
+        label: 'Montage Dispo',
         sub: 'Zeiterfassung',
         icon: '⏱️',
         iconBg: 'rgba(139,92,246,0.15)',
         url: 'https://alarmpegza-a11y.github.io/Stunden/',
     },
     'dispo': {
-        label: 'Ajdin Dispo',
+        label: 'Excel Dispo',
         sub: 'Tourendispo Pro',
         icon: '🚛',
         iconBg: 'rgba(245,158,11,0.15)',
@@ -820,7 +820,6 @@ function openApp(appId) {
         const overlay = document.getElementById('loading-overlay');
         overlay.classList.add('show');
 
-        // Timeout: if iframe doesn't load in 6s, show error with direct link
         const errorTimeout = setTimeout(() => {
             overlay.classList.remove('show');
             showError(app.url, app.label);
@@ -830,15 +829,13 @@ function openApp(appId) {
             clearTimeout(errorTimeout);
             overlay.classList.remove('show');
             loadedFrames.add(appId);
-            // Check if iframe actually loaded something useful
             try {
                 const doc = frame.contentDocument || frame.contentWindow.document;
                 if (!doc || doc.body === null) {
                     showError(app.url, app.label);
                 }
             } catch(e) {
-                // Cross-origin — this means it loaded but we can't inspect it
-                // That's actually fine — the app is running
+                // Cross-origin — app is running fine
             }
         };
         frame.onerror = () => {
