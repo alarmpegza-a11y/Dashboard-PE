@@ -310,12 +310,12 @@
 
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr);
             gap: 16px;
             margin-top: 52px;
             position: relative;
             padding: 0 20px;
-            max-width: 900px;
+            max-width: 1060px;
             width: 100%;
             animation: fadeUp 0.6s 0.2s ease both;
         }
@@ -448,7 +448,6 @@
         }
         .error-btn:hover { background: rgba(239,68,68,0.25); }
 
-        /* Open in new tab button */
         .open-btn {
             display: inline-flex;
             align-items: center;
@@ -590,6 +589,15 @@
 
         <div class="nav-divider"></div>
 
+        <!-- NEU: PE-Fabrikation -->
+        <div class="nav-item" data-app="pe-fabrikation" data-tooltip="PE-Fabrikation" onclick="openApp('pe-fabrikation')">
+            <div class="nav-icon-wrap" style="background:rgba(234,179,8,0.15);">🏭</div>
+            <div class="nav-label">
+                <div class="nav-label-title">PE-Fabrikation</div>
+                <div class="nav-label-sub">Workflow Engine</div>
+            </div>
+        </div>
+
         <div class="sidebar-toggle" onclick="toggleSidebar()">
             <span id="toggle-icon">›</span>
         </div>
@@ -617,7 +625,7 @@
             <div id="home-screen">
                 <div class="home-glow"></div>
                 <div class="home-headline">PE<span>—</span>SYSTEM</div>
-                <div class="home-sub">Command Center · 5 Apps · Alle verbunden</div>
+                <div class="home-sub">Command Center · 6 Apps · Alle verbunden</div>
 
                 <div class="apps-grid">
                     <div class="app-card" onclick="openApp('ausmesser')">
@@ -655,11 +663,18 @@
                             <div class="app-card-desc">Tourendispo Pro</div>
                         </div>
                     </div>
+                    <div class="app-card" onclick="openApp('pe-fabrikation')">
+                        <div class="app-card-icon" style="background:rgba(234,179,8,0.15);">🏭</div>
+                        <div>
+                            <div class="app-card-title">PE-Fabrikation</div>
+                            <div class="app-card-desc">Workflow Engine</div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="stats-bar">
                     <div class="stat-item">
-                        <div class="stat-val">5</div>
+                        <div class="stat-val">6</div>
                         <div class="stat-lbl">Apps</div>
                     </div>
                     <div class="stat-sep"></div>
@@ -701,6 +716,7 @@
     </div>
 </div>
 
+<!-- Mobile Nav -->
 <div id="mobile-nav">
     <div class="mobile-nav-inner">
         <div class="mobile-nav-item active" data-app="home" onclick="openApp('home')">
@@ -727,11 +743,22 @@
             <span class="m-icon">🚛</span>
             <span class="m-label">Excel</span>
         </div>
+        <div class="mobile-nav-item" data-app="pe-fabrikation" onclick="openApp('pe-fabrikation')">
+            <span class="m-icon">🏭</span>
+            <span class="m-label">Fabrik</span>
+        </div>
     </div>
 </div>
 
 <script>
 const APPS = {
+    'pe-fabrikation': {
+        label: 'PE-Fabrikation',
+        sub: 'Workflow Engine',
+        icon: '🏭',
+        iconBg: 'rgba(234,179,8,0.15)',
+        url: 'https://ajdinslijepcevic1-hue.github.io/-PE-/',
+    },
     'ausmesser': {
         label: 'Ausmesser Cloud',
         sub: 'PE Fabrikation GIS',
