@@ -7,507 +7,148 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg:        #07090f;
-            --surface:   #0d1117;
-            --border:    rgba(255,255,255,0.07);
-            --text:      #f0f4ff;
-            --muted:     #4a5568;
-            --accent:    #3b82f6;
-            --glow:      rgba(59,130,246,0.18);
+            --bg:#07090f; --surface:#0d1117; --border:rgba(255,255,255,0.07);
+            --text:#f0f4ff; --muted:#4a5568; --accent:#3b82f6; --glow:rgba(59,130,246,0.18);
         }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            height: 100vh;
-            overflow: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        #shell { display: flex; height: 100vh; width: 100vw; }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
+        #shell{display:flex;height:100vh;width:100vw}
 
         /* SIDEBAR */
-        #sidebar {
-            width: 72px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px 0 20px;
-            gap: 0;
-            z-index: 100;
-            flex-shrink: 0;
-            transition: width 0.28s cubic-bezier(.4,0,.2,1);
-            overflow: hidden;
-        }
-        #sidebar.expanded { width: 220px; }
-
-        .logo-wrap {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 16px;
-            margin-bottom: 28px;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        .logo-icon {
-            width: 40px; height: 40px;
-            flex-shrink: 0;
-            background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 18px; color: #fff; letter-spacing: 1px;
-            box-shadow: 0 4px 16px rgba(59,130,246,0.35);
-        }
-        .logo-text {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 22px; letter-spacing: 3px; color: #fff;
-            opacity: 0; transition: opacity 0.2s; white-space: nowrap;
-        }
-        #sidebar.expanded .logo-text { opacity: 1; }
-
-        .nav-item {
-            width: 100%;
-            display: flex; align-items: center; gap: 12px;
-            padding: 10px 16px;
-            cursor: pointer; transition: background 0.15s;
-            position: relative; overflow: hidden; white-space: nowrap;
-            border-left: 3px solid transparent; user-select: none;
-        }
-        .nav-item:hover { background: rgba(255,255,255,0.05); }
-        .nav-item.active { background: rgba(59,130,246,0.12); border-left-color: var(--accent); }
-        .nav-item.active .nav-icon-wrap { box-shadow: 0 0 0 1px rgba(59,130,246,0.4); }
-
-        .nav-icon-wrap {
-            width: 40px; height: 40px; flex-shrink: 0;
-            border-radius: 11px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; transition: transform 0.15s;
-        }
-        .nav-item:hover .nav-icon-wrap { transform: scale(1.08); }
-
-        .nav-label { flex: 1; overflow: hidden; }
-        .nav-label-title {
-            font-size: 11px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 1px; color: #e2e8f0;
-            opacity: 0; transition: opacity 0.2s; white-space: nowrap;
-        }
-        .nav-label-sub {
-            font-size: 9px; color: var(--muted); font-weight: 600;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            opacity: 0; transition: opacity 0.2s; white-space: nowrap; margin-top: 1px;
-        }
-        #sidebar.expanded .nav-label-title,
-        #sidebar.expanded .nav-label-sub { opacity: 1; }
-
-        .sidebar-toggle {
-            margin-top: auto;
-            width: 40px; height: 40px;
-            border-radius: 11px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--muted); font-size: 16px;
-            transition: all 0.15s; flex-shrink: 0;
-        }
-        .sidebar-toggle:hover { background: rgba(255,255,255,0.1); color: #fff; }
-
-        .nav-divider {
-            width: calc(100% - 24px); height: 1px;
-            background: var(--border); margin: 8px 0; flex-shrink: 0;
-        }
+        #sidebar{width:72px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:16px 0 20px;z-index:100;flex-shrink:0;transition:width 0.28s cubic-bezier(.4,0,.2,1);overflow:hidden}
+        #sidebar.expanded{width:220px}
+        .logo-wrap{width:100%;display:flex;align-items:center;gap:12px;padding:0 16px;margin-bottom:28px;overflow:hidden;white-space:nowrap;cursor:pointer}
+        .logo-icon{width:40px;height:40px;flex-shrink:0;background:linear-gradient(135deg,#1d4ed8 0%,#3b82f6 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;letter-spacing:1px;box-shadow:0 4px 16px rgba(59,130,246,0.35)}
+        .logo-text{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#fff;opacity:0;transition:opacity 0.2s;white-space:nowrap}
+        #sidebar.expanded .logo-text{opacity:1}
+        .nav-item{width:100%;display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;transition:background 0.15s;position:relative;overflow:hidden;white-space:nowrap;border-left:3px solid transparent;user-select:none}
+        .nav-item:hover{background:rgba(255,255,255,0.05)}
+        .nav-item.active{background:rgba(59,130,246,0.12);border-left-color:var(--accent)}
+        .nav-item.active .nav-icon-wrap{box-shadow:0 0 0 1px rgba(59,130,246,0.4)}
+        .nav-icon-wrap{width:40px;height:40px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:transform 0.15s}
+        .nav-item:hover .nav-icon-wrap{transform:scale(1.08)}
+        .nav-label{flex:1;overflow:hidden}
+        .nav-label-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#e2e8f0;opacity:0;transition:opacity 0.2s;white-space:nowrap}
+        .nav-label-sub{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;opacity:0;transition:opacity 0.2s;white-space:nowrap;margin-top:1px}
+        #sidebar.expanded .nav-label-title,#sidebar.expanded .nav-label-sub{opacity:1}
+        .sidebar-toggle{margin-top:auto;width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.05);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;transition:all 0.15s;flex-shrink:0}
+        .sidebar-toggle:hover{background:rgba(255,255,255,0.1);color:#fff}
+        .nav-divider{width:calc(100% - 24px);height:1px;background:var(--border);margin:8px 0;flex-shrink:0}
 
         /* MAIN */
-        #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        #main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+        #topbar{height:52px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;z-index:50}
+        .topbar-breadcrumb{display:flex;align-items:center;gap:8px;flex:1}
+        .topbar-app-badge{display:flex;align-items:center;gap:8px}
+        .topbar-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+        .topbar-name{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:#fff}
+        .topbar-sub{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px}
+        .live-pill{display:flex;align-items:center;gap:5px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:20px;padding:3px 10px;font-size:8px;font-weight:900;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-left:auto}
+        .live-dot{width:5px;height:5px;border-radius:50%;background:#10b981;animation:pulse 1.5s infinite}
+        @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.7)}50%{box-shadow:0 0 6px 3px rgba(16,185,129,0.3)}}
 
-        #topbar {
-            height: 52px;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            display: flex; align-items: center;
-            padding: 0 20px; gap: 12px; flex-shrink: 0; z-index: 50;
-        }
-        .topbar-breadcrumb { display: flex; align-items: center; gap: 8px; flex: 1; }
-        .topbar-app-badge { display: flex; align-items: center; gap: 8px; }
-        .topbar-icon {
-            width: 28px; height: 28px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center; font-size: 14px;
-        }
-        .topbar-name { font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; }
-        .topbar-sub { font-size: 9px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        /* IFRAME */
+        #iframe-container{flex:1;position:relative;overflow:hidden}
+        .app-frame{position:absolute;inset:0;width:100%;height:100%;border:none;opacity:0;pointer-events:none;transition:opacity 0.25s ease;background:#fff}
+        .app-frame.visible{opacity:1;pointer-events:all}
 
-        .live-pill {
-            display: flex; align-items: center; gap: 5px;
-            background: rgba(16,185,129,0.1);
-            border: 1px solid rgba(16,185,129,0.25);
-            border-radius: 20px; padding: 3px 10px;
-            font-size: 8px; font-weight: 900;
-            color: #10b981; text-transform: uppercase; letter-spacing: 1px;
-            margin-left: auto;
-        }
-        .live-dot {
-            width: 5px; height: 5px; border-radius: 50%;
-            background: #10b981; animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.7); }
-            50% { box-shadow: 0 0 6px 3px rgba(16,185,129,0.3); }
-        }
+        /* HOME */
+        #home-screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);overflow:hidden}
+        #home-screen::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%)}
+        .home-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(59,130,246,0.12) 0%,transparent 70%);pointer-events:none}
+        .home-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);letter-spacing:8px;color:#fff;line-height:1;text-align:center;position:relative;animation:fadeUp 0.6s ease both}
+        .home-headline span{color:var(--accent)}
+        .home-sub{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--muted);margin-top:12px;position:relative;animation:fadeUp 0.6s 0.1s ease both}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .apps-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;margin-top:48px;position:relative;padding:0 20px;max-width:1200px;width:100%;animation:fadeUp 0.6s 0.2s ease both}
+        .app-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px 12px;cursor:pointer;transition:all 0.2s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;position:relative;overflow:hidden}
+        .app-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.15)}
+        .app-card:active{transform:translateY(-1px) scale(0.98)}
+        .app-card-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+        .app-card-title{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#e2e8f0;line-height:1.3}
+        .app-card-desc{font-size:8px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;line-height:1.4}
+        .stats-bar{display:flex;gap:32px;margin-top:48px;position:relative;animation:fadeUp 0.6s 0.35s ease both}
+        .stat-item{text-align:center}
+        .stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--accent);line-height:1}
+        .stat-lbl{font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-top:2px}
+        .stat-sep{width:1px;background:var(--border);align-self:stretch}
 
-        /* IFRAME AREA */
-        #iframe-container { flex: 1; position: relative; overflow: hidden; }
-
-        .app-frame {
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            border: none; opacity: 0; pointer-events: none;
-            transition: opacity 0.25s ease; background: #fff;
-        }
-        .app-frame.visible { opacity: 1; pointer-events: all; }
-
-        /* HOME SCREEN */
-        #home-screen {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            background: var(--bg); overflow: hidden;
-        }
-        #home-screen::before {
-            content: '';
-            position: absolute; inset: 0;
-            background-image:
-                linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
-            background-size: 48px 48px;
-            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-        }
-        .home-glow {
-            position: absolute; top: 30%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px; height: 300px;
-            background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .home-headline {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(48px, 8vw, 96px);
-            letter-spacing: 8px; color: #fff; line-height: 1;
-            text-align: center; position: relative;
-            animation: fadeUp 0.6s ease both;
-        }
-        .home-headline span { color: var(--accent); }
-        .home-sub {
-            font-size: 11px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 4px;
-            color: var(--muted); margin-top: 12px; position: relative;
-            animation: fadeUp 0.6s 0.1s ease both;
-        }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 14px;
-            margin-top: 48px; position: relative;
-            padding: 0 20px; max-width: 1200px; width: 100%;
-            animation: fadeUp 0.6s 0.2s ease both;
-        }
-        .app-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px; padding: 18px 12px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(.4,0,.2,1);
-            display: flex; flex-direction: column;
-            align-items: center; gap: 10px;
-            text-align: center; position: relative; overflow: hidden;
-        }
-        .app-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
-        .app-card:active { transform: translateY(-1px) scale(0.98); }
-        .app-card-icon {
-            width: 48px; height: 48px; border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; flex-shrink: 0;
-        }
-        .app-card-title { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #e2e8f0; line-height: 1.3; }
-        .app-card-desc { font-size: 8px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
-
-        .stats-bar {
-            display: flex; gap: 32px; margin-top: 48px;
-            position: relative; animation: fadeUp 0.6s 0.35s ease both;
-        }
-        .stat-item { text-align: center; }
-        .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--accent); line-height: 1; }
-        .stat-lbl { font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-top: 2px; }
-        .stat-sep { width: 1px; background: var(--border); align-self: stretch; }
-
-        /* MAIL APP INLINE */
-        #mail-screen {
-            position: absolute; inset: 0;
-            display: none;
-            background: #0f1117;
-            overflow: hidden;
-        }
-        #mail-screen.visible { display: flex; flex-direction: column; }
-
-        /* Mail inner styles */
-        .m-layout { flex:1; display:grid; grid-template-columns:240px 1fr; overflow:hidden; min-height:0; }
-        .m-sidebar {
-            background:#181c27; border-right:1px solid rgba(255,255,255,0.08);
-            padding:1.25rem 1rem; display:flex; flex-direction:column; gap:1.5rem; overflow-y:auto;
-        }
-        .m-sec-title {
-            font-size:10px; font-weight:900; letter-spacing:0.07em;
-            text-transform:uppercase; color:#4a5568; margin-bottom:8px;
-        }
-        .m-style-cards { display:flex; flex-direction:column; gap:6px; }
-        .m-style-card {
-            background:#1e2333; border:0.5px solid rgba(255,255,255,0.08);
-            border-radius:6px; padding:10px 12px; cursor:pointer;
-            transition:border-color 0.15s, background 0.15s;
-        }
-        .m-style-card:hover { border-color:rgba(255,255,255,0.15); }
-        .m-style-card.active { border-color:#3b82f6; background:rgba(59,130,246,0.12); }
-        .m-style-card .sn { font-size:13px; font-weight:500; color:#e8eaf0; }
-        .m-style-card.active .sn { color:#3b82f6; }
-        .m-style-card .sd { font-size:11px; color:#8b90a0; margin-top:2px; }
-        .m-tone-row { display:flex; flex-wrap:wrap; gap:5px; }
-        .m-tone-btn {
-            font-size:11px; padding:4px 10px; border-radius:99px;
-            border:0.5px solid rgba(255,255,255,0.15); background:transparent;
-            color:#8b90a0; cursor:pointer; transition:all 0.15s;
-        }
-        .m-tone-btn:hover { border-color:#3b82f6; color:#e8eaf0; }
-        .m-tone-btn.active { background:#3b82f6; color:white; border-color:#3b82f6; }
-        .m-ctx-ta {
-            width:100%; background:#1e2333; border:0.5px solid rgba(255,255,255,0.08);
-            border-radius:6px; padding:8px 10px; font-size:12px; color:#e8eaf0;
-            font-family:'DM Sans',sans-serif; resize:vertical; height:90px; line-height:1.5;
-        }
-        .m-ctx-ta:focus { outline:none; border-color:#3b82f6; }
-
-        .m-main { display:flex; flex-direction:column; overflow:hidden; }
-        .m-mode-bar {
-            display:flex; gap:6px; padding:0.875rem 1.25rem;
-            border-bottom:1px solid rgba(255,255,255,0.08); background:#181c27; flex-shrink:0;
-        }
-        .m-mode-btn {
-            font-size:13px; padding:6px 14px; border-radius:6px;
-            border:0.5px solid rgba(255,255,255,0.15); background:transparent;
-            color:#8b90a0; cursor:pointer; display:flex; align-items:center; gap:6px;
-            transition:all 0.15s;
-        }
-        .m-mode-btn:hover { color:#e8eaf0; border-color:#3b82f6; }
-        .m-mode-btn.active { background:rgba(59,130,246,0.12); border-color:#3b82f6; color:#3b82f6; font-weight:700; }
-
-        .m-content { flex:1; overflow-y:auto; padding:1.25rem; display:flex; flex-direction:column; gap:1rem; }
-        .m-field-label { font-size:12px; color:#8b90a0; margin-bottom:5px; display:flex; align-items:center; gap:5px; }
-        .m-ta {
-            width:100%; background:#1e2333; border:0.5px solid rgba(255,255,255,0.08);
-            border-radius:6px; padding:10px 12px; font-size:14px; color:#e8eaf0;
-            font-family:'DM Sans',sans-serif; resize:vertical; line-height:1.6;
-        }
-        .m-ta:focus { outline:none; border-color:#3b82f6; }
-
-        .m-action-row {
-            display:flex; align-items:center; gap:10px; padding:0.75rem 1.25rem;
-            border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08);
-            background:#181c27; flex-shrink:0;
-        }
-        .m-gen-btn {
-            background:#3b82f6; color:white; border:none; border-radius:6px;
-            padding:9px 20px; font-size:14px; font-weight:700; cursor:pointer;
-            display:flex; align-items:center; gap:7px; transition:background 0.15s;
-            font-family:'DM Sans',sans-serif;
-        }
-        .m-gen-btn:hover { background:#2563eb; }
-        .m-gen-btn:disabled { background:#1e2333; color:#4a5568; cursor:not-allowed; }
-        .m-lang-sel {
-            font-size:13px; padding:7px 10px; border-radius:6px;
-            border:0.5px solid rgba(255,255,255,0.15); background:#1e2333;
-            color:#e8eaf0; cursor:pointer; font-family:'DM Sans',sans-serif;
-        }
-        .m-lang-sel:focus { outline:none; border-color:#3b82f6; }
-
-        .m-result-area { padding:1.25rem; display:flex; flex-direction:column; gap:8px; flex:1; overflow:hidden; }
-        .m-result-label { font-size:12px; color:#8b90a0; display:flex; align-items:center; gap:5px; }
-        .m-result-box {
-            background:#1e2333; border:0.5px solid rgba(255,255,255,0.08);
-            border-radius:6px; padding:1rem;
-            font-size:11pt; font-family:Arial,sans-serif;
-            line-height:1.75; color:#4a5568;
-            white-space:pre-wrap; flex:1; overflow-y:auto;
-            font-style:italic; min-height:150px;
-        }
-        .m-result-box.has-content { color:#e8eaf0; font-style:normal; }
-        .m-result-box.loading { animation:mpulse 1.5s infinite; }
-        @keyframes mpulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-
-        .m-result-actions { display:flex; gap:8px; justify-content:flex-end; align-items:center; flex-shrink:0; }
-        .m-act-btn {
-            font-size:13px; padding:6px 14px; border-radius:6px;
-            border:0.5px solid rgba(255,255,255,0.15); background:transparent;
-            color:#8b90a0; cursor:pointer; display:flex; align-items:center; gap:6px;
-            transition:all 0.15s; font-family:'DM Sans',sans-serif;
-        }
-        .m-act-btn:hover { color:#e8eaf0; border-color:#3b82f6; }
-        .m-copied { font-size:12px; color:#10b981; }
-
-        /* API screen inside mail */
-        #m-api-screen {
-            position:absolute; inset:0; background:#0f1117;
-            display:flex; align-items:center; justify-content:center; padding:2rem;
-            z-index:10;
-        }
-        .m-api-card {
-            background:#181c27; border:0.5px solid rgba(255,255,255,0.15);
-            border-radius:16px; padding:2.5rem; width:100%; max-width:460px;
-        }
-        .m-api-card h2 { font-size:20px; font-weight:900; margin-bottom:8px; color:#f0f4ff; letter-spacing:1px; }
-        .m-api-card p { font-size:13px; color:#8b90a0; line-height:1.6; margin-bottom:1.25rem; }
-        .m-api-card a { color:#3b82f6; text-decoration:none; }
-        .m-api-input {
-            width:100%; background:#1e2333; border:0.5px solid rgba(255,255,255,0.15);
-            border-radius:6px; padding:10px 14px; font-size:14px; color:#e8eaf0;
-            font-family:monospace; margin-bottom:1rem;
-        }
-        .m-api-input:focus { outline:none; border-color:#3b82f6; }
-        .m-api-note { font-size:11px; color:#4a5568; margin-top:10px; line-height:1.5; }
-        .m-btn-primary {
-            background:#3b82f6; color:white; border:none; border-radius:6px;
-            padding:10px 20px; font-size:14px; font-weight:700; cursor:pointer;
-            width:100%; transition:background 0.15s; font-family:'DM Sans',sans-serif;
-        }
-        .m-btn-primary:hover { background:#2563eb; }
-
-        /* LOADING */
-        #loading-overlay {
-            position:absolute; inset:0; background:var(--bg);
-            display:flex; flex-direction:column; align-items:center; justify-content:center;
-            gap:16px; z-index:200; opacity:0; pointer-events:none; transition:opacity 0.2s;
-        }
-        #loading-overlay.show { opacity:1; pointer-events:all; }
-        .spinner {
-            width:36px; height:36px;
-            border:3px solid rgba(59,130,246,0.2); border-top-color:var(--accent);
-            border-radius:50%; animation:spin 0.7s linear infinite;
-        }
-        @keyframes spin { to { transform:rotate(360deg); } }
-        .loading-text { font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:3px; color:var(--muted); }
-
-        /* ERROR */
-        #error-screen {
-            position:absolute; inset:0; background:var(--bg);
-            display:none; flex-direction:column; align-items:center; justify-content:center;
-            gap:16px; z-index:150;
-        }
-        #error-screen.show { display:flex; }
-        .error-icon { font-size:48px; }
-        .error-title { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:4px; color:#ef4444; }
-        .error-msg { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:2px; text-align:center; max-width:380px; line-height:1.8; }
-        .error-btn { margin-top:8px; padding:10px 24px; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); border-radius:12px; color:#ef4444; font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:2px; cursor:pointer; transition:all 0.15s; }
-        .error-btn:hover { background:rgba(239,68,68,0.25); }
-        .open-btn { display:inline-flex; align-items:center; gap:6px; margin-top:4px; padding:10px 24px; background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.3); border-radius:12px; color:var(--accent); font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:2px; cursor:pointer; transition:all 0.15s; text-decoration:none; }
-        .open-btn:hover { background:rgba(59,130,246,0.25); }
+        /* LOADING / ERROR */
+        #loading-overlay{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.2s}
+        #loading-overlay.show{opacity:1;pointer-events:all}
+        .spinner{width:36px;height:36px;border:3px solid rgba(59,130,246,0.2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loading-text{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:3px;color:var(--muted)}
+        #error-screen{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:150}
+        #error-screen.show{display:flex}
+        .error-icon{font-size:48px}
+        .error-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:4px;color:#ef4444}
+        .error-msg{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:2px;text-align:center;max-width:380px;line-height:1.8}
+        .error-btn{margin-top:8px;padding:10px 24px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:12px;color:#ef4444;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all 0.15s}
+        .error-btn:hover{background:rgba(239,68,68,0.25)}
+        .open-btn{display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:10px 24px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:12px;color:var(--accent);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all 0.15s;text-decoration:none}
+        .open-btn:hover{background:rgba(59,130,246,0.25)}
 
         /* MOBILE */
-        #mobile-nav { display:none; position:fixed; bottom:0; left:0; right:0; height:64px; background:var(--surface); border-top:1px solid var(--border); z-index:300; overflow-x:auto; overflow-y:hidden; }
-        .mobile-nav-inner { display:flex; height:100%; padding:0 4px; min-width:max-content; }
-        .mobile-nav-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:8px 12px; cursor:pointer; border-radius:12px; margin:6px 2px; transition:background 0.15s; min-width:54px; }
-        .mobile-nav-item.active { background:rgba(59,130,246,0.15); }
-        .mobile-nav-item .m-icon { font-size:18px; }
-        .mobile-nav-item .m-label { font-size:7px; font-weight:900; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); white-space:nowrap; }
-        .mobile-nav-item.active .m-label { color:var(--accent); }
+        #mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--surface);border-top:1px solid var(--border);z-index:300;overflow-x:auto;overflow-y:hidden}
+        .mobile-nav-inner{display:flex;height:100%;padding:0 4px;min-width:max-content}
+        .mobile-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 12px;cursor:pointer;border-radius:12px;margin:6px 2px;transition:background 0.15s;min-width:54px}
+        .mobile-nav-item.active{background:rgba(59,130,246,0.15)}
+        .mobile-nav-item .m-icon{font-size:18px}
+        .mobile-nav-item .m-label{font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);white-space:nowrap}
+        .mobile-nav-item.active .m-label{color:var(--accent)}
 
-        @media (max-width:768px) {
-            #sidebar { display:none; }
-            #mobile-nav { display:block; }
-            #main { padding-bottom:64px; }
-            .apps-grid { grid-template-columns:repeat(4, 1fr); }
-            .stats-bar { gap:20px; }
-            .m-layout { grid-template-columns:1fr; }
-            .m-sidebar { display:none; }
+        @media(max-width:768px){
+            #sidebar{display:none}
+            #mobile-nav{display:block}
+            #main{padding-bottom:64px}
+            .apps-grid{grid-template-columns:repeat(4,1fr)}
+            .stats-bar{gap:20px}
+            .m-layout{grid-template-columns:1fr}
+            .m-sidebar{display:none}
         }
-
-        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after {
-            content:attr(data-tooltip); position:absolute; left:64px; top:50%;
-            transform:translateY(-50%); background:#1e293b; color:#fff;
-            font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:1px;
-            padding:6px 10px; border-radius:8px; white-space:nowrap; pointer-events:none;
-            opacity:0; transition:opacity 0.15s; z-index:999;
-            border:1px solid rgba(255,255,255,0.1);
-        }
-        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after { opacity:1; }
+        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after{content:attr(data-tooltip);position:absolute;left:64px;top:50%;transform:translateY(-50%);background:#1e293b;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;padding:6px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.15s;z-index:999;border:1px solid rgba(255,255,255,0.1)}
+        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after{opacity:1}
     </style>
 </head>
 <body>
-
 <div id="shell">
     <nav id="sidebar">
         <div class="logo-wrap" onclick="toggleSidebar()">
             <div class="logo-icon">PE</div>
             <div class="logo-text">PE-SYSTEM</div>
         </div>
-
         <div class="nav-item active" data-app="home" data-tooltip="Home" onclick="openApp('home')">
-            <div class="nav-icon-wrap" style="background:rgba(100,116,139,0.15);">🏠</div>
+            <div class="nav-icon-wrap" style="background:rgba(100,116,139,0.15)">🏠</div>
             <div class="nav-label"><div class="nav-label-title">Home</div><div class="nav-label-sub">Übersicht</div></div>
         </div>
-
         <div class="nav-divider"></div>
-
         <div class="nav-item" data-app="ausmesser" data-tooltip="Ausmesser" onclick="openApp('ausmesser')">
-            <div class="nav-icon-wrap" style="background:rgba(239,68,68,0.15);">📐</div>
+            <div class="nav-icon-wrap" style="background:rgba(239,68,68,0.15)">📐</div>
             <div class="nav-label"><div class="nav-label-title">Ausmesser Cloud</div><div class="nav-label-sub">PE Fabrikation</div></div>
         </div>
-
         <div class="nav-item" data-app="pe-montage" data-tooltip="Montage Manager" onclick="openApp('pe-montage')">
-            <div class="nav-icon-wrap" style="background:rgba(16,185,129,0.15);">🔧</div>
+            <div class="nav-icon-wrap" style="background:rgba(16,185,129,0.15)">🔧</div>
             <div class="nav-label"><div class="nav-label-title">Montage Manager / FA</div><div class="nav-label-sub">Montage Manager</div></div>
         </div>
-
         <div class="nav-item" data-app="pe-kalender" data-tooltip="Kalender Manager" onclick="openApp('pe-kalender')">
-            <div class="nav-icon-wrap" style="background:rgba(59,130,246,0.15);">📅</div>
+            <div class="nav-icon-wrap" style="background:rgba(59,130,246,0.15)">📅</div>
             <div class="nav-label"><div class="nav-label-title">Kalender Manager</div><div class="nav-label-sub">Tourendispo Live</div></div>
         </div>
-
         <div class="nav-item" data-app="stunden" data-tooltip="Montage Dispo" onclick="openApp('stunden')">
-            <div class="nav-icon-wrap" style="background:rgba(139,92,246,0.15);">⏱️</div>
+            <div class="nav-icon-wrap" style="background:rgba(139,92,246,0.15)">⏱️</div>
             <div class="nav-label"><div class="nav-label-title">Montage Dispo</div><div class="nav-label-sub">Zeiterfassung</div></div>
         </div>
-
         <div class="nav-item" data-app="dispo" data-tooltip="Excel Dispo" onclick="openApp('dispo')">
-            <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15);">🚛</div>
+            <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15)">🚛</div>
             <div class="nav-label"><div class="nav-label-title">Excel Dispo</div><div class="nav-label-sub">Tourendispo Pro</div></div>
         </div>
-
         <div class="nav-divider"></div>
-
         <div class="nav-item" data-app="pe-fabrikation" data-tooltip="PE-Fabrikation" onclick="openApp('pe-fabrikation')">
-            <div class="nav-icon-wrap" style="background:rgba(234,179,8,0.15);">🏭</div>
+            <div class="nav-icon-wrap" style="background:rgba(234,179,8,0.15)">🏭</div>
             <div class="nav-label"><div class="nav-label-title">PE-Fabrikation</div><div class="nav-label-sub">Workflow Engine</div></div>
         </div>
-
-        <div class="nav-item" data-app="mail-ki" data-tooltip="Mail-KI" onclick="openApp('mail-ki')">
-            <div class="nav-icon-wrap" style="background:rgba(236,72,153,0.15);">✉️</div>
-            <div class="nav-label"><div class="nav-label-title">Mail-KI</div><div class="nav-label-sub">KI-Assistent</div></div>
-        </div>
-
-        <div class="sidebar-toggle" onclick="toggleSidebar()">
-            <span id="toggle-icon">›</span>
-        </div>
+        <div class="sidebar-toggle" onclick="toggleSidebar()"><span id="toggle-icon">›</span></div>
     </nav>
 
     <div id="main">
@@ -525,46 +166,40 @@
         </div>
 
         <div id="iframe-container">
-
             <!-- HOME -->
             <div id="home-screen">
                 <div class="home-glow"></div>
                 <div class="home-headline">PE<span>—</span>SYSTEM</div>
-                <div class="home-sub">Command Center · 7 Apps · Alle verbunden</div>
-
+                <div class="home-sub">Command Center · 6 Apps · Alle verbunden</div>
                 <div class="apps-grid">
                     <div class="app-card" onclick="openApp('ausmesser')">
-                        <div class="app-card-icon" style="background:rgba(239,68,68,0.15);">📐</div>
+                        <div class="app-card-icon" style="background:rgba(239,68,68,0.15)">📐</div>
                         <div><div class="app-card-title">Ausmesser Cloud</div><div class="app-card-desc">PE Fabrikation</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-montage')">
-                        <div class="app-card-icon" style="background:rgba(16,185,129,0.15);">🔧</div>
+                        <div class="app-card-icon" style="background:rgba(16,185,129,0.15)">🔧</div>
                         <div><div class="app-card-title">Montage Manager</div><div class="app-card-desc">Montage Manager</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-kalender')">
-                        <div class="app-card-icon" style="background:rgba(59,130,246,0.15);">📅</div>
+                        <div class="app-card-icon" style="background:rgba(59,130,246,0.15)">📅</div>
                         <div><div class="app-card-title">Kalender Manager</div><div class="app-card-desc">Tourendispo Live</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('stunden')">
-                        <div class="app-card-icon" style="background:rgba(139,92,246,0.15);">⏱️</div>
+                        <div class="app-card-icon" style="background:rgba(139,92,246,0.15)">⏱️</div>
                         <div><div class="app-card-title">Montage Dispo</div><div class="app-card-desc">Zeiterfassung</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('dispo')">
-                        <div class="app-card-icon" style="background:rgba(245,158,11,0.15);">🚛</div>
+                        <div class="app-card-icon" style="background:rgba(245,158,11,0.15)">🚛</div>
                         <div><div class="app-card-title">Excel Dispo</div><div class="app-card-desc">Tourendispo Pro</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-fabrikation')">
-                        <div class="app-card-icon" style="background:rgba(234,179,8,0.15);">🏭</div>
+                        <div class="app-card-icon" style="background:rgba(234,179,8,0.15)">🏭</div>
                         <div><div class="app-card-title">PE-Fabrikation</div><div class="app-card-desc">Workflow Engine</div></div>
                     </div>
-                    <div class="app-card" onclick="openApp('mail-ki')" style="border-color:rgba(236,72,153,0.25);">
-                        <div class="app-card-icon" style="background:rgba(236,72,153,0.15);">✉️</div>
-                        <div><div class="app-card-title">Mail-KI</div><div class="app-card-desc">KI-Assistent</div></div>
                     </div>
                 </div>
-
                 <div class="stats-bar">
-                    <div class="stat-item"><div class="stat-val">7</div><div class="stat-lbl">Apps</div></div>
+                    <div class="stat-item"><div class="stat-val">6</div><div class="stat-lbl">Apps</div></div>
                     <div class="stat-sep"></div>
                     <div class="stat-item"><div class="stat-val">2</div><div class="stat-lbl">Accounts</div></div>
                     <div class="stat-sep"></div>
@@ -573,92 +208,7 @@
                     <div class="stat-item"><div class="stat-val" id="clock-val">—</div><div class="stat-lbl">Uhrzeit</div></div>
                 </div>
             </div>
-
-            <!-- MAIL KI INLINE APP -->
-            <div id="mail-screen">
-                <!-- API Key screen -->
-                <div id="m-api-screen">
-                    <div class="m-api-card">
-                        <h2>✉️ MAIL-KI ASSISTENT</h2>
-                        <p>Gib deinen Anthropic API-Key ein, um zu starten. Der Key wird lokal in deinem Browser gespeichert.</p>
-                        <input type="password" class="m-api-input" id="m-api-key-input" placeholder="sk-ant-api03-..." />
-                        <button class="m-btn-primary" onclick="mStartApp()">Starten →</button>
-                        <p class="m-api-note">Noch kein Key? Erstelle einen auf <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>. Er wird nur lokal gespeichert und verlässt dein Gerät nicht.</p>
-                    </div>
-                </div>
-
-                <!-- Mail App -->
-                <div id="m-app" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.08);background:#181c27;flex-shrink:0;">
-                        <span style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#8b90a0;">Mail-KI Assistent · Arial 11pt · kopierbereit</span>
-                        <button onclick="mResetKey()" style="font-size:11px;padding:4px 10px;border-radius:5px;border:0.5px solid rgba(255,255,255,0.15);background:transparent;color:#8b90a0;cursor:pointer;font-family:'DM Sans',sans-serif;">API-Key ändern</button>
-                    </div>
-                    <div class="m-layout">
-                        <div class="m-sidebar">
-                            <div>
-                                <div class="m-sec-title">Schreibstil</div>
-                                <div class="m-style-cards">
-                                    <div class="m-style-card active" id="ms-formal" onclick="mSetStyle('formal')"><div class="sn">Formell</div><div class="sd">Professionell & seriös</div></div>
-                                    <div class="m-style-card" id="ms-friendly" onclick="mSetStyle('friendly')"><div class="sn">Freundlich</div><div class="sd">Warm & zugänglich</div></div>
-                                    <div class="m-style-card" id="ms-short" onclick="mSetStyle('short')"><div class="sn">Kurz & knapp</div><div class="sd">Direkt auf den Punkt</div></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="m-sec-title">Ton</div>
-                                <div class="m-tone-row">
-                                    <button class="m-tone-btn active" onclick="mToggleTone(this,'Selbstsicher')">Selbstsicher</button>
-                                    <button class="m-tone-btn" onclick="mToggleTone(this,'Empathisch')">Empathisch</button>
-                                    <button class="m-tone-btn" onclick="mToggleTone(this,'Verbindlich')">Verbindlich</button>
-                                    <button class="m-tone-btn" onclick="mToggleTone(this,'Höflich')">Höflich</button>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="m-sec-title">Kontext (optional)</div>
-                                <textarea class="m-ctx-ta" id="m-context" placeholder="Dein Name, Firma, Branche, typische Grussformel…"></textarea>
-                            </div>
-                        </div>
-                        <div class="m-main">
-                            <div class="m-mode-bar">
-                                <button class="m-mode-btn active" id="mm-new" onclick="mSetMode('new',this)">✏️ Neues Mail</button>
-                                <button class="m-mode-btn" id="mm-reply" onclick="mSetMode('reply',this)">↩️ Antworten</button>
-                            </div>
-                            <div class="m-content">
-                                <div id="m-new-section">
-                                    <div class="m-field-label">💬 Auftrag / Stichpunkte</div>
-                                    <textarea class="m-ta" id="m-instruction" rows="5" placeholder="z.B. Angebot an Herr Müller für Beratungsmandat, Abschluss bis 20. Mai, Preis CHF 4'500.—"></textarea>
-                                </div>
-                                <div id="m-reply-section" style="display:none;">
-                                    <div class="m-field-label">📨 Empfangenes Mail einfügen</div>
-                                    <textarea class="m-ta" id="m-orig-mail" rows="5" placeholder="Füge hier das Mail ein, auf das du antworten möchtest…"></textarea>
-                                    <div style="height:10px;"></div>
-                                    <div class="m-field-label">💬 Deine Antwort-Absicht</div>
-                                    <textarea class="m-ta" id="m-reply-intent" rows="3" placeholder="z.B. Termin bestätigen, aber Datum auf nächste Woche verschieben"></textarea>
-                                </div>
-                            </div>
-                            <div class="m-action-row">
-                                <button class="m-gen-btn" id="m-gen-btn" onclick="mGenerate()">✨ Mail generieren</button>
-                                <select class="m-lang-sel" id="m-lang">
-                                    <option value="Deutsch">🇩🇪 Deutsch</option>
-                                    <option value="Englisch">🇬🇧 Englisch</option>
-                                    <option value="Französisch">🇫🇷 Französisch</option>
-                                    <option value="Italienisch">🇮🇹 Italienisch</option>
-                                </select>
-                            </div>
-                            <div class="m-result-area">
-                                <div class="m-result-label">📬 Generiertes Mail <span style="font-size:11px;color:#4a5568;margin-left:6px;">Arial 11pt · kopierbereit</span></div>
-                                <div class="m-result-box" id="m-result">Das fertige Mail erscheint hier…</div>
-                                <div class="m-result-actions">
-                                    <span id="m-copied" class="m-copied" style="display:none;">✓ Kopiert!</span>
-                                    <button class="m-act-btn" onclick="mRegenerate()">🔄 Neu generieren</button>
-                                    <button class="m-act-btn" onclick="mCopy()">📋 Kopieren</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Error -->
+            <!-- ERROR -->
             <div id="error-screen">
                 <div class="error-icon">⚠️</div>
                 <div class="error-title">Zugriff Blockiert</div>
@@ -666,16 +216,12 @@
                 <a id="error-link" href="#" target="_blank" class="open-btn">↗ App öffnen</a>
                 <button class="error-btn" onclick="hideError()">← Zurück zur Übersicht</button>
             </div>
-
-            <div id="loading-overlay">
-                <div class="spinner"></div>
-                <div class="loading-text">App wird geladen...</div>
-            </div>
+            <div id="loading-overlay"><div class="spinner"></div><div class="loading-text">App wird geladen...</div></div>
         </div>
     </div>
 </div>
 
-<!-- Mobile Nav -->
+<!-- MOBILE NAV -->
 <div id="mobile-nav">
     <div class="mobile-nav-inner">
         <div class="mobile-nav-item active" data-app="home" onclick="openApp('home')"><span class="m-icon">🏠</span><span class="m-label">Home</span></div>
@@ -685,246 +231,95 @@
         <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')"><span class="m-icon">⏱️</span><span class="m-label">M-Dispo</span></div>
         <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')"><span class="m-icon">🚛</span><span class="m-label">Excel</span></div>
         <div class="mobile-nav-item" data-app="pe-fabrikation" onclick="openApp('pe-fabrikation')"><span class="m-icon">🏭</span><span class="m-label">Fabrik</span></div>
-        <div class="mobile-nav-item" data-app="mail-ki" onclick="openApp('mail-ki')"><span class="m-icon">✉️</span><span class="m-label">Mail-KI</span></div>
     </div>
 </div>
 
 <script>
 const APPS = {
-    'pe-fabrikation': { label:'PE-Fabrikation', sub:'Workflow Engine', icon:'🏭', iconBg:'rgba(234,179,8,0.15)', url:'https://ajdinslijepcevic1-hue.github.io/-PE-/' },
-    'ausmesser': { label:'Ausmesser Cloud', sub:'PE Fabrikation GIS', icon:'📐', iconBg:'rgba(239,68,68,0.15)', url:'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/' },
-    'pe-montage': { label:'Montage Manager / FA', sub:'Montage Manager Pro', icon:'🔧', iconBg:'rgba(16,185,129,0.15)', url:'https://alarmpegza-a11y.github.io/PE-MONTAGE/' },
-    'pe-kalender': { label:'Kalender Manager', sub:'Tourendispo Live', icon:'📅', iconBg:'rgba(59,130,246,0.15)', url:'https://alarmpegza-a11y.github.io/PE-KALENDER/' },
-    'stunden': { label:'Montage Dispo', sub:'Zeiterfassung', icon:'⏱️', iconBg:'rgba(139,92,246,0.15)', url:'https://alarmpegza-a11y.github.io/Stunden/' },
-    'dispo': { label:'Excel Dispo', sub:'Tourendispo Pro', icon:'🚛', iconBg:'rgba(245,158,11,0.15)', url:'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/' },
+    'pe-fabrikation':{label:'PE-Fabrikation',sub:'Workflow Engine',icon:'🏭',iconBg:'rgba(234,179,8,0.15)',url:'https://ajdinslijepcevic1-hue.github.io/-PE-/'},
+    'ausmesser':{label:'Ausmesser Cloud',sub:'PE Fabrikation GIS',icon:'📐',iconBg:'rgba(239,68,68,0.15)',url:'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/'},
+    'pe-montage':{label:'Montage Manager / FA',sub:'Montage Manager Pro',icon:'🔧',iconBg:'rgba(16,185,129,0.15)',url:'https://alarmpegza-a11y.github.io/PE-MONTAGE/'},
+    'pe-kalender':{label:'Kalender Manager',sub:'Tourendispo Live',icon:'📅',iconBg:'rgba(59,130,246,0.15)',url:'https://alarmpegza-a11y.github.io/PE-KALENDER/'},
+    'stunden':{label:'Montage Dispo',sub:'Zeiterfassung',icon:'⏱️',iconBg:'rgba(139,92,246,0.15)',url:'https://alarmpegza-a11y.github.io/Stunden/'},
+    'dispo':{label:'Excel Dispo',sub:'Tourendispo Pro',icon:'🚛',iconBg:'rgba(245,158,11,0.15)',url:'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/'},
 };
 
-let currentApp = 'home';
-let sidebarExpanded = false;
-const loadedFrames = new Set();
+let currentApp='home', sidebarExpanded=false;
+const loadedFrames=new Set();
 
-function toggleSidebar() {
-    sidebarExpanded = !sidebarExpanded;
-    document.getElementById('sidebar').classList.toggle('expanded', sidebarExpanded);
-    document.getElementById('toggle-icon').textContent = sidebarExpanded ? '‹' : '›';
+function toggleSidebar(){
+    sidebarExpanded=!sidebarExpanded;
+    document.getElementById('sidebar').classList.toggle('expanded',sidebarExpanded);
+    document.getElementById('toggle-icon').textContent=sidebarExpanded?'‹':'›';
 }
 
-function openApp(appId) {
-    currentApp = appId;
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.app === appId));
-    document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.toggle('active', el.dataset.app === appId));
+function openApp(appId){
+    currentApp=appId;
+    document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.app===appId));
+    document.querySelectorAll('.mobile-nav-item').forEach(el=>el.classList.toggle('active',el.dataset.app===appId));
 
-    const homeScreen = document.getElementById('home-screen');
-    const errorScreen = document.getElementById('error-screen');
-    const mailScreen = document.getElementById('mail-screen');
+    document.getElementById('home-screen').style.display='none';
+    document.getElementById('error-screen').classList.remove('show');
+    document.querySelectorAll('.app-frame').forEach(f=>f.classList.remove('visible'));
 
-    homeScreen.style.display = 'none';
-    errorScreen.classList.remove('show');
-    mailScreen.classList.remove('visible');
-    document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
-
-    if (appId === 'home') {
-        homeScreen.style.display = 'flex';
-        setTopbar('🏠', 'PE-SYSTEM', 'Command Center', 'rgba(100,116,139,0.15)');
+    if(appId==='home'){
+        document.getElementById('home-screen').style.display='flex';
+        setTopbar('🏠','PE-SYSTEM','Command Center','rgba(100,116,139,0.15)');
         return;
     }
 
-    if (appId === 'mail-ki') {
-        mailScreen.classList.add('visible');
-        setTopbar('✉️', 'Mail-KI', 'KI-Assistent', 'rgba(236,72,153,0.15)');
-        mCheckApiKey();
-        return;
-    }
+    const app=APPS[appId];
+    if(!app) return;
+    setTopbar(app.icon,app.label,app.sub,app.iconBg);
 
-    const app = APPS[appId];
-    if (!app) return;
-    setTopbar(app.icon, app.label, app.sub, app.iconBg);
-
-    let frame = document.getElementById('frame-' + appId);
-    if (!frame) {
-        frame = document.createElement('iframe');
-        frame.id = 'frame-' + appId;
-        frame.className = 'app-frame';
-        frame.allow = 'clipboard-read; clipboard-write';
+    let frame=document.getElementById('frame-'+appId);
+    if(!frame){
+        frame=document.createElement('iframe');
+        frame.id='frame-'+appId;
+        frame.className='app-frame';
+        frame.allow='clipboard-read; clipboard-write';
         document.getElementById('iframe-container').appendChild(frame);
     }
-
-    if (!loadedFrames.has(appId)) {
-        const overlay = document.getElementById('loading-overlay');
+    if(!loadedFrames.has(appId)){
+        const overlay=document.getElementById('loading-overlay');
         overlay.classList.add('show');
-        const errorTimeout = setTimeout(() => { overlay.classList.remove('show'); showError(app.url, app.label); }, 6000);
-        frame.onload = () => {
-            clearTimeout(errorTimeout);
-            overlay.classList.remove('show');
-            loadedFrames.add(appId);
-            try { const doc = frame.contentDocument || frame.contentWindow.document; if (!doc || doc.body === null) showError(app.url, app.label); } catch(e) {}
+        const t=setTimeout(()=>{overlay.classList.remove('show');showError(app.url,app.label);},6000);
+        frame.onload=()=>{
+            clearTimeout(t);overlay.classList.remove('show');loadedFrames.add(appId);
+            try{const d=frame.contentDocument||frame.contentWindow.document;if(!d||d.body===null)showError(app.url,app.label);}catch(e){}
         };
-        frame.onerror = () => { clearTimeout(errorTimeout); overlay.classList.remove('show'); showError(app.url, app.label); };
-        frame.src = app.url;
+        frame.onerror=()=>{clearTimeout(t);overlay.classList.remove('show');showError(app.url,app.label);};
+        frame.src=app.url;
     }
     frame.classList.add('visible');
 }
 
-function showError(url, label) {
-    document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
-    document.getElementById('error-link').href = url;
-    document.getElementById('error-link').textContent = '↗ ' + label + ' öffnen';
+function showError(url,label){
+    document.querySelectorAll('.app-frame').forEach(f=>f.classList.remove('visible'));
+    document.getElementById('error-link').href=url;
+    document.getElementById('error-link').textContent='↗ '+label+' öffnen';
     document.getElementById('error-screen').classList.add('show');
 }
-function hideError() { openApp('home'); }
+function hideError(){openApp('home');}
 
-function setTopbar(icon, name, sub, iconBg) {
-    document.getElementById('topbar-icon').textContent = icon;
-    document.getElementById('topbar-icon').style.background = iconBg;
-    document.getElementById('topbar-name').textContent = name;
-    document.getElementById('topbar-sub').textContent = sub;
+function setTopbar(icon,name,sub,iconBg){
+    document.getElementById('topbar-icon').textContent=icon;
+    document.getElementById('topbar-icon').style.background=iconBg;
+    document.getElementById('topbar-name').textContent=name;
+    document.getElementById('topbar-sub').textContent=sub;
 }
 
-function updateClock() {
-    const now = new Date();
-    document.getElementById('clock-val').textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+function updateClock(){
+    const n=new Date();
+    document.getElementById('clock-val').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
 }
-updateClock();
-setInterval(updateClock, 1000);
+updateClock();setInterval(updateClock,1000);
 
-document.querySelectorAll('.app-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.04), var(--surface) 60%)`;
+document.querySelectorAll('.app-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+        const r=card.getBoundingClientRect();
+        const x=((e.clientX-r.left)/r.width)*100,y=((e.clientY-r.top)/r.height)*100;
+        card.style.background=`radial-gradient(circle at ${x}% ${y}%,rgba(255,255,255,0.04),var(--surface) 60%)`;
     });
-    card.addEventListener('mouseleave', () => { card.style.background = ''; });
+    card.addEventListener('mouseleave',()=>{card.style.background='';});
 });
-
-// ── MAIL KI LOGIC ──
-let mApiKey = localStorage.getItem('mail_ai_key') || '';
-let mStyle = 'formal';
-let mTones = ['Selbstsicher'];
-let mMode = 'new';
-
-const mStyleMap = {
-    formal: 'formell, professionell und seriös',
-    friendly: 'freundlich, warm und zugänglich aber professionell',
-    short: 'kurz, direkt und auf den Punkt ohne unnötige Floskeln'
-};
-
-function mCheckApiKey() {
-    if (mApiKey) {
-        document.getElementById('m-api-screen').style.display = 'none';
-        document.getElementById('m-app').style.display = 'flex';
-        document.getElementById('m-app').style.flexDirection = 'column';
-    } else {
-        document.getElementById('m-api-screen').style.display = 'flex';
-        document.getElementById('m-app').style.display = 'none';
-    }
-}
-
-function mStartApp() {
-    const key = document.getElementById('m-api-key-input').value.trim();
-    if (!key.startsWith('sk-ant')) { alert('Bitte einen gültigen Anthropic API-Key eingeben (beginnt mit sk-ant-)'); return; }
-    mApiKey = key;
-    localStorage.setItem('mail_ai_key', key);
-    mCheckApiKey();
-}
-
-function mResetKey() {
-    localStorage.removeItem('mail_ai_key');
-    mApiKey = '';
-    mCheckApiKey();
-    document.getElementById('m-api-key-input').value = '';
-}
-
-function mSetStyle(s) {
-    mStyle = s;
-    ['formal','friendly','short'].forEach(x => document.getElementById('ms-'+x).classList.remove('active'));
-    document.getElementById('ms-'+s).classList.add('active');
-}
-
-function mToggleTone(el, tone) {
-    el.classList.toggle('active');
-    mTones = el.classList.contains('active') ? [...mTones, tone] : mTones.filter(t => t !== tone);
-}
-
-function mSetMode(mode, btn) {
-    mMode = mode;
-    document.querySelectorAll('.m-mode-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('m-new-section').style.display = mode === 'new' ? '' : 'none';
-    document.getElementById('m-reply-section').style.display = mode === 'reply' ? '' : 'none';
-}
-
-async function mGenerate() {
-    const lang = document.getElementById('m-lang').value;
-    const context = document.getElementById('m-context').value;
-    const toneStr = mTones.length ? mTones.join(', ') : 'neutral';
-    const resultBox = document.getElementById('m-result');
-    const btn = document.getElementById('m-gen-btn');
-
-    let userPrompt = '';
-    if (mMode === 'new') {
-        const instr = document.getElementById('m-instruction').value.trim();
-        if (!instr) { alert('Bitte gib einen Auftrag oder Stichpunkte ein.'); return; }
-        userPrompt = `Schreibe ein ${mStyleMap[mStyle]} Geschäftsmail auf ${lang}. Ton: ${toneStr}. Auftrag: ${instr}.${context ? ' Kontext: ' + context : ''}`;
-    } else {
-        const orig = document.getElementById('m-orig-mail').value.trim();
-        const intent = document.getElementById('m-reply-intent').value.trim();
-        if (!orig) { alert('Bitte füge das empfangene Mail ein.'); return; }
-        userPrompt = `Schreibe eine ${mStyleMap[mStyle]} Antwort auf folgendes Mail (Sprache: ${lang}, Ton: ${toneStr}). Absicht: ${intent || 'höflich und professionell antworten'}.\n\nOriginal-Mail:\n${orig}${context ? '\n\nKontext über mich: ' + context : ''}`;
-    }
-
-    btn.disabled = true;
-    resultBox.className = 'm-result-box loading';
-    resultBox.textContent = 'Mail wird generiert…';
-
-    try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-api-key': mApiKey,
-                'anthropic-version': '2023-06-01',
-                'anthropic-dangerous-allow-browser': 'true'
-            },
-            body: JSON.stringify({
-                model: 'claude-sonnet-4-20250514',
-                max_tokens: 1000,
-                system: `Du bist ein professioneller E-Mail-Assistent für geschäftliche Kommunikation auf Schweizer Deutsch.
-
-WICHTIGE REGELN – IMMER EINHALTEN:
-1. Verwende NIEMALS Bindestriche (-) als Aufzählungszeichen oder Trennzeichen. Schreibe stattdessen Fliesstext oder nummerierte Punkte (1. 2. 3.) wenn nötig.
-2. Erkenne automatisch ob das Original-Mail mit "du/dich/dein" (Du-Form) oder "Sie/Ihnen/Ihr" (Sie-Form) geschrieben ist und antworte in derselben Form. Bei neuen Mails ohne Vorlage: verwende die Sie-Form, ausser der Benutzer gibt etwas anderes an.
-3. Schreibe das Mail in Arial, Grösse 11.
-4. Schreibe das Mail direkt (Betreff: ... dann der Mailtext), ohne Erklärungen davor oder danach. Nur das fertige Mail.`,
-                messages: [{ role: 'user', content: userPrompt }]
-            })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error.message);
-        const text = data.content?.map(i => i.text || '').join('') || 'Fehler beim Generieren.';
-        resultBox.className = 'm-result-box has-content';
-        resultBox.textContent = text;
-    } catch(e) {
-        resultBox.className = 'm-result-box';
-        resultBox.textContent = 'Fehler: ' + e.message;
-    }
-    btn.disabled = false;
-}
-
-async function mRegenerate() {
-    if (!document.getElementById('m-result').classList.contains('has-content')) return;
-    await mGenerate();
-}
-
-function mCopy() {
-    const box = document.getElementById('m-result');
-    if (!box.classList.contains('has-content')) return;
-    navigator.clipboard.writeText(box.textContent).then(() => {
-        const hint = document.getElementById('m-copied');
-        hint.style.display = 'inline';
-        setTimeout(() => hint.style.display = 'none', 2000);
-    });
-}
-</script>
-</body>
-</html>
