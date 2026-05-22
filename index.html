@@ -14,7 +14,7 @@
         body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
         #shell{display:flex;height:100vh;width:100vw}
 
-        /* SIDEBAR */
+        /* ── SIDEBAR (Desktop) ── */
         #sidebar{width:72px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:16px 0 20px;z-index:100;flex-shrink:0;transition:width 0.28s cubic-bezier(.4,0,.2,1);overflow:hidden}
         #sidebar.expanded{width:220px}
         .logo-wrap{width:100%;display:flex;align-items:center;gap:12px;padding:0 16px;margin-bottom:28px;overflow:hidden;white-space:nowrap;cursor:pointer}
@@ -24,7 +24,6 @@
         .nav-item{width:100%;display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;transition:background 0.15s;position:relative;overflow:hidden;white-space:nowrap;border-left:3px solid transparent;user-select:none}
         .nav-item:hover{background:rgba(255,255,255,0.05)}
         .nav-item.active{background:rgba(59,130,246,0.12);border-left-color:var(--accent)}
-        .nav-item.active .nav-icon-wrap{box-shadow:0 0 0 1px rgba(59,130,246,0.4)}
         .nav-icon-wrap{width:40px;height:40px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:transform 0.15s}
         .nav-item:hover .nav-icon-wrap{transform:scale(1.08)}
         .nav-label{flex:1;overflow:hidden}
@@ -35,128 +34,155 @@
         .sidebar-toggle:hover{background:rgba(255,255,255,0.1);color:#fff}
         .nav-divider{width:calc(100% - 24px);height:1px;background:var(--border);margin:8px 0;flex-shrink:0}
 
-        /* MAIN */
-        #main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
-        #topbar{height:52px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0;z-index:50}
-        .topbar-breadcrumb{display:flex;align-items:center;gap:8px;flex:1}
-        .topbar-app-badge{display:flex;align-items:center;gap:8px}
-        .topbar-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
-        .topbar-name{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:#fff}
-        .topbar-sub{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px}
-        .live-pill{display:flex;align-items:center;gap:5px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:20px;padding:3px 10px;font-size:8px;font-weight:900;color:#10b981;text-transform:uppercase;letter-spacing:1px;margin-left:auto}
+        /* ── MAIN ── */
+        #main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;min-width:0}
+
+        /* ── TOPBAR ── */
+        #topbar{height:52px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;z-index:50}
+        .topbar-app-badge{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+        .topbar-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+        .topbar-info{min-width:0;overflow:hidden}
+        .topbar-name{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.2px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .topbar-sub{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .live-pill{display:flex;align-items:center;gap:5px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:20px;padding:3px 9px;font-size:8px;font-weight:900;color:#10b981;text-transform:uppercase;letter-spacing:1px;flex-shrink:0}
         .live-dot{width:5px;height:5px;border-radius:50%;background:#10b981;animation:pulse 1.5s infinite}
         @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.7)}50%{box-shadow:0 0 6px 3px rgba(16,185,129,0.3)}}
 
-        /* IFRAME */
+        /* ── IFRAME CONTAINER ── */
         #iframe-container{flex:1;position:relative;overflow:hidden}
         .app-frame{position:absolute;inset:0;width:100%;height:100%;border:none;opacity:0;pointer-events:none;transition:opacity 0.25s ease;background:#fff}
         .app-frame.visible{opacity:1;pointer-events:all}
 
-        /* HOME */
+        /* ── HOME SCREEN ── */
         #home-screen{
             position:absolute;inset:0;
-            display:flex;flex-direction:column;align-items:center;justify-content:center;
-            background:var(--bg);overflow:hidden;
+            display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+            background:var(--bg);overflow-y:auto;overflow-x:hidden;
+            padding:24px 16px 120px;
         }
         #home-screen::before{
-            content:'';position:absolute;inset:0;
+            content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
             background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);
             background-size:48px 48px;
-            mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);
-            pointer-events:none;
+            mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 40%,transparent 100%);
         }
-        .home-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(59,130,246,0.12) 0%,transparent 70%);pointer-events:none}
-        .home-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);letter-spacing:8px;color:#fff;line-height:1;text-align:center;position:relative;z-index:1;animation:fadeUp 0.6s ease both}
-        .home-headline span{color:var(--accent)}
-        .home-sub{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--muted);margin-top:16px;position:relative;z-index:1;animation:fadeUp 0.6s 0.1s ease both}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .home-glow{position:fixed;top:20%;left:50%;transform:translate(-50%,-50%);width:400px;height:250px;background:radial-gradient(ellipse,rgba(59,130,246,0.1) 0%,transparent 70%);pointer-events:none;z-index:0}
 
-        /* PE FABRIKATION LOGO */
-        .pe-logo-wrap {
-            position: relative;
-            z-index: 1;
-            margin-bottom: 32px;
-            animation: fadeUp 0.5s ease both;
-        }
-        .pe-logo-svg {
-            width: 380px;
-            height: auto;
-            filter: drop-shadow(0 4px 24px rgba(13,71,161,0.6)) drop-shadow(0 0 60px rgba(21,101,192,0.25));
-        }
+        /* PE LOGO */
+        .pe-logo-wrap{position:relative;z-index:1;margin-bottom:20px;animation:fadeUp 0.5s ease both;width:100%;max-width:480px}
+        .pe-logo-svg{width:100%;height:auto;filter:drop-shadow(0 4px 20px rgba(13,71,161,0.5))}
 
+        .home-sub{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--muted);margin-bottom:24px;position:relative;z-index:1;animation:fadeUp 0.6s 0.1s ease both;text-align:center}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
+        /* ── APP GRID ── */
         .apps-grid{
-            display:grid;grid-template-columns:repeat(6,1fr);gap:14px;
-            margin-top:48px;position:relative;z-index:1;
-            padding:0 20px;max-width:900px;width:100%;
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:10px;
+            position:relative;z-index:1;
+            width:100%;max-width:480px;
             animation:fadeUp 0.6s 0.2s ease both;
         }
         .app-card{
-            background:var(--surface);border:1px solid var(--border);border-radius:20px;
-            padding:18px 12px;cursor:pointer;
+            background:var(--surface);border:1px solid var(--border);border-radius:16px;
+            padding:16px 8px 14px;cursor:pointer;
             transition:all 0.2s cubic-bezier(.4,0,.2,1);
-            display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;
-            position:relative;overflow:hidden;z-index:1;
+            display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;
+            position:relative;overflow:hidden;
+            -webkit-tap-highlight-color:transparent;
+            min-height:90px;
         }
-        .app-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.15)}
-        .app-card:active{transform:translateY(-1px) scale(0.98)}
-        .app-card-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-        .app-card-title{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#e2e8f0;line-height:1.3}
-        .app-card-desc{font-size:8px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;line-height:1.4}
+        .app-card:active{transform:scale(0.95);background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.25)}
+        .app-card-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+        .app-card-title{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;color:#e2e8f0;line-height:1.3}
+        .app-card-desc{font-size:7.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.3px;line-height:1.3}
 
+        /* ── STATS BAR ── */
         .stats-bar{
-            display:flex;gap:32px;margin-top:48px;
+            display:flex;gap:0;margin-top:24px;
             position:relative;z-index:1;
             animation:fadeUp 0.6s 0.35s ease both;
+            background:var(--surface);border:1px solid var(--border);border-radius:16px;
+            padding:16px 0;width:100%;max-width:480px;
         }
-        .stat-item{text-align:center}
-        .stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--accent);line-height:1}
-        .stat-lbl{font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-top:2px}
-        .stat-sep{width:1px;background:var(--border);align-self:stretch}
+        .stat-item{text-align:center;flex:1}
+        .stat-val{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--accent);line-height:1}
+        .stat-lbl{font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-top:3px}
+        .stat-sep{width:1px;background:var(--border)}
 
-        /* LOADING / ERROR */
+        /* ── LOADING / ERROR ── */
         #loading-overlay{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.2s}
         #loading-overlay.show{opacity:1;pointer-events:all}
         .spinner{width:36px;height:36px;border:3px solid rgba(59,130,246,0.2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
         @keyframes spin{to{transform:rotate(360deg)}}
         .loading-text{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:3px;color:var(--muted)}
-        #error-screen{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:150}
+        #error-screen{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:150;padding:24px}
         #error-screen.show{display:flex}
-        .error-icon{font-size:48px}
-        .error-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:4px;color:#ef4444}
-        .error-msg{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:2px;text-align:center;max-width:380px;line-height:1.8}
-        .error-btn{margin-top:8px;padding:10px 24px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:12px;color:#ef4444;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all 0.15s}
-        .error-btn:hover{background:rgba(239,68,68,0.25)}
-        .open-btn{display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:10px 24px;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);border-radius:12px;color:var(--accent);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all 0.15s;text-decoration:none}
-        .open-btn:hover{background:rgba(59,130,246,0.25)}
+        .error-icon{font-size:44px}
+        .error-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;color:#ef4444}
+        .error-msg{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;text-align:center;max-width:320px;line-height:1.9}
+        .error-btn{margin-top:4px;padding:12px 24px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:12px;color:#ef4444;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all 0.15s;width:100%;max-width:280px}
+        .open-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 24px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);border-radius:12px;color:var(--accent);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all 0.15s;text-decoration:none;width:100%;max-width:280px}
 
-        /* MOBILE */
-        #mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:var(--surface);border-top:1px solid var(--border);z-index:300;overflow-x:auto;overflow-y:hidden}
-        .mobile-nav-inner{display:flex;height:100%;padding:0 4px;min-width:max-content}
-        .mobile-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 12px;cursor:pointer;border-radius:12px;margin:6px 2px;transition:background 0.15s;min-width:54px}
+        /* ── MOBILE BOTTOM NAV ── */
+        #mobile-nav{
+            display:none;position:fixed;bottom:0;left:0;right:0;
+            height:72px;background:var(--surface);border-top:1px solid var(--border);
+            z-index:300;padding-bottom:env(safe-area-inset-bottom);
+        }
+        .mobile-nav-inner{
+            display:flex;height:100%;overflow-x:auto;overflow-y:hidden;
+            -webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 4px;
+        }
+        .mobile-nav-inner::-webkit-scrollbar{display:none}
+        .mobile-nav-item{
+            display:flex;flex-direction:column;align-items:center;justify-content:center;
+            gap:4px;padding:8px 12px;cursor:pointer;border-radius:12px;margin:6px 3px;
+            transition:background 0.15s;min-width:58px;flex-shrink:0;
+            -webkit-tap-highlight-color:transparent;
+        }
         .mobile-nav-item.active{background:rgba(59,130,246,0.15)}
-        .mobile-nav-item .m-icon{font-size:18px}
-        .mobile-nav-item .m-label{font-size:7px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);white-space:nowrap}
+        .mobile-nav-item .m-icon{font-size:20px;line-height:1}
+        .mobile-nav-item .m-label{font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);white-space:nowrap}
         .mobile-nav-item.active .m-label{color:var(--accent)}
 
+        /* ── RESPONSIVE BREAKPOINTS ── */
         @media(max-width:768px){
             #sidebar{display:none}
             #mobile-nav{display:block}
-            #main{padding-bottom:64px}
-            .apps-grid{grid-template-columns:repeat(3,1fr)}
-            .stats-bar{gap:20px}
+            #main{padding-bottom:72px}
+            #home-screen{padding-top:16px;padding-bottom:100px}
         }
 
+        /* Desktop hover glow still works */
+        @media(hover:hover){
+            .app-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,0.13)}
+        }
+
+        /* Sidebar tooltip (desktop collapsed) */
         #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after{
             content:attr(data-tooltip);position:absolute;left:64px;top:50%;transform:translateY(-50%);
             background:#1e293b;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;
             padding:6px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;
-            opacity:1;z-index:999;border:1px solid rgba(255,255,255,0.1);
+            z-index:999;border:1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Scrollbar styling for home on desktop */
+        #home-screen::-webkit-scrollbar{width:4px}
+        #home-screen::-webkit-scrollbar-track{background:transparent}
+        #home-screen::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
+
+        /* Desktop home centering */
+        @media(min-width:769px){
+            #home-screen{justify-content:center;padding:40px 20px 40px}
         }
     </style>
 </head>
 <body>
 <div id="shell">
+
+    <!-- ══ SIDEBAR (Desktop) ══ -->
     <nav id="sidebar">
         <div class="logo-wrap" onclick="toggleSidebar()">
             <div class="logo-icon">PE</div>
@@ -195,15 +221,14 @@
         <div class="sidebar-toggle" onclick="toggleSidebar()"><span id="toggle-icon">›</span></div>
     </nav>
 
+    <!-- ══ MAIN ══ -->
     <div id="main">
         <div id="topbar">
-            <div class="topbar-breadcrumb">
-                <div class="topbar-app-badge">
-                    <div class="topbar-icon" id="topbar-icon">🏠</div>
-                    <div>
-                        <div class="topbar-name" id="topbar-name">PE-SYSTEM</div>
-                        <div class="topbar-sub" id="topbar-sub">Command Center</div>
-                    </div>
+            <div class="topbar-app-badge">
+                <div class="topbar-icon" id="topbar-icon">🏠</div>
+                <div class="topbar-info">
+                    <div class="topbar-name" id="topbar-name">PE-SYSTEM</div>
+                    <div class="topbar-sub" id="topbar-sub">Command Center</div>
                 </div>
             </div>
             <div class="live-pill"><div class="live-dot"></div><span>LIVE</span></div>
@@ -211,124 +236,122 @@
 
         <div id="iframe-container">
 
-            <!-- ═══ HOME SCREEN ═══ -->
+            <!-- ══ HOME SCREEN ══ -->
             <div id="home-screen">
                 <div class="home-glow"></div>
 
-                <!-- PE FABRIKATION LOGO SVG — nachgebaut ohne weissen Hintergrund -->
+                <!-- PE FABRIKATION LOGO SVG -->
                 <div class="pe-logo-wrap">
                     <svg class="pe-logo-svg" viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg">
                         <defs>
-                            <!-- Clip to outer shape so stripes stay inside -->
                             <clipPath id="logo-clip">
                                 <rect width="560" height="100" rx="2"/>
                             </clipPath>
                         </defs>
-
-                        <!-- Full background: PE blue -->
                         <rect width="560" height="100" fill="#1565c0" rx="2"/>
-
-                        <!-- Top thin stripe (darker, full width) -->
                         <rect x="0" y="0" width="560" height="11" fill="#0d47a1"/>
-                        <!-- Bottom thin stripe -->
                         <rect x="0" y="89" width="560" height="11" fill="#0d47a1"/>
-
-                        <!-- Right side: two diagonal slash pairs — matching logo style -->
-                        <!-- First slash pair (outer) -->
-                        <polygon points="452,11  480,11  560,89  532,89" fill="#0d47a1" clip-path="url(#logo-clip)"/>
-                        <!-- Second slash pair (inner, slightly lighter gap) -->
-                        <polygon points="482,11  508,11  560,72  560,50" fill="#0d47a1" clip-path="url(#logo-clip)"/>
-
-                        <!-- Main text -->
-                        <text
-                            x="28" y="68"
-                            font-family="'DM Sans', Arial Black, sans-serif"
-                            font-size="52"
-                            font-weight="900"
-                            fill="#ffffff"
-                            letter-spacing="-0.5"
-                        >PE Fabrikation</text>
+                        <polygon points="452,11 480,11 560,89 532,89" fill="#0d47a1" clip-path="url(#logo-clip)"/>
+                        <polygon points="482,11 508,11 560,72 560,50" fill="#0d47a1" clip-path="url(#logo-clip)"/>
+                        <text x="28" y="68" font-family="'DM Sans', Arial Black, sans-serif" font-size="52" font-weight="900" fill="#ffffff" letter-spacing="-0.5">PE Fabrikation</text>
                     </svg>
                 </div>
 
-                <div class="home-sub">Command Center &nbsp;·&nbsp; 6 Apps &nbsp;·&nbsp; Alle verbunden</div>
+                <div class="home-sub">Command Center &nbsp;·&nbsp; 6 Apps</div>
 
-                <!-- APP GRID — 6 cards, grid closes properly -->
+                <!-- APP GRID — 3 Spalten auf Mobile, 6 auf Desktop via CSS -->
                 <div class="apps-grid">
                     <div class="app-card" onclick="openApp('ausmesser')">
                         <div class="app-card-icon" style="background:rgba(239,68,68,0.15)">📐</div>
-                        <div><div class="app-card-title">Ausmesser Cloud</div><div class="app-card-desc">PE Fabrikation</div></div>
+                        <div><div class="app-card-title">Ausmesser</div><div class="app-card-desc">Cloud</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-montage')">
                         <div class="app-card-icon" style="background:rgba(16,185,129,0.15)">🔧</div>
-                        <div><div class="app-card-title">Montage Manager</div><div class="app-card-desc">Montage Manager</div></div>
+                        <div><div class="app-card-title">Montage</div><div class="app-card-desc">Manager</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-kalender')">
                         <div class="app-card-icon" style="background:rgba(59,130,246,0.15)">📅</div>
-                        <div><div class="app-card-title">Kalender Manager</div><div class="app-card-desc">Tourendispo Live</div></div>
+                        <div><div class="app-card-title">Kalender</div><div class="app-card-desc">Touren Live</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('stunden')">
                         <div class="app-card-icon" style="background:rgba(139,92,246,0.15)">⏱️</div>
-                        <div><div class="app-card-title">Montage Dispo</div><div class="app-card-desc">Zeiterfassung</div></div>
+                        <div><div class="app-card-title">M-Dispo</div><div class="app-card-desc">Zeiterfassung</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('dispo')">
                         <div class="app-card-icon" style="background:rgba(245,158,11,0.15)">🚛</div>
-                        <div><div class="app-card-title">Excel Dispo</div><div class="app-card-desc">Tourendispo Pro</div></div>
+                        <div><div class="app-card-title">Excel Dispo</div><div class="app-card-desc">Touren Pro</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-fabrikation')">
                         <div class="app-card-icon" style="background:rgba(234,179,8,0.15)">🏭</div>
-                        <div><div class="app-card-title">PE-Fabrikation</div><div class="app-card-desc">Workflow Engine</div></div>
+                        <div><div class="app-card-title">Fabrikation</div><div class="app-card-desc">Workflow</div></div>
                     </div>
-                </div><!-- /.apps-grid -->
+                </div>
 
-                <!-- STATS BAR — inside home-screen -->
+                <!-- STATS BAR -->
                 <div class="stats-bar">
                     <div class="stat-item"><div class="stat-val">6</div><div class="stat-lbl">Apps</div></div>
                     <div class="stat-sep"></div>
                     <div class="stat-item"><div class="stat-val">2</div><div class="stat-lbl">Accounts</div></div>
                     <div class="stat-sep"></div>
-                    <div class="stat-item"><div class="stat-val">∞</div><div class="stat-lbl">Live-Sync</div></div>
+                    <div class="stat-item"><div class="stat-val">∞</div><div class="stat-lbl">Live</div></div>
                     <div class="stat-sep"></div>
                     <div class="stat-item"><div class="stat-val" id="clock-val">—</div><div class="stat-lbl">Uhrzeit</div></div>
                 </div>
             </div><!-- /#home-screen -->
 
-            <!-- ERROR -->
+            <!-- ERROR SCREEN -->
             <div id="error-screen">
                 <div class="error-icon">⚠️</div>
                 <div class="error-title">Zugriff Blockiert</div>
-                <div class="error-msg">Diese App kann nicht direkt eingebettet werden.<br>GitHub Pages blockiert manchmal iFrame-Zugriff.<br>Öffne sie direkt im neuen Tab:</div>
+                <div class="error-msg">Diese App kann nicht direkt eingebettet werden. GitHub Pages blockiert manchmal iFrame-Zugriff. Öffne sie direkt im neuen Tab:</div>
                 <a id="error-link" href="#" target="_blank" class="open-btn">↗ App öffnen</a>
                 <button class="error-btn" onclick="hideError()">← Zurück zur Übersicht</button>
             </div>
 
-            <div id="loading-overlay"><div class="spinner"></div><div class="loading-text">App wird geladen...</div></div>
+            <div id="loading-overlay">
+                <div class="spinner"></div>
+                <div class="loading-text">App wird geladen...</div>
+            </div>
 
         </div><!-- /#iframe-container -->
     </div><!-- /#main -->
 </div><!-- /#shell -->
 
-<!-- MOBILE NAV -->
+<!-- ══ MOBILE BOTTOM NAV ══ -->
 <div id="mobile-nav">
     <div class="mobile-nav-inner">
-        <div class="mobile-nav-item active" data-app="home" onclick="openApp('home')"><span class="m-icon">🏠</span><span class="m-label">Home</span></div>
-        <div class="mobile-nav-item" data-app="ausmesser" onclick="openApp('ausmesser')"><span class="m-icon">📐</span><span class="m-label">Ausmesser</span></div>
-        <div class="mobile-nav-item" data-app="pe-montage" onclick="openApp('pe-montage')"><span class="m-icon">🔧</span><span class="m-label">Montage</span></div>
-        <div class="mobile-nav-item" data-app="pe-kalender" onclick="openApp('pe-kalender')"><span class="m-icon">📅</span><span class="m-label">Kalender</span></div>
-        <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')"><span class="m-icon">⏱️</span><span class="m-label">M-Dispo</span></div>
-        <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')"><span class="m-icon">🚛</span><span class="m-label">Excel</span></div>
-        <div class="mobile-nav-item" data-app="pe-fabrikation" onclick="openApp('pe-fabrikation')"><span class="m-icon">🏭</span><span class="m-label">Fabrik</span></div>
+        <div class="mobile-nav-item active" data-app="home" onclick="openApp('home')">
+            <span class="m-icon">🏠</span><span class="m-label">Home</span>
+        </div>
+        <div class="mobile-nav-item" data-app="ausmesser" onclick="openApp('ausmesser')">
+            <span class="m-icon">📐</span><span class="m-label">Ausmesser</span>
+        </div>
+        <div class="mobile-nav-item" data-app="pe-montage" onclick="openApp('pe-montage')">
+            <span class="m-icon">🔧</span><span class="m-label">Montage</span>
+        </div>
+        <div class="mobile-nav-item" data-app="pe-kalender" onclick="openApp('pe-kalender')">
+            <span class="m-icon">📅</span><span class="m-label">Kalender</span>
+        </div>
+        <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')">
+            <span class="m-icon">⏱️</span><span class="m-label">M-Dispo</span>
+        </div>
+        <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')">
+            <span class="m-icon">🚛</span><span class="m-label">Excel</span>
+        </div>
+        <div class="mobile-nav-item" data-app="pe-fabrikation" onclick="openApp('pe-fabrikation')">
+            <span class="m-icon">🏭</span><span class="m-label">Fabrik</span>
+        </div>
     </div>
 </div>
 
 <script>
 const APPS = {
-    'pe-fabrikation': { label:'PE-Fabrikation',    sub:'Workflow Engine',      icon:'🏭', iconBg:'rgba(234,179,8,0.15)',   url:'https://ajdinslijepcevic1-hue.github.io/-PE-/' },
-    'ausmesser':      { label:'Ausmesser Cloud',   sub:'PE Fabrikation GIS',   icon:'📐', iconBg:'rgba(239,68,68,0.15)',   url:'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/' },
-    'pe-montage':     { label:'Montage Manager / FA', sub:'Montage Manager Pro', icon:'🔧', iconBg:'rgba(16,185,129,0.15)', url:'https://alarmpegza-a11y.github.io/PE-MONTAGE/' },
-    'pe-kalender':    { label:'Kalender Manager',  sub:'Tourendispo Live',     icon:'📅', iconBg:'rgba(59,130,246,0.15)',  url:'https://alarmpegza-a11y.github.io/PE-KALENDER/' },
-    'stunden':        { label:'Montage Dispo',     sub:'Zeiterfassung',        icon:'⏱️', iconBg:'rgba(139,92,246,0.15)',  url:'https://alarmpegza-a11y.github.io/Stunden/' },
-    'dispo':          { label:'Excel Dispo',       sub:'Tourendispo Pro',      icon:'🚛', iconBg:'rgba(245,158,11,0.15)',  url:'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/' },
+    'pe-fabrikation': { label:'PE-Fabrikation',       sub:'Workflow Engine',      icon:'🏭', iconBg:'rgba(234,179,8,0.15)',   url:'https://ajdinslijepcevic1-hue.github.io/-PE-/' },
+    'ausmesser':      { label:'Ausmesser Cloud',      sub:'PE Fabrikation GIS',   icon:'📐', iconBg:'rgba(239,68,68,0.15)',   url:'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/' },
+    'pe-montage':     { label:'Montage Manager / FA', sub:'Montage Manager Pro',  icon:'🔧', iconBg:'rgba(16,185,129,0.15)', url:'https://alarmpegza-a11y.github.io/PE-MONTAGE/' },
+    'pe-kalender':    { label:'Kalender Manager',     sub:'Tourendispo Live',     icon:'📅', iconBg:'rgba(59,130,246,0.15)', url:'https://alarmpegza-a11y.github.io/PE-KALENDER/' },
+    'stunden':        { label:'Montage Dispo',        sub:'Zeiterfassung',        icon:'⏱️', iconBg:'rgba(139,92,246,0.15)', url:'https://alarmpegza-a11y.github.io/Stunden/' },
+    'dispo':          { label:'Excel Dispo',          sub:'Tourendispo Pro',      icon:'🚛', iconBg:'rgba(245,158,11,0.15)', url:'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/' },
 };
 
 let currentApp = 'home';
@@ -344,7 +367,6 @@ function toggleSidebar() {
 function openApp(appId) {
     currentApp = appId;
 
-    // Update nav active states
     document.querySelectorAll('.nav-item').forEach(el =>
         el.classList.toggle('active', el.dataset.app === appId)
     );
@@ -352,7 +374,6 @@ function openApp(appId) {
         el.classList.toggle('active', el.dataset.app === appId)
     );
 
-    // Hide all
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('error-screen').classList.remove('show');
     document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
@@ -418,7 +439,6 @@ function setTopbar(icon, name, sub, iconBg) {
     document.getElementById('topbar-sub').textContent = sub;
 }
 
-// Clock
 function updateClock() {
     const n = new Date();
     document.getElementById('clock-val').textContent =
@@ -427,16 +447,18 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
-// Card hover glow
-document.querySelectorAll('.app-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const x = ((e.clientX - r.left) / r.width) * 100;
-        const y = ((e.clientY - r.top) / r.height) * 100;
-        card.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.04), var(--surface) 60%)`;
+// Card hover glow (desktop only)
+if (window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.app-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const r = card.getBoundingClientRect();
+            const x = ((e.clientX - r.left) / r.width) * 100;
+            const y = ((e.clientY - r.top) / r.height) * 100;
+            card.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.04), var(--surface) 60%)`;
+        });
+        card.addEventListener('mouseleave', () => { card.style.background = ''; });
     });
-    card.addEventListener('mouseleave', () => { card.style.background = ''; });
-});
+}
 </script>
 </body>
 </html>
