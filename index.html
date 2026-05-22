@@ -68,8 +68,22 @@
         .home-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:500px;height:300px;background:radial-gradient(ellipse,rgba(59,130,246,0.12) 0%,transparent 70%);pointer-events:none}
         .home-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);letter-spacing:8px;color:#fff;line-height:1;text-align:center;position:relative;z-index:1;animation:fadeUp 0.6s ease both}
         .home-headline span{color:var(--accent)}
-        .home-sub{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--muted);margin-top:12px;position:relative;z-index:1;animation:fadeUp 0.6s 0.1s ease both}
+        .home-sub{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--muted);margin-top:16px;position:relative;z-index:1;animation:fadeUp 0.6s 0.1s ease both}
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+        /* PE FABRIKATION LOGO */
+        .pe-logo-wrap {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 32px;
+            animation: fadeUp 0.5s ease both;
+        }
+        .pe-logo-svg {
+            width: 380px;
+            height: auto;
+            filter: drop-shadow(0 4px 24px rgba(13,71,161,0.6)) drop-shadow(0 0 60px rgba(21,101,192,0.25));
+        }
+
 
         .apps-grid{
             display:grid;grid-template-columns:repeat(6,1fr);gap:14px;
@@ -200,8 +214,44 @@
             <!-- ═══ HOME SCREEN ═══ -->
             <div id="home-screen">
                 <div class="home-glow"></div>
-                <div class="home-headline">PE<span>—</span>SYSTEM</div>
-                <div class="home-sub">Command Center · 6 Apps · Alle verbunden</div>
+
+                <!-- PE FABRIKATION LOGO SVG — nachgebaut ohne weissen Hintergrund -->
+                <div class="pe-logo-wrap">
+                    <svg class="pe-logo-svg" viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Clip to outer shape so stripes stay inside -->
+                            <clipPath id="logo-clip">
+                                <rect width="560" height="100" rx="2"/>
+                            </clipPath>
+                        </defs>
+
+                        <!-- Full background: PE blue -->
+                        <rect width="560" height="100" fill="#1565c0" rx="2"/>
+
+                        <!-- Top thin stripe (darker, full width) -->
+                        <rect x="0" y="0" width="560" height="11" fill="#0d47a1"/>
+                        <!-- Bottom thin stripe -->
+                        <rect x="0" y="89" width="560" height="11" fill="#0d47a1"/>
+
+                        <!-- Right side: two diagonal slash pairs — matching logo style -->
+                        <!-- First slash pair (outer) -->
+                        <polygon points="452,11  480,11  560,89  532,89" fill="#0d47a1" clip-path="url(#logo-clip)"/>
+                        <!-- Second slash pair (inner, slightly lighter gap) -->
+                        <polygon points="482,11  508,11  560,72  560,50" fill="#0d47a1" clip-path="url(#logo-clip)"/>
+
+                        <!-- Main text -->
+                        <text
+                            x="28" y="68"
+                            font-family="'DM Sans', Arial Black, sans-serif"
+                            font-size="52"
+                            font-weight="900"
+                            fill="#ffffff"
+                            letter-spacing="-0.5"
+                        >PE Fabrikation</text>
+                    </svg>
+                </div>
+
+                <div class="home-sub">Command Center &nbsp;·&nbsp; 6 Apps &nbsp;·&nbsp; Alle verbunden</div>
 
                 <!-- APP GRID — 6 cards, grid closes properly -->
                 <div class="apps-grid">
