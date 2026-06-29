@@ -195,6 +195,11 @@
         }
         .rp-add-btn:hover{background:#2563eb}
         .rp-add-btn:active{transform:scale(0.98)}
+        /* Type toggle */
+        .rp-type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        .rp-type-btn{padding:9px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent}
+        .rp-type-btn.active{background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.4);color:var(--accent)}
+        .rp-type-btn:hover:not(.active){background:rgba(255,255,255,0.08);color:#fff}
 
         /* Reminder list */
         .rp-list-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
@@ -431,7 +436,7 @@
         <div class="rp-header-icon">🔔</div>
         <div class="rp-header-text">
             <div class="rp-title">Erinnerungen</div>
-            <div class="rp-sub">Wöchentliche Erinnerungen</div>
+            <div class="rp-sub">Wöchentlich &amp; Monatlich</div>
         </div>
         <div class="rp-close" onclick="closeReminderPanel()">✕</div>
     </div>
@@ -443,7 +448,13 @@
                 <label>Titel / Aufgabe</label>
                 <input type="text" id="r-title" placeholder="z.B. Gipsplatten bestellen" maxlength="80">
             </div>
-            <div class="rp-row">
+            <!-- Type toggle -->
+            <div class="rp-type-toggle">
+                <button class="rp-type-btn active" id="r-type-weekly" onclick="setReminderType('weekly')">🗓 Wöchentlich</button>
+                <button class="rp-type-btn" id="r-type-monthly" onclick="setReminderType('monthly')">📅 Monatlich</button>
+            </div>
+            <!-- Weekly fields -->
+            <div id="r-weekly-fields" class="rp-row">
                 <div class="rp-field">
                     <label>Wochentag</label>
                     <select id="r-day">
@@ -459,6 +470,17 @@
                 <div class="rp-field">
                     <label>Uhrzeit</label>
                     <input type="time" id="r-time" value="08:00">
+                </div>
+            </div>
+            <!-- Monthly fields -->
+            <div id="r-monthly-fields" class="rp-row" style="display:none">
+                <div class="rp-field">
+                    <label>Tag des Monats</label>
+                    <select id="r-monthday"></select>
+                </div>
+                <div class="rp-field">
+                    <label>Uhrzeit</label>
+                    <input type="time" id="r-mtime" value="08:00">
                 </div>
             </div>
             <button class="rp-add-btn" onclick="addReminder()">Erinnerung speichern</button>
@@ -618,15 +640,48 @@ function markFired(r) {
     } catch {}
 }
 
+// ── TYPE TOGGLE ──
+let currentAddType = 'weekly';
+function setReminderType(type) {
+    currentAddType = type;
+    document.getElementById('r-type-weekly').classList.toggle('active', type === 'weekly');
+    document.getElementById('r-type-monthly').classList.toggle('active', type === 'monthly');
+    document.getElementById('r-weekly-fields').style.display = type === 'weekly' ? '' : 'none';
+    document.getElementById('r-monthly-fields').style.display = type === 'monthly' ? '' : 'none';
+}
+// Populate month-day select (1–31)
+function initMonthdaySelect(selId, selected) {
+    const sel = document.getElementById(selId);
+    if (!sel) return;
+    sel.innerHTML = '';
+    for (let d = 1; d <= 31; d++) {
+        const o = document.createElement('option');
+        o.value = d; o.textContent = d + '. Tag';
+        if (selected && d === selected) o.selected = true;
+        sel.appendChild(o);
+    }
+    if (!selected) sel.value = 22; // sensible default
+}
+
 function addReminder() {
     const title = document.getElementById('r-title').value.trim();
-    const day = parseInt(document.getElementById('r-day').value);
-    const time = document.getElementById('r-time').value;
     if (!title) { document.getElementById('r-title').focus(); return; }
-    if (!time) { return; }
-    const [h, m] = time.split(':').map(Number);
     const id = Date.now().toString(36);
-    reminders.push({ id, title, day, hour: h, minute: m });
+    let reminder;
+    if (currentAddType === 'weekly') {
+        const day = parseInt(document.getElementById('r-day').value);
+        const time = document.getElementById('r-time').value;
+        if (!time) return;
+        const [h, m] = time.split(':').map(Number);
+        reminder = { id, type: 'weekly', title, day, hour: h, minute: m };
+    } else {
+        const monthday = parseInt(document.getElementById('r-monthday').value);
+        const time = document.getElementById('r-mtime').value;
+        if (!time) return;
+        const [h, m] = time.split(':').map(Number);
+        reminder = { id, type: 'monthly', title, monthday, hour: h, minute: m };
+    }
+    reminders.push(reminder);
     saveReminders();
     document.getElementById('r-title').value = '';
     renderReminderList();
@@ -652,37 +707,63 @@ function renderReminderList() {
     empty.style.display = 'none';
 
     reminders.forEach(r => {
+        const isMonthly = r.type === 'monthly';
         const timeStr = String(r.hour).padStart(2,'0') + ':' + String(r.minute).padStart(2,'0');
+        const metaStr = isMonthly
+            ? r.monthday + '. des Monats &nbsp;·&nbsp; ' + timeStr + ' Uhr &nbsp;·&nbsp; Monatlich'
+            : DAY_NAMES[r.day] + ' &nbsp;·&nbsp; ' + timeStr + ' Uhr &nbsp;·&nbsp; Wöchentlich';
+        const typeIcon = isMonthly ? '📅' : '🔔';
+        const typeBadge = isMonthly
+            ? '<span style="font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px;background:rgba(139,92,246,0.2);color:#a78bfa;border-radius:6px;padding:2px 6px;margin-left:6px">Monatlich</span>'
+            : '<span style="font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:1px;background:rgba(59,130,246,0.15);color:#60a5fa;border-radius:6px;padding:2px 6px;margin-left:6px">Wöchentlich</span>';
+
+        // Build edit form fields depending on type
+        const dayOpts = DAY_NAMES.map((n,i) =>
+            `<option value="${i}" ${(!isMonthly && r.day===i)?'selected':''}>${n}</option>`
+        ).join('');
+        let editFields;
+        if (isMonthly) {
+            let dayOpsM = '';
+            for (let d=1;d<=31;d++) dayOpsM += `<option value="${d}" ${r.monthday===d?'selected':''}>${d}. Tag</option>`;
+            editFields = `
+                <div class="reminder-edit-row">
+                    <div>
+                        <label class="reminder-edit-label">Tag des Monats</label>
+                        <select id="redit-monthday-${r.id}">${dayOpsM}</select>
+                    </div>
+                    <div>
+                        <label class="reminder-edit-label">Uhrzeit</label>
+                        <input type="time" id="redit-time-${r.id}" value="${timeStr}">
+                    </div>
+                </div>`;
+        } else {
+            editFields = `
+                <div class="reminder-edit-row">
+                    <div>
+                        <label class="reminder-edit-label">Wochentag</label>
+                        <select id="redit-day-${r.id}">${dayOpts}</select>
+                    </div>
+                    <div>
+                        <label class="reminder-edit-label">Uhrzeit</label>
+                        <input type="time" id="redit-time-${r.id}" value="${timeStr}">
+                    </div>
+                </div>`;
+        }
+
         const div = document.createElement('div');
         div.className = 'reminder-item';
         div.id = 'ri-' + r.id;
-
-        // Build day options
-        const dayOpts = DAY_NAMES.map((n,i) =>
-            `<option value="${i}" ${r.day===i?'selected':''}>${n}</option>`
-        ).join('');
-
         div.innerHTML = `
-            <div class="reminder-item-icon">🔔</div>
+            <div class="reminder-item-icon">${typeIcon}</div>
             <div class="reminder-item-body" style="flex:1;min-width:0">
-                <div class="reminder-item-name" id="rname-${r.id}">${escHtml(r.title)}</div>
-                <div class="reminder-item-meta" id="rmeta-${r.id}">${DAY_NAMES[r.day]} &nbsp;·&nbsp; ${timeStr} Uhr &nbsp;·&nbsp; Wöchentlich</div>
-                <!-- Inline edit form -->
+                <div class="reminder-item-name" id="rname-${r.id}">${escHtml(r.title)}${typeBadge}</div>
+                <div class="reminder-item-meta" id="rmeta-${r.id}">${metaStr}</div>
                 <div class="reminder-edit-form" id="redit-${r.id}">
                     <div>
                         <label class="reminder-edit-label">Titel</label>
                         <input type="text" id="redit-title-${r.id}" value="${escHtml(r.title)}" maxlength="80">
                     </div>
-                    <div class="reminder-edit-row">
-                        <div>
-                            <label class="reminder-edit-label">Wochentag</label>
-                            <select id="redit-day-${r.id}">${dayOpts}</select>
-                        </div>
-                        <div>
-                            <label class="reminder-edit-label">Uhrzeit</label>
-                            <input type="time" id="redit-time-${r.id}" value="${timeStr}">
-                        </div>
-                    </div>
+                    ${editFields}
                     <div class="reminder-edit-actions">
                         <button class="reminder-edit-save" onclick="saveEdit('${r.id}')">✓ Speichern</button>
                         <button class="reminder-edit-cancel" onclick="cancelEdit('${r.id}')">Abbrechen</button>
@@ -735,15 +816,21 @@ function cancelEdit(id) {
 
 function saveEdit(id) {
     const title = document.getElementById('redit-title-' + id).value.trim();
-    const day = parseInt(document.getElementById('redit-day-' + id).value);
-    const time = document.getElementById('redit-time-' + id).value;
     if (!title) { document.getElementById('redit-title-' + id).focus(); return; }
+    const time = document.getElementById('redit-time-' + id).value;
     const [h, m] = time.split(':').map(Number);
     const idx = reminders.findIndex(x => x.id === id);
     if (idx === -1) return;
-    reminders[idx] = { ...reminders[idx], title, day, hour: h, minute: m };
+    const r = reminders[idx];
+    if (r.type === 'monthly') {
+        const monthday = parseInt(document.getElementById('redit-monthday-' + id).value);
+        reminders[idx] = { ...r, title, monthday, hour: h, minute: m };
+    } else {
+        const day = parseInt(document.getElementById('redit-day-' + id).value);
+        reminders[idx] = { ...r, title, day, hour: h, minute: m };
+    }
     saveReminders();
-    renderReminderList(); // re-render all
+    renderReminderList();
 }
 
 function escHtml(str) {
@@ -782,7 +869,10 @@ function closeReminderPanel() {
 function showAlert(r) {
     const timeStr = String(r.hour).padStart(2,'0') + ':' + String(r.minute).padStart(2,'0');
     document.getElementById('alert-title').textContent = r.title;
-    document.getElementById('alert-time').textContent = DAY_NAMES[r.day] + ' · ' + timeStr + ' Uhr';
+    const when = r.type === 'monthly'
+        ? r.monthday + '. des Monats · ' + timeStr + ' Uhr'
+        : DAY_NAMES[r.day] + ' · ' + timeStr + ' Uhr';
+    document.getElementById('alert-time').textContent = when;
     const qEl = document.getElementById('alert-queue');
     if (alertQueue.length > 0) {
         qEl.textContent = '+ ' + alertQueue.length + ' weitere Erinnerung' + (alertQueue.length > 1 ? 'en' : '') + ' warten';
@@ -804,20 +894,26 @@ function dismissAlert() {
 // ── CHECK LOOP: runs every 30 seconds ──
 function checkReminders() {
     const now = new Date();
-    const currentDay = now.getDay();
+    const currentDay = now.getDay();       // 0–6
+    const currentDate = now.getDate();     // 1–31
     const currentH = now.getHours();
     const currentM = now.getMinutes();
 
     reminders.forEach(r => {
-        if (r.day !== currentDay) return;
+        // Time must match
         if (r.hour !== currentH) return;
         if (r.minute !== currentM) return;
+        // Type-specific day check
+        if (r.type === 'monthly') {
+            if (r.monthday !== currentDate) return;
+        } else {
+            // Legacy weekly (type may be undefined for old saved reminders)
+            if (r.day !== currentDay) return;
+        }
         if (hasFired(r)) return;
         markFired(r);
-        // If alert is already visible, queue it
         if (document.getElementById('reminder-alert').classList.contains('show')) {
             alertQueue.push(r);
-            // Update queue label
             const qEl = document.getElementById('alert-queue');
             qEl.textContent = '+ ' + alertQueue.length + ' weitere Erinnerung' + (alertQueue.length > 1 ? 'en' : '') + ' warten';
             qEl.classList.add('show');
@@ -838,8 +934,9 @@ function openReminderPanel() {
 loadReminders();
 renderReminderList();
 updateBadges();
+initMonthdaySelect('r-monthday', 22);
 checkReminders();
-setInterval(checkReminders, 30000); // check every 30 seconds
+setInterval(checkReminders, 30000);
 </script>
 </body>
 </html>
