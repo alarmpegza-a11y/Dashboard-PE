@@ -7,767 +7,500 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg:        #07090f;
-            --surface:   #0d1117;
-            --border:    rgba(255,255,255,0.07);
-            --text:      #f0f4ff;
-            --muted:     #4a5568;
-            --accent:    #3b82f6;
-            --glow:      rgba(59,130,246,0.18);
+            --bg:#07090f; --surface:#0d1117; --border:rgba(255,255,255,0.07);
+            --text:#f0f4ff; --muted:#4a5568; --accent:#3b82f6; --glow:rgba(59,130,246,0.18);
         }
-
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            height: 100vh;
-            overflow: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        #shell {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-        }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
+        #shell{display:flex;height:100vh;width:100vw}
 
         /* ── SIDEBAR ── */
-        #sidebar {
-            width: 72px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px 0 20px;
-            gap: 0;
-            z-index: 100;
-            flex-shrink: 0;
-            transition: width 0.28s cubic-bezier(.4,0,.2,1);
-            overflow: hidden;
-        }
-
-        #sidebar.expanded { width: 220px; }
-
-        .logo-wrap {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 16px;
-            margin-bottom: 28px;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 18px;
-            color: #fff;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 16px rgba(59,130,246,0.35);
-        }
-        .logo-text {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 22px;
-            letter-spacing: 3px;
-            color: #fff;
-            opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-        }
-        #sidebar.expanded .logo-text { opacity: 1; }
-
-        .nav-item {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: background 0.15s;
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-            border-left: 3px solid transparent;
-            user-select: none;
-        }
-        .nav-item:hover { background: rgba(255,255,255,0.05); }
-        .nav-item.active {
-            background: rgba(59,130,246,0.12);
-            border-left-color: var(--accent);
-        }
-        .nav-item.active .nav-icon-wrap { box-shadow: 0 0 0 1px rgba(59,130,246,0.4); }
-
-        .nav-icon-wrap {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            border-radius: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: transform 0.15s;
-        }
-        .nav-item:hover .nav-icon-wrap { transform: scale(1.08); }
-
-        .nav-label { flex: 1; overflow: hidden; }
-        .nav-label-title {
-            font-size: 11px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e2e8f0;
-            opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-        }
-        .nav-label-sub {
-            font-size: 9px;
-            color: var(--muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-            margin-top: 1px;
-        }
-        #sidebar.expanded .nav-label-title,
-        #sidebar.expanded .nav-label-sub { opacity: 1; }
-
-        .sidebar-toggle {
-            margin-top: auto;
-            width: 40px;
-            height: 40px;
-            border-radius: 11px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--muted);
-            font-size: 16px;
-            transition: all 0.15s;
-            flex-shrink: 0;
-        }
-        .sidebar-toggle:hover { background: rgba(255,255,255,0.1); color: #fff; }
-
-        .nav-divider {
-            width: calc(100% - 24px);
-            height: 1px;
-            background: var(--border);
-            margin: 8px 0;
-            flex-shrink: 0;
-        }
+        #sidebar{width:72px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:16px 0 20px;z-index:100;flex-shrink:0;transition:width 0.28s cubic-bezier(.4,0,.2,1);overflow:hidden}
+        #sidebar.expanded{width:220px}
+        .logo-wrap{width:100%;display:flex;align-items:center;gap:12px;padding:0 16px;margin-bottom:28px;overflow:hidden;white-space:nowrap;cursor:pointer}
+        .logo-icon{width:40px;height:40px;flex-shrink:0;background:linear-gradient(135deg,#1d4ed8 0%,#3b82f6 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;letter-spacing:1px;box-shadow:0 4px 16px rgba(59,130,246,0.35)}
+        .logo-text{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#fff;opacity:0;transition:opacity 0.2s;white-space:nowrap}
+        #sidebar.expanded .logo-text{opacity:1}
+        .nav-item{width:100%;display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;transition:background 0.15s;position:relative;overflow:hidden;white-space:nowrap;border-left:3px solid transparent;user-select:none}
+        .nav-item:hover{background:rgba(255,255,255,0.05)}
+        .nav-item.active{background:rgba(59,130,246,0.12);border-left-color:var(--accent)}
+        .nav-icon-wrap{width:40px;height:40px;flex-shrink:0;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:transform 0.15s;position:relative}
+        .nav-item:hover .nav-icon-wrap{transform:scale(1.08)}
+        .nav-label{flex:1;overflow:hidden}
+        .nav-label-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#e2e8f0;opacity:0;transition:opacity 0.2s;white-space:nowrap}
+        .nav-label-sub{font-size:9px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;opacity:0;transition:opacity 0.2s;white-space:nowrap;margin-top:1px}
+        #sidebar.expanded .nav-label-title,#sidebar.expanded .nav-label-sub{opacity:1}
+        .sidebar-toggle{margin-top:auto;width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.05);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:16px;transition:all 0.15s;flex-shrink:0}
+        .sidebar-toggle:hover{background:rgba(255,255,255,0.1);color:#fff}
+        .nav-divider{width:calc(100% - 24px);height:1px;background:var(--border);margin:8px 0;flex-shrink:0}
+        /* Reminder badge on bell icon */
+        .reminder-badge{position:absolute;top:6px;right:6px;min-width:16px;height:16px;background:#ef4444;border-radius:8px;font-size:9px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;padding:0 3px;display:none}
+        .reminder-badge.show{display:flex}
 
         /* ── MAIN ── */
-        #main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
+        #main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;min-width:0}
 
-        #topbar {
-            height: 52px;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 12px;
-            flex-shrink: 0;
-            z-index: 50;
-        }
+        /* ── TOPBAR ── */
+        #topbar{height:52px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;z-index:50}
+        .topbar-app-badge{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+        .topbar-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+        .topbar-info{min-width:0;overflow:hidden}
+        .topbar-name{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.2px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .topbar-sub{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .live-pill{display:flex;align-items:center;gap:5px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:20px;padding:3px 9px;font-size:8px;font-weight:900;color:#10b981;text-transform:uppercase;letter-spacing:1px;flex-shrink:0}
+        .live-dot{width:5px;height:5px;border-radius:50%;background:#10b981;animation:pulse 1.5s infinite}
+        @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.7)}50%{box-shadow:0 0 6px 3px rgba(16,185,129,0.3)}}
+        /* Topbar bell button */
+        .topbar-bell{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;position:relative;transition:background 0.15s;-webkit-tap-highlight-color:transparent}
+        .topbar-bell:hover{background:rgba(255,255,255,0.1)}
+        .topbar-bell-badge{position:absolute;top:4px;right:4px;min-width:14px;height:14px;background:#ef4444;border-radius:7px;font-size:8px;font-weight:900;color:#fff;display:none;align-items:center;justify-content:center;padding:0 2px}
+        .topbar-bell-badge.show{display:flex}
 
-        .topbar-breadcrumb { display: flex; align-items: center; gap: 8px; flex: 1; }
-        .topbar-app-badge { display: flex; align-items: center; gap: 8px; }
-        .topbar-icon {
-            width: 28px; height: 28px;
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 14px;
-        }
-        .topbar-name {
-            font-size: 13px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 1.5px; color: #fff;
-        }
-        .topbar-sub {
-            font-size: 9px; color: var(--muted);
-            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .live-pill {
-            display: flex; align-items: center; gap: 5px;
-            background: rgba(16,185,129,0.1);
-            border: 1px solid rgba(16,185,129,0.25);
-            border-radius: 20px; padding: 3px 10px;
-            font-size: 8px; font-weight: 900;
-            color: #10b981; text-transform: uppercase; letter-spacing: 1px;
-            margin-left: auto;
-        }
-        .live-dot {
-            width: 5px; height: 5px; border-radius: 50%;
-            background: #10b981; animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.7); }
-            50% { box-shadow: 0 0 6px 3px rgba(16,185,129,0.3); }
-        }
-
-        /* ── IFRAME AREA ── */
-        #iframe-container {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-frame {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
-            background: #fff;
-        }
-        .app-frame.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
+        /* ── IFRAME ── */
+        #iframe-container{flex:1;position:relative;overflow:hidden}
+        .app-frame{position:absolute;inset:0;width:100%;height:100%;border:none;opacity:0;pointer-events:none;transition:opacity 0.25s ease;background:#fff}
+        .app-frame.visible{opacity:1;pointer-events:all}
 
         /* ── HOME SCREEN ── */
-        #home-screen {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg);
-            overflow: hidden;
+        #home-screen{
+            position:absolute;inset:0;
+            display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+            background:var(--bg);overflow-y:auto;overflow-x:hidden;
+            padding:24px 16px 120px;
         }
+        #home-screen::before{
+            content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+            background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);
+            background-size:48px 48px;
+            mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 40%,transparent 100%);
+        }
+        .home-glow{position:fixed;top:20%;left:50%;transform:translate(-50%,-50%);width:400px;height:250px;background:radial-gradient(ellipse,rgba(59,130,246,0.1) 0%,transparent 70%);pointer-events:none;z-index:0}
+        .pe-logo-wrap{position:relative;z-index:1;margin-bottom:20px;animation:fadeUp 0.5s ease both;width:100%;max-width:480px}
+        .pe-logo-svg{width:100%;height:auto;filter:drop-shadow(0 4px 20px rgba(13,71,161,0.5))}
+        .home-sub{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--muted);margin-bottom:24px;position:relative;z-index:1;animation:fadeUp 0.6s 0.1s ease both;text-align:center}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        .apps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;position:relative;z-index:1;width:100%;max-width:480px;animation:fadeUp 0.6s 0.2s ease both}
+        .app-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 8px 14px;cursor:pointer;transition:all 0.2s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;min-height:90px}
+        .app-card:active{transform:scale(0.95);background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.25)}
+        .app-card-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+        .app-card-title{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:0.8px;color:#e2e8f0;line-height:1.3}
+        .app-card-desc{font-size:7.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.3px;line-height:1.3}
+        .stats-bar{display:flex;gap:0;margin-top:24px;position:relative;z-index:1;animation:fadeUp 0.6s 0.35s ease both;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 0;width:100%;max-width:480px}
+        .stat-item{text-align:center;flex:1}
+        .stat-val{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--accent);line-height:1}
+        .stat-lbl{font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-top:3px}
+        .stat-sep{width:1px;background:var(--border)}
 
-        #home-screen::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px);
-            background-size: 48px 48px;
-            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
-        }
+        /* ── LOADING / ERROR ── */
+        #loading-overlay{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:200;opacity:0;pointer-events:none;transition:opacity 0.2s}
+        #loading-overlay.show{opacity:1;pointer-events:all}
+        .spinner{width:36px;height:36px;border:3px solid rgba(59,130,246,0.2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .loading-text{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:3px;color:var(--muted)}
+        #error-screen{position:absolute;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:150;padding:24px}
+        #error-screen.show{display:flex}
+        .error-icon{font-size:44px}
+        .error-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;color:#ef4444}
+        .error-msg{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;text-align:center;max-width:320px;line-height:1.9}
+        .error-btn{margin-top:4px;padding:12px 24px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:12px;color:#ef4444;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all 0.15s;width:100%;max-width:280px}
+        .open-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 24px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);border-radius:12px;color:var(--accent);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:all 0.15s;text-decoration:none;width:100%;max-width:280px}
 
-        .home-glow {
-            position: absolute;
-            top: 30%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px; height: 300px;
-            background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
-            pointer-events: none;
-        }
+        /* ════════════════════════════════════════
+           ERINNERUNGS-SYSTEM
+        ════════════════════════════════════════ */
 
-        .home-headline {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(48px, 8vw, 96px);
-            letter-spacing: 8px;
-            color: #fff;
-            line-height: 1;
-            text-align: center;
-            position: relative;
-            animation: fadeUp 0.6s ease both;
+        /* Alert — erscheint über allem, muss weggeklickt werden */
+        #reminder-alert{
+            position:fixed;inset:0;z-index:9999;
+            display:none;align-items:center;justify-content:center;
+            padding:20px;
+            background:rgba(0,0,0,0.75);
+            backdrop-filter:blur(4px);
+            -webkit-backdrop-filter:blur(4px);
         }
-        .home-headline span { color: var(--accent); }
-        .home-sub {
-            font-size: 11px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 4px;
-            color: var(--muted); margin-top: 12px;
-            position: relative;
-            animation: fadeUp 0.6s 0.1s ease both;
+        #reminder-alert.show{display:flex;animation:alertFadeIn 0.3s ease}
+        @keyframes alertFadeIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+        .alert-box{
+            background:#0d1117;border:2px solid #f59e0b;border-radius:24px;
+            padding:32px 28px;max-width:420px;width:100%;
+            box-shadow:0 0 60px rgba(245,158,11,0.25);
+            position:relative;
         }
+        .alert-pulse-ring{
+            position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;
+            border-radius:26px;border:2px solid #f59e0b;
+            animation:ringPulse 2s ease-in-out infinite;
+            pointer-events:none;
+        }
+        @keyframes ringPulse{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.6;transform:scale(1.01)}}
+        .alert-icon-wrap{display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+        .alert-bell{font-size:48px;animation:bellRing 0.6s ease-in-out infinite alternate}
+        @keyframes bellRing{from{transform:rotate(-12deg)}to{transform:rotate(12deg)}}
+        .alert-label{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:3px;color:#f59e0b;text-align:center;margin-bottom:8px}
+        .alert-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:3px;color:#fff;text-align:center;margin-bottom:8px;line-height:1.1}
+        .alert-time{font-size:10px;font-weight:700;color:var(--muted);text-align:center;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
+        .alert-queue{font-size:11px;color:#f59e0b;text-align:center;margin-bottom:16px;font-weight:700;display:none}
+        .alert-queue.show{display:block}
+        .alert-dismiss-btn{
+            width:100%;padding:16px;
+            background:#f59e0b;border:none;border-radius:14px;
+            color:#000;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:2px;
+            cursor:pointer;transition:all 0.15s;
+            -webkit-tap-highlight-color:transparent;
+        }
+        .alert-dismiss-btn:hover{background:#fbbf24}
+        .alert-dismiss-btn:active{transform:scale(0.98)}
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Erinnerungs-Panel (Overlay) */
+        #reminder-panel{
+            position:fixed;top:0;right:0;bottom:0;width:360px;max-width:100vw;
+            background:#0d1117;border-left:1px solid var(--border);
+            z-index:8000;transform:translateX(100%);
+            transition:transform 0.32s cubic-bezier(.4,0,.2,1);
+            display:flex;flex-direction:column;
+            box-shadow:-20px 0 60px rgba(0,0,0,0.6);
         }
+        #reminder-panel.open{transform:translateX(0)}
+        #reminder-backdrop{position:fixed;inset:0;z-index:7999;background:rgba(0,0,0,0.5);display:none;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+        #reminder-backdrop.show{display:block}
+        .rp-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
+        .rp-header-icon{font-size:24px}
+        .rp-header-text{flex:1}
+        .rp-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#fff}
+        .rp-sub{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+        .rp-close{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted);-webkit-tap-highlight-color:transparent;transition:background 0.15s}
+        .rp-close:hover{background:rgba(255,255,255,0.1);color:#fff}
+        .rp-body{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:20px}
+        .rp-body::-webkit-scrollbar{width:3px}
+        .rp-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
 
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 16px;
-            margin-top: 52px;
-            position: relative;
-            padding: 0 20px;
-            max-width: 900px;
-            width: 100%;
-            animation: fadeUp 0.6s 0.2s ease both;
+        /* New reminder form */
+        .rp-form{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+        .rp-form-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px}
+        .rp-field label{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:6px}
+        .rp-field input,.rp-field select{
+            width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+            border-radius:10px;padding:10px 12px;color:#fff;font-family:'DM Sans',sans-serif;
+            font-size:13px;font-weight:600;outline:none;transition:border 0.15s;
+            -webkit-appearance:none;
         }
+        .rp-field select option{background:#1e293b;color:#fff}
+        .rp-field input:focus,.rp-field select:focus{border-color:rgba(59,130,246,0.5)}
+        .rp-field input::placeholder{color:var(--muted)}
+        .rp-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .rp-add-btn{
+            width:100%;padding:12px;background:var(--accent);border:none;border-radius:12px;
+            color:#fff;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;
+            cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;
+        }
+        .rp-add-btn:hover{background:#2563eb}
+        .rp-add-btn:active{transform:scale(0.98)}
 
-        .app-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px 16px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(.4,0,.2,1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+        /* Reminder list */
+        .rp-list-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+        .rp-list{display:flex;flex-direction:column;gap:8px}
+        .rp-empty{font-size:11px;color:var(--muted);text-align:center;padding:24px 0;font-weight:600}
+        .reminder-item{
+            background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;
+            padding:14px;display:flex;align-items:flex-start;gap:12px;
         }
-        .app-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255,255,255,0.15);
+        .reminder-item-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+        .reminder-item-body{flex:1;min-width:0}
+        .reminder-item-name{font-size:13px;font-weight:700;color:#e2e8f0;margin-bottom:4px;line-height:1.3}
+        .reminder-item-meta{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+        .reminder-item-del{width:30px;height:30px;border-radius:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:background 0.15s;-webkit-tap-highlight-color:transparent}
+        .reminder-item-del:hover{background:rgba(239,68,68,0.25)}
+        .reminder-item-edit{width:30px;height:30px;border-radius:8px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:background 0.15s;-webkit-tap-highlight-color:transparent}
+        .reminder-item-edit:hover{background:rgba(59,130,246,0.25)}
+        .reminder-item-actions{display:flex;gap:6px;flex-shrink:0}
+        /* Inline edit form inside a list item */
+        .reminder-edit-form{display:none;flex-direction:column;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+        .reminder-edit-form.open{display:flex}
+        .reminder-edit-form input,.reminder-edit-form select{
+            width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+            border-radius:10px;padding:9px 12px;color:#fff;font-family:'DM Sans',sans-serif;
+            font-size:13px;font-weight:600;outline:none;transition:border 0.15s;-webkit-appearance:none;
         }
-        .app-card:active { transform: translateY(-1px) scale(0.98); }
-
-        .app-card-icon {
-            width: 52px; height: 52px;
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px; flex-shrink: 0;
-        }
-        .app-card-title {
-            font-size: 10px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 1px;
-            color: #e2e8f0; line-height: 1.3;
-        }
-        .app-card-desc {
-            font-size: 8.5px; color: var(--muted);
-            font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.5px; line-height: 1.4;
-        }
-
-        .stats-bar {
-            display: flex;
-            gap: 32px;
-            margin-top: 52px;
-            position: relative;
-            animation: fadeUp 0.6s 0.35s ease both;
-        }
-        .stat-item { text-align: center; }
-        .stat-val {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px; letter-spacing: 2px;
-            color: var(--accent); line-height: 1;
-        }
-        .stat-lbl {
-            font-size: 8px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 2px;
-            color: var(--muted); margin-top: 2px;
-        }
-        .stat-sep { width: 1px; background: var(--border); align-self: stretch; }
-
-        /* ── LOADING ── */
-        #loading-overlay {
-            position: absolute;
-            inset: 0;
-            background: var(--bg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            z-index: 200;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-        }
-        #loading-overlay.show { opacity: 1; pointer-events: all; }
-        .spinner {
-            width: 36px; height: 36px;
-            border: 3px solid rgba(59,130,246,0.2);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-text {
-            font-size: 10px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 3px; color: var(--muted);
-        }
-
-        /* ── ERROR SCREEN ── */
-        #error-screen {
-            position: absolute;
-            inset: 0;
-            background: var(--bg);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            z-index: 150;
-        }
-        #error-screen.show { display: flex; }
-        .error-icon { font-size: 48px; }
-        .error-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px; letter-spacing: 4px;
-            color: #ef4444;
-        }
-        .error-msg {
-            font-size: 11px; color: var(--muted);
-            font-weight: 600; text-transform: uppercase;
-            letter-spacing: 2px; text-align: center;
-            max-width: 380px; line-height: 1.8;
-        }
-        .error-btn {
-            margin-top: 8px;
-            padding: 10px 24px;
-            background: rgba(239,68,68,0.15);
-            border: 1px solid rgba(239,68,68,0.3);
-            border-radius: 12px;
-            color: #ef4444;
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .error-btn:hover { background: rgba(239,68,68,0.25); }
-
-        /* Open in new tab button */
-        .open-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 4px;
-            padding: 10px 24px;
-            background: rgba(59,130,246,0.15);
-            border: 1px solid rgba(59,130,246,0.3);
-            border-radius: 12px;
-            color: var(--accent);
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.15s;
-            text-decoration: none;
-        }
-        .open-btn:hover { background: rgba(59,130,246,0.25); }
+        .reminder-edit-form select option{background:#1e293b;color:#fff}
+        .reminder-edit-form input:focus,.reminder-edit-form select:focus{border-color:rgba(59,130,246,0.5)}
+        .reminder-edit-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+        .reminder-edit-label{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:5px;display:block}
+        .reminder-edit-actions{display:flex;gap:8px}
+        .reminder-edit-save{flex:1;padding:9px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:background 0.15s;-webkit-tap-highlight-color:transparent}
+        .reminder-edit-save:hover{background:#2563eb}
+        .reminder-edit-cancel{padding:9px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:background 0.15s;-webkit-tap-highlight-color:transparent}
+        .reminder-edit-cancel:hover{background:rgba(255,255,255,0.1);color:#fff}
+        .reminder-item.editing{border-color:rgba(59,130,246,0.35);background:rgba(59,130,246,0.05)}
 
         /* ── MOBILE BOTTOM NAV ── */
-        #mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: 64px;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            z-index: 300;
-            overflow-x: auto; overflow-y: hidden;
-        }
-        .mobile-nav-inner {
-            display: flex;
-            height: 100%;
-            padding: 0 4px;
-            min-width: max-content;
-        }
-        .mobile-nav-item {
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 3px; padding: 8px 14px;
-            cursor: pointer; border-radius: 12px;
-            margin: 6px 2px; transition: background 0.15s;
-            min-width: 60px;
-        }
-        .mobile-nav-item.active { background: rgba(59,130,246,0.15); }
-        .mobile-nav-item .m-icon { font-size: 20px; }
-        .mobile-nav-item .m-label {
-            font-size: 7px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            color: var(--muted); white-space: nowrap;
-        }
-        .mobile-nav-item.active .m-label { color: var(--accent); }
+        #mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:72px;background:var(--surface);border-top:1px solid var(--border);z-index:300;padding-bottom:env(safe-area-inset-bottom)}
+        .mobile-nav-inner{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 4px}
+        .mobile-nav-inner::-webkit-scrollbar{display:none}
+        .mobile-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 12px;cursor:pointer;border-radius:12px;margin:6px 3px;transition:background 0.15s;min-width:58px;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+        .mobile-nav-item.active{background:rgba(59,130,246,0.15)}
+        .mobile-nav-item .m-icon{font-size:20px;line-height:1}
+        .mobile-nav-item .m-label{font-size:7.5px;font-weight:900;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);white-space:nowrap}
+        .mobile-nav-item.active .m-label{color:var(--accent)}
+        /* Bell in mobile nav */
+        .mobile-nav-item.bell-item{position:relative}
+        .mobile-bell-badge{position:absolute;top:8px;right:8px;min-width:14px;height:14px;background:#ef4444;border-radius:7px;font-size:8px;font-weight:900;color:#fff;display:none;align-items:center;justify-content:center;padding:0 2px}
+        .mobile-bell-badge.show{display:flex}
 
-        @media (max-width: 768px) {
-            #sidebar { display: none; }
-            #mobile-nav { display: block; }
-            #main { padding-bottom: 64px; }
-            .apps-grid { grid-template-columns: repeat(3, 1fr); }
-            .stats-bar { gap: 20px; }
+        /* ── RESPONSIVE ── */
+        @media(max-width:768px){
+            #sidebar{display:none}
+            #mobile-nav{display:block}
+            #main{padding-bottom:72px}
+            #home-screen{padding-top:16px;padding-bottom:100px}
+            #reminder-panel{width:100vw;top:0;border-left:none;border-top:1px solid var(--border)}
         }
-
-        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            left: 64px; top: 50%;
-            transform: translateY(-50%);
-            background: #1e293b; color: #fff;
-            font-size: 10px; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 1px;
-            padding: 6px 10px; border-radius: 8px;
-            white-space: nowrap; pointer-events: none;
-            opacity: 0; transition: opacity 0.15s;
-            z-index: 999;
-            border: 1px solid rgba(255,255,255,0.1);
+        @media(hover:hover){
+            .app-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,0.13)}
         }
-        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after { opacity: 1; }
+        @media(min-width:769px){
+            #home-screen{justify-content:center;padding:40px 20px 40px}
+        }
+        #sidebar:not(.expanded) .nav-item:hover[data-tooltip]::after{
+            content:attr(data-tooltip);position:absolute;left:64px;top:50%;transform:translateY(-50%);
+            background:#1e293b;color:#fff;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;
+            padding:6px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;
+            z-index:999;border:1px solid rgba(255,255,255,0.1);
+        }
+        #home-screen::-webkit-scrollbar{width:4px}
+        #home-screen::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
     </style>
 </head>
 <body>
-
 <div id="shell">
 
+    <!-- SIDEBAR -->
     <nav id="sidebar">
         <div class="logo-wrap" onclick="toggleSidebar()">
             <div class="logo-icon">PE</div>
             <div class="logo-text">PE-SYSTEM</div>
         </div>
-
         <div class="nav-item active" data-app="home" data-tooltip="Home" onclick="openApp('home')">
-            <div class="nav-icon-wrap" style="background:rgba(100,116,139,0.15);">🏠</div>
-            <div class="nav-label">
-                <div class="nav-label-title">Home</div>
-                <div class="nav-label-sub">Übersicht</div>
-            </div>
+            <div class="nav-icon-wrap" style="background:rgba(100,116,139,0.15)">🏠</div>
+            <div class="nav-label"><div class="nav-label-title">Home</div><div class="nav-label-sub">Übersicht</div></div>
         </div>
-
         <div class="nav-divider"></div>
-
         <div class="nav-item" data-app="ausmesser" data-tooltip="Ausmesser" onclick="openApp('ausmesser')">
-            <div class="nav-icon-wrap" style="background:rgba(239,68,68,0.15);">📐</div>
-            <div class="nav-label">
-                <div class="nav-label-title">Ausmesser Cloud</div>
-                <div class="nav-label-sub">PE Fabrikation</div>
-            </div>
+            <div class="nav-icon-wrap" style="background:rgba(239,68,68,0.15)">📐</div>
+            <div class="nav-label"><div class="nav-label-title">Ausmesser Cloud</div><div class="nav-label-sub">PE Fabrikation</div></div>
         </div>
-
-        <div class="nav-item" data-app="pe-montage" data-tooltip="PE-Montage" onclick="openApp('pe-montage')">
-            <div class="nav-icon-wrap" style="background:rgba(16,185,129,0.15);">🔧</div>
-            <div class="nav-label">
-                <div class="nav-label-title">PE-Montage / FA</div>
-                <div class="nav-label-sub">Montage Manager</div>
-            </div>
+        <div class="nav-item" data-app="pe-montage" data-tooltip="Montage Manager" onclick="openApp('pe-montage')">
+            <div class="nav-icon-wrap" style="background:rgba(16,185,129,0.15)">🔧</div>
+            <div class="nav-label"><div class="nav-label-title">Montage Manager / FA</div><div class="nav-label-sub">Montage Manager</div></div>
         </div>
-
-        <div class="nav-item" data-app="pe-kalender" data-tooltip="PE-Kalender" onclick="openApp('pe-kalender')">
-            <div class="nav-icon-wrap" style="background:rgba(59,130,246,0.15);">📅</div>
-            <div class="nav-label">
-                <div class="nav-label-title">PE-Kalender</div>
-                <div class="nav-label-sub">Tourendispo Live</div>
-            </div>
+        <div class="nav-item" data-app="pe-kalender" data-tooltip="Kalender Manager" onclick="openApp('pe-kalender')">
+            <div class="nav-icon-wrap" style="background:rgba(59,130,246,0.15)">📅</div>
+            <div class="nav-label"><div class="nav-label-title">Kalender Manager</div><div class="nav-label-sub">Tourendispo Live</div></div>
         </div>
-
-        <div class="nav-item" data-app="stunden" data-tooltip="Stunden" onclick="openApp('stunden')">
-            <div class="nav-icon-wrap" style="background:rgba(139,92,246,0.15);">⏱️</div>
-            <div class="nav-label">
-                <div class="nav-label-title">Stunden</div>
-                <div class="nav-label-sub">Zeiterfassung</div>
-            </div>
+        <div class="nav-item" data-app="stunden" data-tooltip="Montage Dispo" onclick="openApp('stunden')">
+            <div class="nav-icon-wrap" style="background:rgba(139,92,246,0.15)">⏱️</div>
+            <div class="nav-label"><div class="nav-label-title">Montage Dispo</div><div class="nav-label-sub">Zeiterfassung</div></div>
         </div>
-
-        <div class="nav-item" data-app="dispo" data-tooltip="Ajdin Dispo" onclick="openApp('dispo')">
-            <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15);">🚛</div>
-            <div class="nav-label">
-                <div class="nav-label-title">Ajdin Dispo</div>
-                <div class="nav-label-sub">Tourendispo Pro</div>
-            </div>
+        <div class="nav-item" data-app="dispo" data-tooltip="Excel Dispo" onclick="openApp('dispo')">
+            <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15)">🚛</div>
+            <div class="nav-label"><div class="nav-label-title">Excel Dispo</div><div class="nav-label-sub">Tourendispo Pro</div></div>
         </div>
-
         <div class="nav-divider"></div>
-
-        <div class="sidebar-toggle" onclick="toggleSidebar()">
-            <span id="toggle-icon">›</span>
+        <div class="nav-item" data-app="pe-fabrikation" data-tooltip="PE-Fabrikation" onclick="openApp('pe-fabrikation')">
+            <div class="nav-icon-wrap" style="background:rgba(234,179,8,0.15)">🏭</div>
+            <div class="nav-label"><div class="nav-label-title">PE-Fabrikation</div><div class="nav-label-sub">Workflow Engine</div></div>
         </div>
+        <div class="nav-divider"></div>
+        <!-- BELL NAV ITEM -->
+        <div class="nav-item" data-tooltip="Erinnerungen" onclick="openReminderPanel()">
+            <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15)" id="sidebar-bell-wrap">🔔
+                <div class="reminder-badge" id="sidebar-badge"></div>
+            </div>
+            <div class="nav-label"><div class="nav-label-title">Erinnerungen</div><div class="nav-label-sub">Wöchentlich</div></div>
+        </div>
+        <div class="sidebar-toggle" onclick="toggleSidebar()"><span id="toggle-icon">›</span></div>
     </nav>
 
+    <!-- MAIN -->
     <div id="main">
         <div id="topbar">
-            <div class="topbar-breadcrumb">
-                <div class="topbar-app-badge">
-                    <div class="topbar-icon" id="topbar-icon">🏠</div>
-                    <div>
-                        <div class="topbar-name" id="topbar-name">PE-SYSTEM</div>
-                        <div class="topbar-sub" id="topbar-sub">Command Center</div>
-                    </div>
+            <div class="topbar-app-badge">
+                <div class="topbar-icon" id="topbar-icon">🏠</div>
+                <div class="topbar-info">
+                    <div class="topbar-name" id="topbar-name">PE-SYSTEM</div>
+                    <div class="topbar-sub" id="topbar-sub">Command Center</div>
                 </div>
             </div>
-            <div class="live-pill">
-                <div class="live-dot"></div>
-                <span>LIVE</span>
-            </div>
+            <!-- Bell button in topbar -->
+            <button class="topbar-bell" onclick="openReminderPanel()" title="Erinnerungen" aria-label="Erinnerungen öffnen">
+                🔔
+                <div class="topbar-bell-badge" id="topbar-bell-badge"></div>
+            </button>
+            <div class="live-pill"><div class="live-dot"></div><span>LIVE</span></div>
         </div>
 
         <div id="iframe-container">
 
+            <!-- HOME SCREEN -->
             <div id="home-screen">
                 <div class="home-glow"></div>
-                <div class="home-headline">PE<span>—</span>SYSTEM</div>
-                <div class="home-sub">Command Center · 5 Apps · Alle verbunden</div>
-
+                <div class="pe-logo-wrap">
+                    <svg class="pe-logo-svg" viewBox="0 0 560 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs><clipPath id="logo-clip"><rect width="560" height="100" rx="2"/></clipPath></defs>
+                        <rect width="560" height="100" fill="#1565c0" rx="2"/>
+                        <rect x="0" y="0" width="560" height="11" fill="#0d47a1"/>
+                        <rect x="0" y="89" width="560" height="11" fill="#0d47a1"/>
+                        <polygon points="452,11 480,11 560,89 532,89" fill="#0d47a1" clip-path="url(#logo-clip)"/>
+                        <polygon points="482,11 508,11 560,72 560,50" fill="#0d47a1" clip-path="url(#logo-clip)"/>
+                        <text x="28" y="68" font-family="'DM Sans', Arial Black, sans-serif" font-size="52" font-weight="900" fill="#ffffff" letter-spacing="-0.5">PE Fabrikation</text>
+                    </svg>
+                </div>
+                <div class="home-sub">Command Center &nbsp;·&nbsp; 6 Apps</div>
                 <div class="apps-grid">
                     <div class="app-card" onclick="openApp('ausmesser')">
-                        <div class="app-card-icon" style="background:rgba(239,68,68,0.15);">📐</div>
-                        <div>
-                            <div class="app-card-title">Ausmesser Cloud</div>
-                            <div class="app-card-desc">PE Fabrikation</div>
-                        </div>
+                        <div class="app-card-icon" style="background:rgba(239,68,68,0.15)">📐</div>
+                        <div><div class="app-card-title">Ausmesser</div><div class="app-card-desc">Cloud</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-montage')">
-                        <div class="app-card-icon" style="background:rgba(16,185,129,0.15);">🔧</div>
-                        <div>
-                            <div class="app-card-title">PE-Montage / FA</div>
-                            <div class="app-card-desc">Montage Manager</div>
-                        </div>
+                        <div class="app-card-icon" style="background:rgba(16,185,129,0.15)">🔧</div>
+                        <div><div class="app-card-title">Montage</div><div class="app-card-desc">Manager</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('pe-kalender')">
-                        <div class="app-card-icon" style="background:rgba(59,130,246,0.15);">📅</div>
-                        <div>
-                            <div class="app-card-title">PE-Kalender</div>
-                            <div class="app-card-desc">Tourendispo Live</div>
-                        </div>
+                        <div class="app-card-icon" style="background:rgba(59,130,246,0.15)">📅</div>
+                        <div><div class="app-card-title">Kalender</div><div class="app-card-desc">Touren Live</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('stunden')">
-                        <div class="app-card-icon" style="background:rgba(139,92,246,0.15);">⏱️</div>
-                        <div>
-                            <div class="app-card-title">Stunden</div>
-                            <div class="app-card-desc">Zeiterfassung</div>
-                        </div>
+                        <div class="app-card-icon" style="background:rgba(139,92,246,0.15)">⏱️</div>
+                        <div><div class="app-card-title">M-Dispo</div><div class="app-card-desc">Zeiterfassung</div></div>
                     </div>
                     <div class="app-card" onclick="openApp('dispo')">
-                        <div class="app-card-icon" style="background:rgba(245,158,11,0.15);">🚛</div>
-                        <div>
-                            <div class="app-card-title">Ajdin Dispo</div>
-                            <div class="app-card-desc">Tourendispo Pro</div>
-                        </div>
+                        <div class="app-card-icon" style="background:rgba(245,158,11,0.15)">🚛</div>
+                        <div><div class="app-card-title">Excel Dispo</div><div class="app-card-desc">Touren Pro</div></div>
+                    </div>
+                    <div class="app-card" onclick="openApp('pe-fabrikation')">
+                        <div class="app-card-icon" style="background:rgba(234,179,8,0.15)">🏭</div>
+                        <div><div class="app-card-title">Fabrikation</div><div class="app-card-desc">Workflow</div></div>
                     </div>
                 </div>
-
                 <div class="stats-bar">
-                    <div class="stat-item">
-                        <div class="stat-val">5</div>
-                        <div class="stat-lbl">Apps</div>
-                    </div>
+                    <div class="stat-item"><div class="stat-val">6</div><div class="stat-lbl">Apps</div></div>
                     <div class="stat-sep"></div>
-                    <div class="stat-item">
-                        <div class="stat-val">2</div>
-                        <div class="stat-lbl">Accounts</div>
-                    </div>
+                    <div class="stat-item"><div class="stat-val">2</div><div class="stat-lbl">Accounts</div></div>
                     <div class="stat-sep"></div>
-                    <div class="stat-item">
-                        <div class="stat-val">∞</div>
-                        <div class="stat-lbl">Live-Sync</div>
-                    </div>
+                    <div class="stat-item"><div class="stat-val">∞</div><div class="stat-lbl">Live</div></div>
                     <div class="stat-sep"></div>
-                    <div class="stat-item">
-                        <div class="stat-val" id="clock-val">—</div>
-                        <div class="stat-lbl">Uhrzeit</div>
-                    </div>
+                    <div class="stat-item"><div class="stat-val" id="clock-val">—</div><div class="stat-lbl">Uhrzeit</div></div>
                 </div>
-            </div>
+            </div><!-- /#home-screen -->
 
-            <!-- Error screen -->
+            <!-- ERROR -->
             <div id="error-screen">
                 <div class="error-icon">⚠️</div>
                 <div class="error-title">Zugriff Blockiert</div>
-                <div class="error-msg">
-                    Diese App kann nicht direkt eingebettet werden.<br>
-                    GitHub Pages blockiert manchmal iFrame-Zugriff.<br>
-                    Öffne sie direkt im neuen Tab:
-                </div>
+                <div class="error-msg">Diese App kann nicht direkt eingebettet werden. GitHub Pages blockiert manchmal iFrame-Zugriff. Öffne sie direkt im neuen Tab:</div>
                 <a id="error-link" href="#" target="_blank" class="open-btn">↗ App öffnen</a>
                 <button class="error-btn" onclick="hideError()">← Zurück zur Übersicht</button>
             </div>
+            <div id="loading-overlay"><div class="spinner"></div><div class="loading-text">App wird geladen...</div></div>
+        </div>
+    </div>
+</div>
 
-            <div id="loading-overlay">
-                <div class="spinner"></div>
-                <div class="loading-text">App wird geladen...</div>
+<!-- MOBILE NAV -->
+<div id="mobile-nav">
+    <div class="mobile-nav-inner">
+        <div class="mobile-nav-item active" data-app="home" onclick="openApp('home')"><span class="m-icon">🏠</span><span class="m-label">Home</span></div>
+        <div class="mobile-nav-item" data-app="ausmesser" onclick="openApp('ausmesser')"><span class="m-icon">📐</span><span class="m-label">Ausmesser</span></div>
+        <div class="mobile-nav-item" data-app="pe-montage" onclick="openApp('pe-montage')"><span class="m-icon">🔧</span><span class="m-label">Montage</span></div>
+        <div class="mobile-nav-item" data-app="pe-kalender" onclick="openApp('pe-kalender')"><span class="m-icon">📅</span><span class="m-label">Kalender</span></div>
+        <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')"><span class="m-icon">⏱️</span><span class="m-label">M-Dispo</span></div>
+        <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')"><span class="m-icon">🚛</span><span class="m-label">Excel</span></div>
+        <div class="mobile-nav-item" data-app="pe-fabrikation" onclick="openApp('pe-fabrikation')"><span class="m-icon">🏭</span><span class="m-label">Fabrik</span></div>
+        <div class="mobile-nav-item bell-item" onclick="openReminderPanel()">
+            <span class="m-icon">🔔</span><span class="m-label">Erinn.</span>
+            <div class="mobile-bell-badge" id="mobile-bell-badge"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════════════════════════════════
+     ERINNERUNGS-PANEL
+════════════════════════════════════ -->
+<div id="reminder-backdrop" onclick="closeReminderPanel()"></div>
+<div id="reminder-panel">
+    <div class="rp-header">
+        <div class="rp-header-icon">🔔</div>
+        <div class="rp-header-text">
+            <div class="rp-title">Erinnerungen</div>
+            <div class="rp-sub">Wöchentliche Erinnerungen</div>
+        </div>
+        <div class="rp-close" onclick="closeReminderPanel()">✕</div>
+    </div>
+    <div class="rp-body">
+        <!-- Neue Erinnerung -->
+        <div class="rp-form">
+            <div class="rp-form-title">+ Neue Erinnerung</div>
+            <div class="rp-field">
+                <label>Titel / Aufgabe</label>
+                <input type="text" id="r-title" placeholder="z.B. Gipsplatten bestellen" maxlength="80">
+            </div>
+            <div class="rp-row">
+                <div class="rp-field">
+                    <label>Wochentag</label>
+                    <select id="r-day">
+                        <option value="1">Montag</option>
+                        <option value="2">Dienstag</option>
+                        <option value="3" selected>Mittwoch</option>
+                        <option value="4">Donnerstag</option>
+                        <option value="5">Freitag</option>
+                        <option value="6">Samstag</option>
+                        <option value="0">Sonntag</option>
+                    </select>
+                </div>
+                <div class="rp-field">
+                    <label>Uhrzeit</label>
+                    <input type="time" id="r-time" value="08:00">
+                </div>
+            </div>
+            <button class="rp-add-btn" onclick="addReminder()">Erinnerung speichern</button>
+        </div>
+
+        <!-- Bestehende Erinnerungen -->
+        <div>
+            <div class="rp-list-title" style="margin-bottom:10px">Aktive Erinnerungen</div>
+            <div class="rp-list" id="reminder-list">
+                <div class="rp-empty" id="reminder-empty">Noch keine Erinnerungen. Füge deine erste hinzu!</div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="mobile-nav">
-    <div class="mobile-nav-inner">
-        <div class="mobile-nav-item active" data-app="home" onclick="openApp('home')">
-            <span class="m-icon">🏠</span>
-            <span class="m-label">Home</span>
-        </div>
-        <div class="mobile-nav-item" data-app="ausmesser" onclick="openApp('ausmesser')">
-            <span class="m-icon">📐</span>
-            <span class="m-label">Ausmesser</span>
-        </div>
-        <div class="mobile-nav-item" data-app="pe-montage" onclick="openApp('pe-montage')">
-            <span class="m-icon">🔧</span>
-            <span class="m-label">Montage</span>
-        </div>
-        <div class="mobile-nav-item" data-app="pe-kalender" onclick="openApp('pe-kalender')">
-            <span class="m-icon">📅</span>
-            <span class="m-label">Kalender</span>
-        </div>
-        <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')">
-            <span class="m-icon">⏱️</span>
-            <span class="m-label">Stunden</span>
-        </div>
-        <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')">
-            <span class="m-icon">🚛</span>
-            <span class="m-label">Dispo</span>
-        </div>
+<!-- ERINNERUNGS-ALERT (über allem) -->
+<div id="reminder-alert">
+    <div class="alert-box">
+        <div class="alert-pulse-ring"></div>
+        <div class="alert-icon-wrap"><span class="alert-bell">🔔</span></div>
+        <div class="alert-label">Erinnerung</div>
+        <div class="alert-title" id="alert-title">Gipsplatten bestellen</div>
+        <div class="alert-time" id="alert-time">Mittwoch · 08:00 Uhr</div>
+        <div class="alert-queue" id="alert-queue"></div>
+        <button class="alert-dismiss-btn" onclick="dismissAlert()">✓ &nbsp;Erledigt — Schliessen</button>
     </div>
 </div>
 
 <script>
+// ════════════════════════
+// APP LOGIC
+// ════════════════════════
 const APPS = {
-    'ausmesser': {
-        label: 'Ausmesser Cloud',
-        sub: 'PE Fabrikation GIS',
-        icon: '📐',
-        iconBg: 'rgba(239,68,68,0.15)',
-        url: 'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/',
-    },
-    'pe-montage': {
-        label: 'PE-Montage / FA',
-        sub: 'Montage Manager Pro',
-        icon: '🔧',
-        iconBg: 'rgba(16,185,129,0.15)',
-        url: 'https://alarmpegza-a11y.github.io/PE-MONTAGE/',
-    },
-    'pe-kalender': {
-        label: 'PE-Kalender',
-        sub: 'Tourendispo Live',
-        icon: '📅',
-        iconBg: 'rgba(59,130,246,0.15)',
-        url: 'https://alarmpegza-a11y.github.io/PE-KALENDER/',
-    },
-    'stunden': {
-        label: 'Stunden',
-        sub: 'Zeiterfassung',
-        icon: '⏱️',
-        iconBg: 'rgba(139,92,246,0.15)',
-        url: 'https://alarmpegza-a11y.github.io/Stunden/',
-    },
-    'dispo': {
-        label: 'Ajdin Dispo',
-        sub: 'Tourendispo Pro',
-        icon: '🚛',
-        iconBg: 'rgba(245,158,11,0.15)',
-        url: 'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/',
-    },
+    'pe-fabrikation': { label:'PE-Fabrikation',       sub:'Workflow Engine',      icon:'🏭', iconBg:'rgba(234,179,8,0.15)',   url:'https://ajdinslijepcevic1-hue.github.io/-PE-/' },
+    'ausmesser':      { label:'Ausmesser Cloud',      sub:'PE Fabrikation GIS',   icon:'📐', iconBg:'rgba(239,68,68,0.15)',   url:'https://ajdinslijepcevic1-hue.github.io/PE-Fabrikation_Ausmass/' },
+    'pe-montage':     { label:'Montage Manager / FA', sub:'Montage Manager Pro',  icon:'🔧', iconBg:'rgba(16,185,129,0.15)', url:'https://alarmpegza-a11y.github.io/PE-MONTAGE/' },
+    'pe-kalender':    { label:'Kalender Manager',     sub:'Tourendispo Live',     icon:'📅', iconBg:'rgba(59,130,246,0.15)', url:'https://alarmpegza-a11y.github.io/PE-KALENDER/' },
+    'stunden':        { label:'Montage Dispo',        sub:'Zeiterfassung',        icon:'⏱️', iconBg:'rgba(139,92,246,0.15)', url:'https://alarmpegza-a11y.github.io/Stunden/' },
+    'dispo':          { label:'Excel Dispo',          sub:'Tourendispo Pro',      icon:'🚛', iconBg:'rgba(245,158,11,0.15)', url:'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/' },
 };
+
+const DAY_NAMES = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
 
 let currentApp = 'home';
 let sidebarExpanded = false;
@@ -781,31 +514,20 @@ function toggleSidebar() {
 
 function openApp(appId) {
     currentApp = appId;
-
-    document.querySelectorAll('.nav-item').forEach(el =>
-        el.classList.toggle('active', el.dataset.app === appId));
-    document.querySelectorAll('.mobile-nav-item').forEach(el =>
-        el.classList.toggle('active', el.dataset.app === appId));
-
-    const homeScreen = document.getElementById('home-screen');
-    const errorScreen = document.getElementById('error-screen');
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.app === appId));
+    document.querySelectorAll('.mobile-nav-item[data-app]').forEach(el => el.classList.toggle('active', el.dataset.app === appId));
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('error-screen').classList.remove('show');
+    document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
 
     if (appId === 'home') {
-        homeScreen.style.display = 'flex';
-        errorScreen.classList.remove('show');
-        document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
+        document.getElementById('home-screen').style.display = 'flex';
         setTopbar('🏠', 'PE-SYSTEM', 'Command Center', 'rgba(100,116,139,0.15)');
         return;
     }
-
-    homeScreen.style.display = 'none';
-    errorScreen.classList.remove('show');
-
     const app = APPS[appId];
     if (!app) return;
-
     setTopbar(app.icon, app.label, app.sub, app.iconBg);
-    document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
 
     let frame = document.getElementById('frame-' + appId);
     if (!frame) {
@@ -815,54 +537,27 @@ function openApp(appId) {
         frame.allow = 'clipboard-read; clipboard-write';
         document.getElementById('iframe-container').appendChild(frame);
     }
-
     if (!loadedFrames.has(appId)) {
         const overlay = document.getElementById('loading-overlay');
         overlay.classList.add('show');
-
-        // Timeout: if iframe doesn't load in 6s, show error with direct link
-        const errorTimeout = setTimeout(() => {
-            overlay.classList.remove('show');
-            showError(app.url, app.label);
-        }, 6000);
-
+        const t = setTimeout(() => { overlay.classList.remove('show'); showError(app.url, app.label); }, 6000);
         frame.onload = () => {
-            clearTimeout(errorTimeout);
-            overlay.classList.remove('show');
-            loadedFrames.add(appId);
-            // Check if iframe actually loaded something useful
-            try {
-                const doc = frame.contentDocument || frame.contentWindow.document;
-                if (!doc || doc.body === null) {
-                    showError(app.url, app.label);
-                }
-            } catch(e) {
-                // Cross-origin — this means it loaded but we can't inspect it
-                // That's actually fine — the app is running
-            }
+            clearTimeout(t); overlay.classList.remove('show'); loadedFrames.add(appId);
+            try { const d = frame.contentDocument || frame.contentWindow.document; if (!d || d.body === null) showError(app.url, app.label); } catch(e) {}
         };
-        frame.onerror = () => {
-            clearTimeout(errorTimeout);
-            overlay.classList.remove('show');
-            showError(app.url, app.label);
-        };
+        frame.onerror = () => { clearTimeout(t); overlay.classList.remove('show'); showError(app.url, app.label); };
         frame.src = app.url;
     }
-
     frame.classList.add('visible');
 }
 
 function showError(url, label) {
     document.querySelectorAll('.app-frame').forEach(f => f.classList.remove('visible'));
-    const errorScreen = document.getElementById('error-screen');
     document.getElementById('error-link').href = url;
     document.getElementById('error-link').textContent = '↗ ' + label + ' öffnen';
-    errorScreen.classList.add('show');
+    document.getElementById('error-screen').classList.add('show');
 }
-
-function hideError() {
-    openApp('home');
-}
+function hideError() { openApp('home'); }
 
 function setTopbar(icon, name, sub, iconBg) {
     document.getElementById('topbar-icon').textContent = icon;
@@ -871,25 +566,280 @@ function setTopbar(icon, name, sub, iconBg) {
     document.getElementById('topbar-sub').textContent = sub;
 }
 
+// Clock
 function updateClock() {
-    const now = new Date();
-    const h = String(now.getHours()).padStart(2,'0');
-    const m = String(now.getMinutes()).padStart(2,'0');
-    document.getElementById('clock-val').textContent = h + ':' + m;
+    const n = new Date();
+    document.getElementById('clock-val').textContent =
+        String(n.getHours()).padStart(2,'0') + ':' + String(n.getMinutes()).padStart(2,'0');
 }
-updateClock();
-setInterval(updateClock, 1000);
+updateClock(); setInterval(updateClock, 1000);
 
-document.querySelectorAll('.app-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.04), var(--surface) 60%)`;
+// Hover glow
+if (window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.app-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const r = card.getBoundingClientRect();
+            card.style.background = `radial-gradient(circle at ${((e.clientX-r.left)/r.width*100)}% ${((e.clientY-r.top)/r.height*100)}%, rgba(255,255,255,0.04), var(--surface) 60%)`;
+        });
+        card.addEventListener('mouseleave', () => { card.style.background = ''; });
     });
-    card.addEventListener('mouseleave', () => { card.style.background = ''; });
-});
-</script>
+}
 
+// ════════════════════════
+// ERINNERUNGS-SYSTEM
+// ════════════════════════
+const LS_KEY = 'pe_reminders_v1';
+const LS_FIRED = 'pe_reminder_fired_v1';
+let reminders = [];
+let alertQueue = []; // queue for multiple simultaneous reminders
+
+function loadReminders() {
+    try { reminders = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { reminders = []; }
+}
+function saveReminders() {
+    localStorage.setItem(LS_KEY, JSON.stringify(reminders));
+}
+// Track which reminders already fired today (day+hour+minute key)
+function getFiredKey(r) {
+    const now = new Date();
+    return r.id + '_' + now.getFullYear() + '_' + now.getMonth() + '_' + now.getDate();
+}
+function hasFired(r) {
+    try { const f = JSON.parse(localStorage.getItem(LS_FIRED) || '{}'); return !!f[getFiredKey(r)]; } catch { return false; }
+}
+function markFired(r) {
+    try {
+        const f = JSON.parse(localStorage.getItem(LS_FIRED) || '{}');
+        // Clean old keys (keep only today)
+        const today = new Date(); const todayPrefix = '_' + today.getFullYear() + '_' + today.getMonth() + '_' + today.getDate();
+        Object.keys(f).forEach(k => { if (!k.includes(todayPrefix)) delete f[k]; });
+        f[getFiredKey(r)] = true;
+        localStorage.setItem(LS_FIRED, JSON.stringify(f));
+    } catch {}
+}
+
+function addReminder() {
+    const title = document.getElementById('r-title').value.trim();
+    const day = parseInt(document.getElementById('r-day').value);
+    const time = document.getElementById('r-time').value;
+    if (!title) { document.getElementById('r-title').focus(); return; }
+    if (!time) { return; }
+    const [h, m] = time.split(':').map(Number);
+    const id = Date.now().toString(36);
+    reminders.push({ id, title, day, hour: h, minute: m });
+    saveReminders();
+    document.getElementById('r-title').value = '';
+    renderReminderList();
+    updateBadges();
+}
+
+function deleteReminder(id) {
+    reminders = reminders.filter(r => r.id !== id);
+    saveReminders();
+    renderReminderList();
+    updateBadges();
+}
+
+function renderReminderList() {
+    const list = document.getElementById('reminder-list');
+    const empty = document.getElementById('reminder-empty');
+    list.querySelectorAll('.reminder-item').forEach(el => el.remove());
+
+    if (reminders.length === 0) {
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+
+    reminders.forEach(r => {
+        const timeStr = String(r.hour).padStart(2,'0') + ':' + String(r.minute).padStart(2,'0');
+        const div = document.createElement('div');
+        div.className = 'reminder-item';
+        div.id = 'ri-' + r.id;
+
+        // Build day options
+        const dayOpts = DAY_NAMES.map((n,i) =>
+            `<option value="${i}" ${r.day===i?'selected':''}>${n}</option>`
+        ).join('');
+
+        div.innerHTML = `
+            <div class="reminder-item-icon">🔔</div>
+            <div class="reminder-item-body" style="flex:1;min-width:0">
+                <div class="reminder-item-name" id="rname-${r.id}">${escHtml(r.title)}</div>
+                <div class="reminder-item-meta" id="rmeta-${r.id}">${DAY_NAMES[r.day]} &nbsp;·&nbsp; ${timeStr} Uhr &nbsp;·&nbsp; Wöchentlich</div>
+                <!-- Inline edit form -->
+                <div class="reminder-edit-form" id="redit-${r.id}">
+                    <div>
+                        <label class="reminder-edit-label">Titel</label>
+                        <input type="text" id="redit-title-${r.id}" value="${escHtml(r.title)}" maxlength="80">
+                    </div>
+                    <div class="reminder-edit-row">
+                        <div>
+                            <label class="reminder-edit-label">Wochentag</label>
+                            <select id="redit-day-${r.id}">${dayOpts}</select>
+                        </div>
+                        <div>
+                            <label class="reminder-edit-label">Uhrzeit</label>
+                            <input type="time" id="redit-time-${r.id}" value="${timeStr}">
+                        </div>
+                    </div>
+                    <div class="reminder-edit-actions">
+                        <button class="reminder-edit-save" onclick="saveEdit('${r.id}')">✓ Speichern</button>
+                        <button class="reminder-edit-cancel" onclick="cancelEdit('${r.id}')">Abbrechen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="reminder-item-actions">
+                <div class="reminder-item-edit" onclick="startEdit('${r.id}')" title="Bearbeiten" id="rbtn-edit-${r.id}">✏️</div>
+                <div class="reminder-item-del" onclick="deleteReminder('${r.id}')" title="Löschen" id="rbtn-del-${r.id}">🗑</div>
+            </div>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function startEdit(id) {
+    // Close any other open edit forms first
+    document.querySelectorAll('.reminder-edit-form.open').forEach(el => {
+        const otherId = el.id.replace('redit-','');
+        if (otherId !== id) cancelEdit(otherId);
+    });
+    const item = document.getElementById('ri-' + id);
+    const form = document.getElementById('redit-' + id);
+    item.classList.add('editing');
+    form.classList.add('open');
+    // Hide action buttons while editing
+    document.getElementById('rbtn-edit-' + id).style.display = 'none';
+    document.getElementById('rbtn-del-' + id).style.display = 'none';
+    // Focus title field
+    setTimeout(() => document.getElementById('redit-title-' + id).focus(), 50);
+}
+
+function cancelEdit(id) {
+    const item = document.getElementById('ri-' + id);
+    const form = document.getElementById('redit-' + id);
+    if (!item || !form) return;
+    item.classList.remove('editing');
+    form.classList.remove('open');
+    document.getElementById('rbtn-edit-' + id).style.display = '';
+    document.getElementById('rbtn-del-' + id).style.display = '';
+    // Reset field to current saved value
+    const r = reminders.find(x => x.id === id);
+    if (r) {
+        document.getElementById('redit-title-' + id).value = r.title;
+        document.getElementById('redit-day-' + id).value = r.day;
+        document.getElementById('redit-time-' + id).value =
+            String(r.hour).padStart(2,'0') + ':' + String(r.minute).padStart(2,'0');
+    }
+}
+
+function saveEdit(id) {
+    const title = document.getElementById('redit-title-' + id).value.trim();
+    const day = parseInt(document.getElementById('redit-day-' + id).value);
+    const time = document.getElementById('redit-time-' + id).value;
+    if (!title) { document.getElementById('redit-title-' + id).focus(); return; }
+    const [h, m] = time.split(':').map(Number);
+    const idx = reminders.findIndex(x => x.id === id);
+    if (idx === -1) return;
+    reminders[idx] = { ...reminders[idx], title, day, hour: h, minute: m };
+    saveReminders();
+    renderReminderList(); // re-render all
+}
+
+function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function updateBadges() {
+    const count = reminders.length;
+    const show = count > 0;
+    const txt = count > 9 ? '9+' : String(count);
+    // Sidebar badge
+    const sb = document.getElementById('sidebar-badge');
+    sb.classList.toggle('show', show);
+    sb.textContent = txt;
+    // Topbar badge
+    const tb = document.getElementById('topbar-bell-badge');
+    tb.classList.toggle('show', show);
+    tb.textContent = txt;
+    // Mobile badge
+    const mb = document.getElementById('mobile-bell-badge');
+    mb.classList.toggle('show', show);
+    mb.textContent = txt;
+}
+
+// Panel open/close
+function openReminderPanel() {
+    document.getElementById('reminder-panel').classList.add('open');
+    document.getElementById('reminder-backdrop').classList.add('show');
+}
+function closeReminderPanel() {
+    document.getElementById('reminder-panel').classList.remove('open');
+    document.getElementById('reminder-backdrop').classList.remove('show');
+}
+
+// ── ALERT LOGIC ──
+function showAlert(r) {
+    const timeStr = String(r.hour).padStart(2,'0') + ':' + String(r.minute).padStart(2,'0');
+    document.getElementById('alert-title').textContent = r.title;
+    document.getElementById('alert-time').textContent = DAY_NAMES[r.day] + ' · ' + timeStr + ' Uhr';
+    const qEl = document.getElementById('alert-queue');
+    if (alertQueue.length > 0) {
+        qEl.textContent = '+ ' + alertQueue.length + ' weitere Erinnerung' + (alertQueue.length > 1 ? 'en' : '') + ' warten';
+        qEl.classList.add('show');
+    } else {
+        qEl.classList.remove('show');
+    }
+    document.getElementById('reminder-alert').classList.add('show');
+}
+
+function dismissAlert() {
+    document.getElementById('reminder-alert').classList.remove('show');
+    if (alertQueue.length > 0) {
+        const next = alertQueue.shift();
+        setTimeout(() => showAlert(next), 400);
+    }
+}
+
+// ── CHECK LOOP: runs every 30 seconds ──
+function checkReminders() {
+    const now = new Date();
+    const currentDay = now.getDay();
+    const currentH = now.getHours();
+    const currentM = now.getMinutes();
+
+    reminders.forEach(r => {
+        if (r.day !== currentDay) return;
+        if (r.hour !== currentH) return;
+        if (r.minute !== currentM) return;
+        if (hasFired(r)) return;
+        markFired(r);
+        // If alert is already visible, queue it
+        if (document.getElementById('reminder-alert').classList.contains('show')) {
+            alertQueue.push(r);
+            // Update queue label
+            const qEl = document.getElementById('alert-queue');
+            qEl.textContent = '+ ' + alertQueue.length + ' weitere Erinnerung' + (alertQueue.length > 1 ? 'en' : '') + ' warten';
+            qEl.classList.add('show');
+        } else {
+            showAlert(r);
+        }
+    });
+}
+
+// Panel open
+function openReminderPanel() {
+    renderReminderList();
+    document.getElementById('reminder-panel').classList.add('open');
+    document.getElementById('reminder-backdrop').classList.add('show');
+}
+
+// Init
+loadReminders();
+renderReminderList();
+updateBadges();
+checkReminders();
+setInterval(checkReminders, 30000); // check every 30 seconds
+</script>
 </body>
 </html>
