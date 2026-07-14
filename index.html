@@ -309,6 +309,10 @@
             <div class="nav-icon-wrap" style="background:rgba(245,158,11,0.15)">🚛</div>
             <div class="nav-label"><div class="nav-label-title">Excel Dispo</div><div class="nav-label-sub">Tourendispo Pro</div></div>
         </div>
+        <div class="nav-item" data-app="rechnungen" data-tooltip="Rechnungskontrolle" onclick="openApp('rechnungen')">
+            <div class="nav-icon-wrap" style="background:rgba(6,182,212,0.15)">🧾</div>
+            <div class="nav-label"><div class="nav-label-title">Rechnungskontrolle</div><div class="nav-label-sub">Subunternehmer-Abgleich</div></div>
+        </div>
         <div class="nav-divider"></div>
         <div class="nav-item" data-app="pe-fabrikation" data-tooltip="PE-Fabrikation" onclick="openApp('pe-fabrikation')">
             <div class="nav-icon-wrap" style="background:rgba(234,179,8,0.15)">🏭</div>
@@ -359,7 +363,7 @@
                         <text x="28" y="68" font-family="'DM Sans', Arial Black, sans-serif" font-size="52" font-weight="900" fill="#ffffff" letter-spacing="-0.5">PE Fabrikation</text>
                     </svg>
                 </div>
-                <div class="home-sub">Command Center &nbsp;·&nbsp; 6 Apps</div>
+                <div class="home-sub">Command Center &nbsp;·&nbsp; 7 Apps</div>
                 <div class="apps-grid">
                     <div class="app-card" onclick="openApp('ausmesser')">
                         <div class="app-card-icon" style="background:rgba(239,68,68,0.15)">📐</div>
@@ -381,13 +385,17 @@
                         <div class="app-card-icon" style="background:rgba(245,158,11,0.15)">🚛</div>
                         <div><div class="app-card-title">Excel Dispo</div><div class="app-card-desc">Touren Pro</div></div>
                     </div>
+                    <div class="app-card" onclick="openApp('rechnungen')">
+                        <div class="app-card-icon" style="background:rgba(6,182,212,0.15)">🧾</div>
+                        <div><div class="app-card-title">Rechnungen</div><div class="app-card-desc">Sub-Abgleich</div></div>
+                    </div>
                     <div class="app-card" onclick="openApp('pe-fabrikation')">
                         <div class="app-card-icon" style="background:rgba(234,179,8,0.15)">🏭</div>
                         <div><div class="app-card-title">Fabrikation</div><div class="app-card-desc">Workflow</div></div>
                     </div>
                 </div>
                 <div class="stats-bar">
-                    <div class="stat-item"><div class="stat-val">6</div><div class="stat-lbl">Apps</div></div>
+                    <div class="stat-item"><div class="stat-val">7</div><div class="stat-lbl">Apps</div></div>
                     <div class="stat-sep"></div>
                     <div class="stat-item"><div class="stat-val">2</div><div class="stat-lbl">Accounts</div></div>
                     <div class="stat-sep"></div>
@@ -419,6 +427,7 @@
         <div class="mobile-nav-item" data-app="pe-kalender" onclick="openApp('pe-kalender')"><span class="m-icon">📅</span><span class="m-label">Kalender</span></div>
         <div class="mobile-nav-item" data-app="stunden" onclick="openApp('stunden')"><span class="m-icon">⏱️</span><span class="m-label">M-Dispo</span></div>
         <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')"><span class="m-icon">🚛</span><span class="m-label">Excel</span></div>
+        <div class="mobile-nav-item" data-app="rechnungen" onclick="openApp('rechnungen')"><span class="m-icon">🧾</span><span class="m-label">Rechn.</span></div>
         <div class="mobile-nav-item" data-app="pe-fabrikation" onclick="openApp('pe-fabrikation')"><span class="m-icon">🏭</span><span class="m-label">Fabrik</span></div>
         <div class="mobile-nav-item bell-item" onclick="openReminderPanel()">
             <span class="m-icon">🔔</span><span class="m-label">Erinn.</span>
@@ -520,6 +529,7 @@ const APPS = {
     'pe-kalender':    { label:'Kalender Manager',     sub:'Tourendispo Live',     icon:'📅', iconBg:'rgba(59,130,246,0.15)', url:'https://alarmpegza-a11y.github.io/PE-KALENDER/' },
     'stunden':        { label:'Montage Dispo',        sub:'Zeiterfassung',        icon:'⏱️', iconBg:'rgba(139,92,246,0.15)', url:'https://alarmpegza-a11y.github.io/Stunden/' },
     'dispo':          { label:'Excel Dispo',          sub:'Tourendispo Pro',      icon:'🚛', iconBg:'rgba(245,158,11,0.15)', url:'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/' },
+    'rechnungen':     { label:'Rechnungskontrolle',   sub:'Subunternehmer-Abgleich', icon:'🧾', iconBg:'rgba(6,182,212,0.15)', url:'https://alarmpegza-a11y.github.io/DATENBANKRECHNUNGEN/' },
 };
 
 const DAY_NAMES = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
