@@ -789,15 +789,6 @@ window.toggleSidebar = () => {
 window.openApp = (appId) => {
   const app = APPS[appId];
 
-  // ── Bauleiter Übersicht: nutzt eigene Firebase-Authentifizierung.
-  // Google blockiert verschachtelte Auth-Anmeldungen innerhalb von iframes
-  // ("Diese App lässt sich nicht einbetten") — deshalb öffnet diese eine
-  // App bewusst in einem neuen Tab statt eingebettet zu werden.
-  if (appId === 'bauleiter' && app) {
-    window.open(app.url, '_blank');
-    return;
-  }
-
   currentApp = appId;
   document.querySelectorAll('.nav-item[data-app]').forEach(el => el.classList.toggle('active', el.dataset.app === appId));
   document.querySelectorAll('.mobile-nav-item[data-app]').forEach(el => el.classList.toggle('active', el.dataset.app === appId));
