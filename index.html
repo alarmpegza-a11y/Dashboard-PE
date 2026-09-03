@@ -353,6 +353,10 @@ nav.nav-list{display:flex;flex-direction:column;gap:3px;width:100%;flex:1;min-wi
         <div class="nav-icon" style="background:rgba(34,211,238,0.14)">🧾</div>
         <div class="nav-label"><div class="nav-label-title">Rechnungskontrolle</div><div class="nav-label-sub">Sub-Abgleich</div></div>
       </div>
+      <div class="nav-item" data-app="bauleiter" data-tooltip="Bauleiter Übersicht" onclick="openApp('bauleiter')">
+        <div class="nav-icon" style="background:rgba(239,68,68,0.14)">👷</div>
+        <div class="nav-label"><div class="nav-label-title">Bauleiter Übersicht</div><div class="nav-label-sub">Baustellen-Zuteilung</div></div>
+      </div>
       <div class="nav-divider"></div>
       <div class="nav-item" data-app="pe-fabrikation" data-tooltip="PE-Fabrikation" onclick="openApp('pe-fabrikation')">
         <div class="nav-icon" style="background:rgba(251,191,36,0.14)">🏭</div>
@@ -443,9 +447,13 @@ nav.nav-list{display:flex;flex-direction:column;gap:3px;width:100%;flex:1;min-wi
             <div class="app-card-icon" style="background:linear-gradient(135deg,rgba(251,191,36,0.28),rgba(251,191,36,0.12))">🏭</div>
             <div><div class="app-card-title">Fabrikation</div><div class="app-card-desc">Workflow</div></div>
           </div>
+          <div class="app-card glass" onclick="openApp('bauleiter')">
+            <div class="app-card-icon" style="background:linear-gradient(135deg,rgba(239,68,68,0.28),rgba(239,68,68,0.12))">👷</div>
+            <div><div class="app-card-title">Bauleiter</div><div class="app-card-desc">Zuteilung</div></div>
+          </div>
         </div>
         <div class="stats-row glass-card">
-          <div class="stat"><div class="stat-val">7</div><div class="stat-lbl">Apps</div></div>
+          <div class="stat"><div class="stat-val">8</div><div class="stat-lbl">Apps</div></div>
           <div class="stat-sep"></div>
           <div class="stat"><div class="stat-val" id="stat-users">—</div><div class="stat-lbl">Nutzer</div></div>
           <div class="stat-sep"></div>
@@ -478,6 +486,7 @@ nav.nav-list{display:flex;flex-direction:column;gap:3px;width:100%;flex:1;min-wi
     <div class="mobile-nav-item" data-app="dispo" onclick="openApp('dispo')"><span class="m-icon">🚛</span><span class="m-label">Excel</span></div>
     <div class="mobile-nav-item" data-app="rechnungen" onclick="openApp('rechnungen')"><span class="m-icon">🧾</span><span class="m-label">Rechn.</span></div>
     <div class="mobile-nav-item" data-app="pe-fabrikation" onclick="openApp('pe-fabrikation')"><span class="m-icon">🏭</span><span class="m-label">Fabrik</span></div>
+    <div class="mobile-nav-item" data-app="bauleiter" onclick="openApp('bauleiter')"><span class="m-icon">👷</span><span class="m-label">Bauleiter</span></div>
     <div class="mobile-nav-item" onclick="openReminderPanel()"><span class="m-icon">🔔</span><span class="m-label">Erinn.</span><div class="icon-badge" id="mobile-bell-badge" style="top:4px;right:14px"></div></div>
     <div class="mobile-nav-item hidden" id="mobile-nav-admin" onclick="openAdminPanel()"><span class="m-icon">🛡️</span><span class="m-label">Admin</span></div>
   </div>
@@ -765,6 +774,7 @@ const APPS = {
   'stunden':        { label:'Montage Dispo',        sub:'Zeiterfassung',        icon:'⏱️', iconBg:'rgba(139,92,246,0.14)', url:'https://alarmpegza-a11y.github.io/Stunden/' },
   'dispo':          { label:'Excel Dispo',          sub:'Tourendispo Pro',      icon:'🚛', iconBg:'rgba(251,191,36,0.14)', url:'https://ajdinslijepcevic1-hue.github.io/Ajdin-Dispo/' },
   'rechnungen':     { label:'Rechnungskontrolle',   sub:'Subunternehmer-Abgleich', icon:'🧾', iconBg:'rgba(34,211,238,0.14)', url:'https://alarmpegza-a11y.github.io/DATENBANKRECHNUNGEN/' },
+  'bauleiter':      { label:'Bauleiter Übersicht',  sub:'Baustellen-Zuteilung', icon:'👷', iconBg:'rgba(239,68,68,0.14)', url:'https://alarmpegza-a11y.github.io/BAUSTELLEN-ZUTEILUNG/' },
 };
 const DAY_NAMES = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
 let currentApp = 'home', sidebarExpanded = false;
