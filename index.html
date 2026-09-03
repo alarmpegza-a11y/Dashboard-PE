@@ -787,6 +787,17 @@ window.toggleSidebar = () => {
 };
 
 window.openApp = (appId) => {
+  const app = APPS[appId];
+
+  // ── Bauleiter Übersicht: nutzt eigene Firebase-Authentifizierung.
+  // Google blockiert verschachtelte Auth-Anmeldungen innerhalb von iframes
+  // ("Diese App lässt sich nicht einbetten") — deshalb öffnet diese eine
+  // App bewusst in einem neuen Tab statt eingebettet zu werden.
+  if (appId === 'bauleiter' && app) {
+    window.open(app.url, '_blank');
+    return;
+  }
+
   currentApp = appId;
   document.querySelectorAll('.nav-item[data-app]').forEach(el => el.classList.toggle('active', el.dataset.app === appId));
   document.querySelectorAll('.mobile-nav-item[data-app]').forEach(el => el.classList.toggle('active', el.dataset.app === appId));
@@ -799,7 +810,7 @@ window.openApp = (appId) => {
     setTopbar('🏠', 'PE-SYSTEM', 'Command Center', 'rgba(255,255,255,0.06)');
     return;
   }
-  const app = APPS[appId]; if (!app) return;
+  if (!app) return;
   setTopbar(app.icon, app.label, app.sub, app.iconBg);
 
   let frame = document.getElementById('frame-' + appId);
